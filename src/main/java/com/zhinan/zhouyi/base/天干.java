@@ -27,4 +27,16 @@ public enum 天干 {
     public 五行 getWuXing() {
         return wuXing;
     }
+
+    public int getValue() {
+        return ordinal();
+    }
+
+    public String getName() {
+        return name();
+    }
+
+    public static 天干 getByValue(int value) {
+        return values()[value];
+    }
 }

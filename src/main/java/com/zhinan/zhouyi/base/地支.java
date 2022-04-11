@@ -22,6 +22,10 @@ public enum 地支 {
         this.wuXing = wuXing;
     }
 
+    public static 地支 getByValue(int value) {
+        return values()[value % 12];
+    }
+
     public 阴阳 getYinYang() {
         return yinYang;
     }
@@ -29,4 +33,14 @@ public enum 地支 {
     public 五行 getWuXing() {
         return wuXing;
     }
+
+    public int getValue() {
+        return ordinal();
+    }
+
+    public String getName() {
+        return name();
+    }
+
+
 }
