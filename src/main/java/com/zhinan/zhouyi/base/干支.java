@@ -24,4 +24,12 @@ public class 干支 {
     public 地支 getZhi() {
         return zhi;
     }
+
+    public int getValue() {
+        return ((6 - (((zhi.getValue()+ 12 - gan.getValue()) % 12) / 2))  % 6) * 10 + gan.getValue();
+    }
+
+    public 干支 roll(int i) {
+        return getByValue(getValue() + i + 60);
+    }
 }

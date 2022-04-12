@@ -3,10 +3,7 @@ package com.zhinan.zhouyi.util;
 import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.date.LunarDateTime;
 import net.time4j.PlainDate;
-import net.time4j.calendar.ChineseCalendar;
-import net.time4j.calendar.CommonElements;
-import net.time4j.calendar.EastAsianMonth;
-import net.time4j.calendar.EastAsianYear;
+import net.time4j.calendar.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,7 +12,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class DateUtil {
-
 
     public static LunarDateTime toLunar(LocalDateTime solarDate) {
         ChineseCalendar calendar = PlainDate.from(solarDate.toLocalDate()).transform(ChineseCalendar.class);
@@ -33,9 +29,13 @@ public class DateUtil {
                 .atTime(lunarDateTime.getHour(), lunarDateTime.getMinute());
     }
 
+    public static ChineseCalendar toChineseCalendar(LocalDate date) {
+        return PlainDate.from(date).transform(ChineseCalendar.class);
+    }
+
     public static List<干支> toGanZhi(LocalDate date) {
+        ChineseCalendar calendar = toChineseCalendar(date);
         List<干支> ganzhi = new ArrayList<>();
-        ChineseCalendar calendar = PlainDate.from(date).transform(ChineseCalendar.class);
         ganzhi.add(干支.getByValue(calendar.getYear().getNumber()));
         ganzhi.add(干支.getByValue(calendar.getSexagesimalMonth().getNumber()));
         ganzhi.add(干支.getByValue(calendar.getSexagesimalDay().getNumber()));
@@ -59,14 +59,47 @@ public class DateUtil {
     }
 
     public static 干支 toGanZhi(int year, int month) {
-        return toGanZhi(LocalDate.of(year, month, 15)).get(1);
+        return 干支.getByValue(toChineseCalendar(LocalDate.of(year, month, 15)).getSexagesimalMonth().getNumber());
     }
 
     public static 干支 toGanZhi(int year, int month, int day) {
-        return toGanZhi(LocalDate.of(year, month, day)).get(2);
+        return 干支.getByValue(toChineseCalendar(LocalDate.of(year, month, day)).getSexagesimalDay().getNumber());
     }
 
     public static 干支 toGanZhi(int year, int month, int day, int hour) {
         return toGanZhi(toGanZhi(year, month, day), hour);
+    }
+
+    public static SolarTerm getMajorSolarTerm(LocalDate date) {
+        return SolarTerm.ofMajor(date.getMonthValue());
+    }
+
+    public static LocalDate getLastMajorSolarTerm(LocalDate date) {
+        int year = date.getYear();
+        SolarTerm solarTerm = getMajorSolarTerm(date);
+        if (toLocalDate(date.getYear(), solarTerm).isBefore(date)) {
+            if (solarTerm.getIndex() - 2 < 1) {
+                year -= 1;
+            }
+            solarTerm = solarTerm.roll(-2);
+        }
+        return toLocalDate(year, solarTerm);
+    }
+
+    public static LocalDate getNextMajorSolarTerm(LocalDate date) {
+        int year = date.getYear();
+        SolarTerm solarTerm = getMajorSolarTerm(date);
+        if (toLocalDate(date.getYear(), solarTerm).isAfter(date)) {
+            if (solarTerm.getIndex() + 2 > 24) {
+                year += 1;
+            }
+            solarTerm = solarTerm.roll(2);
+        }
+        return toLocalDate(year, solarTerm);
+    }
+
+    public static LocalDate toLocalDate(int year, SolarTerm solarTerm) {
+        return ChineseCalendar.ofNewYear(year).with(ChineseCalendar.SOLAR_TERM, solarTerm)
+                .transform(PlainDate.class).toTemporalAccessor();
     }
 }
