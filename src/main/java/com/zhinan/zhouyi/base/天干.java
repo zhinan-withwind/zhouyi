@@ -36,7 +36,13 @@ public enum 天干 {
         return name();
     }
 
+    public 十神 compare(天干 other) {
+        return 十神.results[this.getWuXing().compare(other.getWuXing()).getValue() * 2
+                         + this.getYinYang().compare(other.getYinYang()).getValue()];
+    }
+
     public static 天干 getByValue(int value) {
         return values()[value];
     }
+
 }

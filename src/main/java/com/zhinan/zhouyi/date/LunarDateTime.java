@@ -6,7 +6,7 @@ import com.zhinan.zhouyi.util.DateUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class LunarDateTime {
+public class LunarDateTime implements DateTimeHolder {
     private final int year;
     private final int month;
     private final int day;
@@ -57,5 +57,10 @@ public class LunarDateTime {
 
     public boolean isLeap() {
         return leap;
+    }
+
+    @Override
+    public String toString() {
+        return "";
     }
 }

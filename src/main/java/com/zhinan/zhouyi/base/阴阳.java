@@ -7,11 +7,19 @@ public enum 阴阳 {
         return values()[value];
     }
 
-    public boolean isMajor() {
+    public boolean isYang() {
         return this.equals(阳);
     }
 
-    public boolean isMinor() {
-        return !isMajor();
+    public boolean isYin() {
+        return !isYang();
+    }
+
+    public int getValue() {
+        return ordinal();
+    }
+
+    public 阴阳 compare(阴阳 other) {
+        return getByValue(Math.abs(this.getValue() - other.getValue()));
     }
 }
