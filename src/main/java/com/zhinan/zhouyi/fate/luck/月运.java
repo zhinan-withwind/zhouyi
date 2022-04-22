@@ -16,18 +16,9 @@ public class 月运 extends 运势 {
 
     public static 月运 of(LocalDateTime dateTime, LocalDateTime birthday, int sex) {
         干支 ganzhi    = DateUtil.toGanZhi(dateTime.getYear(), dateTime.getMonthValue());
-        LocalDateTime startTime = DateUtil.getLastMajorSolarTerm(dateTime.toLocalDate()).atTime(0, 0);
+        LocalDateTime startTime = DateUtil.getLastMajorSolarTerm(dateTime);
         LocalDateTime endTime   = startTime.plusMonths(1);
         return new 月运(ganzhi, 八字.of(birthday, sex), startTime, endTime);
-    }
-
-    public 年运 getParent() {
-        return 年运.of(this.startTime, bazi.getBirthday(), bazi.getSex().getValue());
-    }
-
-    public 月运 getNext() {
-        return new 月运(roll(1), bazi,
-                startTime.plus(1, ChronoUnit.MONTHS), endTime.plus(1, ChronoUnit.MONTHS));
     }
 
     public static List<月运> list(int year, LocalDateTime birthday, int sex) {
@@ -40,4 +31,22 @@ public class 月运 extends 运势 {
         return result;
     }
 
+    public 年运 getParent() {
+        return 年运.of(this.startTime, bazi.getBirthday(), bazi.getSex().getValue());
+    }
+
+    public 月运 getNext() {
+        return new 月运(roll(1), bazi,
+                startTime.plus(1, ChronoUnit.MONTHS), endTime.plus(1, ChronoUnit.MONTHS));
+    }
+
+    @Override
+    public String getDate() {
+        return startTime.getMonthValue() + "." + startTime.getDayOfMonth();
+    }
+
+    @Override
+    public String getAge() {
+        return DateUtil.getMajorSolarTerm(startTime).getName();
+    }
 }

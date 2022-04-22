@@ -1,6 +1,7 @@
 package com.zhinan.zhouyi.fate.luck;
 
 import com.zhinan.zhouyi.base.干支;
+import com.zhinan.zhouyi.date.DateTimeFormatter;
 import com.zhinan.zhouyi.fate.八字;
 import com.zhinan.zhouyi.util.DateUtil;
 
@@ -22,6 +23,18 @@ public class 日运  extends 运势 {
         return new 日运(ganzhi, 八字.of(birthday, sex), startTime, endTime);
     }
 
+    public static List<日运> list(int year, int month, LocalDateTime birthday, int sex) {
+        List<日运> result = new ArrayList<>();
+        月运 monthLuck = 月运.of(LocalDateTime.of(year, month, 15, 0, 0), birthday, sex);
+        日运 luck = 日运.of(monthLuck.getStartTime(), birthday, sex);
+        int length = (int) Duration.between(monthLuck.getStartTime(), monthLuck.endTime).toHours() / 24;
+        for (int i = 0; i < length; i++) {
+            result.add(luck);
+            luck = luck.getNext();
+        }
+        return result;
+    }
+
     public 月运 getParent() {
         return 月运.of(this.startTime, bazi.getBirthday(), bazi.getSex().getValue());
     }
@@ -31,16 +44,14 @@ public class 日运  extends 运势 {
                 startTime.plus(1, ChronoUnit.DAYS), endTime.plus(1, ChronoUnit.DAYS));
     }
 
-    public static List<日运> list(int year, int month, LocalDateTime birthday, int sex) {
-        List<日运> result = new ArrayList<>();
-        月运 monthLuck = 月运.of(LocalDateTime.of(year, month, 15, 0, 0), birthday, sex);
-        日运 luck = 日运.of(monthLuck.getStartTime(), birthday, sex);
-        int length = (int) Duration.between(monthLuck.getStartTime(), monthLuck.endTime).get(ChronoUnit.DAYS);
-        for (int i = 0; i < length; i++) {
-            result.add(luck);
-            luck = luck.getNext();
-        }
-        return result;
+    @Override
+    public String getDate() {
+        return startTime.getMonthValue() + "." + startTime.getDayOfMonth();
     }
 
+    @Override
+    public String getAge() {
+        return DateTimeFormatter.getInstance(DateUtil.toLunar(startTime))
+                .format(DateTimeFormatter.DATE_FORMAT_TYPE.CHINESE_NUMBER, DateTimeFormatter.DATE_TYPE.DAY);
+    }
 }

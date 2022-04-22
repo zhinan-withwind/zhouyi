@@ -15,21 +15,11 @@ public class 年运 extends 运势 {
         super(ganzhi, bazi, startTime, endTime, 类型.年运);
     }
 
-
     public static 年运 of(LocalDateTime dateTime, LocalDateTime birthday, int sex) {
         干支 ganzhi    = DateUtil.toGanZhi(dateTime.getYear());
         LocalDateTime startTime = getStartTimeOfYear(dateTime.getYear());
         LocalDateTime endTime   = startTime.plusYears(1);
         return new 年运(ganzhi, 八字.of(birthday, sex), startTime, endTime);
-    }
-
-    public 大运 getParent() {
-        return 大运.of(this.startTime, bazi.getBirthday(), bazi.getSex().getValue());
-    }
-
-    public 年运 getNext() {
-        return new 年运(roll(1), bazi,
-                startTime.plus(1, ChronoUnit.YEARS), endTime.plus(1, ChronoUnit.YEARS));
     }
 
     public static List<年运> list(int startYear, LocalDateTime birthday, int sex) {
@@ -40,5 +30,14 @@ public class 年运 extends 运势 {
             luck = luck.getNext();
         }
         return result;
+    }
+
+    public 大运 getParent() {
+        return 大运.of(this.startTime, bazi.getBirthday(), bazi.getSex().getValue());
+    }
+
+    public 年运 getNext() {
+        return new 年运(roll(1), bazi,
+                startTime.plus(1, ChronoUnit.YEARS), endTime.plus(1, ChronoUnit.YEARS));
     }
 }

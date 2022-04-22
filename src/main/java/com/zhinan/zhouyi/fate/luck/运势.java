@@ -5,13 +5,15 @@ import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.date.DateTimeFormatter;
 import com.zhinan.zhouyi.date.SolarDateTime;
+import com.zhinan.zhouyi.date.SolarTerm;
 import com.zhinan.zhouyi.fate.八字;
 import com.zhinan.zhouyi.util.DateUtil;
-import net.time4j.calendar.SolarTerm;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
 public class 运势 extends 干支 {
     public enum 类型 {
         大运, 年运, 月运, 日运, 时运;
@@ -36,7 +38,7 @@ public class 运势 extends 干支 {
     }
 
     public static LocalDateTime getStartTimeOfYear(int year) {
-        return DateUtil.toLocalDate(year, SolarTerm.MINOR_01_LICHUN_315).atTime(0, 0);
+        return SolarTerm.立春.of(year);
     }
 
     public boolean contains(LocalDateTime dateTime) {
@@ -55,14 +57,6 @@ public class 运势 extends 干支 {
         return result;
     }
 
-    public String getDate() {
-        return DateTimeFormatter.getInstance(SolarDateTime.of(startTime)).format(DateTimeFormatter.DATE_FORMAT_TYPE.ARABIC_NUMBER);
-    }
-
-    public String getAge() {
-        return String.valueOf(startTime.getYear() - bazi.getBirthday().getYear());
-    }
-
     public 十神 getGanGod() {
         return getBazi().getMing().compare(getGan());
     }
@@ -71,24 +65,12 @@ public class 运势 extends 干支 {
         return getBazi().getMing().compare(getZhi().getTianGan());
     }
 
-    public 八字 getBazi() {
-        return bazi;
+    public String getDate() {
+        return String.valueOf(startTime.getYear());
     }
 
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
-    public 类型 getType() {
-        return type;
-    }
-
-    public boolean isSelected() {
-        return selected;
+    public String getAge() {
+        return String.valueOf(startTime.getYear() - bazi.getBirthday().getYear() + 1);
     }
 
     public boolean isGanGodGood() {

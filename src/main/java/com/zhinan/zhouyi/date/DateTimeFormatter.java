@@ -10,6 +10,10 @@ public class DateTimeFormatter {
         ARABIC_NUMBER, CHINESE_NUMBER, GANZHI_NUMBER, MIX_TYPE
     }
 
+    public enum DATE_TYPE {
+        DATE, DAY, DATETIME
+    }
+
     DateTimeHolder dateTime;
 
     public DateTimeFormatter(DateTimeHolder dateTime) {
@@ -20,42 +24,93 @@ public class DateTimeFormatter {
         return new DateTimeFormatter(dateTime);
     }
 
-    public String toArabicNumberString() {
-        return dateTime.getYear()+"-" + dateTime.getMonth() + (dateTime.isLeap() ? "(Leap)" : "")
-                + "-" + dateTime.getDay() + " " + dateTime.getHour() + ":" + dateTime.getMinute();
+    public String toArabicNumberString(DATE_TYPE dateType) {
+        String result = "";
+        switch (dateType) {
+            case DAY:
+                result = String.valueOf(dateTime.getDay());
+                break;
+            case DATE:
+                result = dateTime.getYear()+"-" + dateTime.getMonth() + (dateTime.isLeap() ? "(Leap)" : "")
+                        + "-" + dateTime.getDay();
+                break;
+            case DATETIME:
+                result = dateTime.getYear()+"-" + dateTime.getMonth() + (dateTime.isLeap() ? "(Leap)" : "")
+                        + "-" + dateTime.getDay() + " " + dateTime.getHour() + ":" + dateTime.getMinute();
+        }
+        return result;
     }
 
-    public String toChineseNumberString() {
-        return toChineseNumber(dateTime.getYear()) + "年" + (dateTime.isLeap() ? "闰" : "")
-                + MONTH_NAME[dateTime.getMonth() - 1] + "月"
-                + DATE_NAME[dateTime.getDay() - 1] + " "
-                + 地支.getByValue(Math.floorDiv(dateTime.getHour() + 1,  2) % 12).getName() + "时";
+    public String toChineseNumberString(DATE_TYPE dateType) {
+        String result = "";
+        switch (dateType) {
+            case DAY:
+                result = DATE_NAME[dateTime.getDay() - 1];
+                break;
+            case DATE:
+                result = toChineseNumber(dateTime.getYear()) + "年" + (dateTime.isLeap() ? "闰" : "")
+                        + MONTH_NAME[dateTime.getMonth() - 1] + "月"
+                        + DATE_NAME[dateTime.getDay() - 1];
+                break;
+            case DATETIME:
+                result = toChineseNumber(dateTime.getYear()) + "年" + (dateTime.isLeap() ? "闰" : "")
+                        + MONTH_NAME[dateTime.getMonth() - 1] + "月"
+                        + DATE_NAME[dateTime.getDay() - 1] + " "
+                        + 地支.getByValue(Math.floorDiv(dateTime.getHour() + 1,  2) % 12).getName() + "时";
+        }
+        return result;
     }
 
-    public String toMixTypeString() {
-        return dateTime.getYear() + "年" + dateTime.getMonth() + "月" + dateTime.getDay() + "日 "
-                + dateTime.getHour() + "时" + dateTime.getMinute() + "分";
+    public String toMixTypeString(DATE_TYPE dateType) {
+        String result = "";
+        switch (dateType) {
+            case DAY:
+                result = dateTime.getDay() + "日";
+                break;
+            case DATE:
+                result = dateTime.getYear() + "年" + dateTime.getMonth() + "月" + dateTime.getDay() + "日";
+                break;
+            case DATETIME:
+                result = dateTime.getYear() + "年" + dateTime.getMonth() + "月" + dateTime.getDay() + "日 "
+                        + dateTime.getHour() + "时" + dateTime.getMinute() + "分";
+        }
+        return result;
     }
 
-    public String toGanZhiString() {
+    public String toGanZhiString(DATE_TYPE dateType) {
         List<干支> ganzhi = dateTime.toGanZhi();
-        return ganzhi.get(0) +"年" + ganzhi.get(1) + "月" + ganzhi.get(2) + "日" + ganzhi.get(3) + "时";
+        String result = "";
+        switch (dateType) {
+            case DAY:
+                result = ganzhi.get(2) + "日";
+                break;
+            case DATE:
+                result = ganzhi.get(0) +"年" + ganzhi.get(1) + "月" + ganzhi.get(2) + "日";
+                break;
+            case DATETIME:
+                result = ganzhi.get(0) +"年" + ganzhi.get(1) + "月" + ganzhi.get(2) + "日" + ganzhi.get(3) + "时";
+        }
+        return result;
     }
 
-    public String format(DATE_FORMAT_TYPE type) {
+    public String format(DATE_FORMAT_TYPE formatType) {
+        return format(formatType, DATE_TYPE.DATETIME);
+    }
+
+    public String format(DATE_FORMAT_TYPE formatType, DATE_TYPE dateType) {
         String result;
-        switch (type) {
+        switch (formatType) {
             case CHINESE_NUMBER:
-                result = toChineseNumberString();
+                result = toChineseNumberString(dateType);
                 break;
             case MIX_TYPE:
-                result = toMixTypeString();
+                result = toMixTypeString(dateType);
                 break;
             case GANZHI_NUMBER:
-                result = toGanZhiString();
+                result = toGanZhiString(dateType);
                 break;
             default:
-                result = toArabicNumberString();
+                result = toArabicNumberString(dateType);
         }
         return result;
     }

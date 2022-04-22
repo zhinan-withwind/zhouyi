@@ -3,6 +3,7 @@ package com.zhinan.zhouyi.fate;
 import com.zhinan.zhouyi.base.*;
 import com.zhinan.zhouyi.fate.luck.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +13,7 @@ public class 命盘 {
     LocalDateTime birthday;
     阴阳         sex;
     天干         ming;
+    命主         zhu;
     命局         pattern;
 
     List<天干>   ganList        = new ArrayList<>();
@@ -23,6 +25,9 @@ public class 命盘 {
     List<纳音>   soundList      = new ArrayList<>();
     List<长生>   starStatusList = new ArrayList<>();
     List<长生>   selfStatusList = new ArrayList<>();
+
+    String      luckAge;
+    LocalDate   luckDate;
 
     List<大运>   decadeLuckList;
     List<年运>   yearLuckList;
@@ -39,9 +44,13 @@ public class 命盘 {
         pan.birthday = birthday;
         pan.sex      = 阴阳.getByValue(sex);
         pan.ming     = bazi.getMing();
+        pan.zhu      = 命主.of(pan.ming);
         pan.pattern  = bazi.getPattern();
 
         bazi.getFourColumn().forEach(pan::addGanZhi);
+
+        pan.luckAge  = 大运.calculateLuckAge (birthday, sex);
+        pan.luckDate = 大运.calculateLuckDate(birthday, sex);
 
         pan.decadeLuckList = 大运.list(birthday, sex);
 
@@ -66,7 +75,7 @@ public class 命盘 {
         运势 yun = 运势.select(decadeLuckList, 运势.getStartTimeOfYear(year));
         if (yun != null) {
             addGanZhi(yun);
-            yearLuckList = 年运.list(year, birthday, sex.getValue());
+            yearLuckList = 年运.list(yun.getStartTime().getYear(), birthday, sex.getValue());
         }
         return this;
     }

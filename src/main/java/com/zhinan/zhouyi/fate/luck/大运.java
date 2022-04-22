@@ -2,6 +2,7 @@ package com.zhinan.zhouyi.fate.luck;
 
 import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.base.阴阳;
+import com.zhinan.zhouyi.date.LunarDateTime;
 import com.zhinan.zhouyi.fate.八字;
 import com.zhinan.zhouyi.util.DateUtil;
 
@@ -31,7 +32,7 @@ public class 大运 extends 运势 {
         if (!dateTime.toLocalDate().isBefore(luckDate)) {
             startTime = dateTime.minusYears((dateTime.getYear() - luckDate.getYear()) % 10);
             endTime   = startTime.plusYears(10);
-            ganzhi    = bazi.getMonth().roll(direction * (dateTime.getYear() - luckDate.getYear()) / 10);
+            ganzhi    = bazi.getMonth().roll(direction * ((dateTime.getYear() - luckDate.getYear()) / 10 + 1));
         }
 
         return new 大运(ganzhi, bazi, startTime, endTime);
@@ -43,32 +44,32 @@ public class 大运 extends 运势 {
 
         long hours;
         if (direction > 0) {
-            hours = Duration.between(birthday, DateUtil.getNextMajorSolarTerm(birthday.toLocalDate())).toHours();
+            LocalDateTime nextMajorSolarTerm = DateUtil.getNextMajorSolarTerm(birthday);
+            hours = Duration.between(birthday, nextMajorSolarTerm).toHours();
         } else {
-            hours = Duration.between(DateUtil.getLastMajorSolarTerm(birthday.toLocalDate()), birthday).toHours();
+            LocalDateTime lastMajorSolarTerm = DateUtil.getLastMajorSolarTerm(birthday);
+            hours = Duration.between(lastMajorSolarTerm, birthday).toHours();
         }
         return hours;
     }
 
-    public static LocalDate calculateLuckAge(LocalDateTime birthday, int sex) {
+    public  static String calculateLuckAge(LocalDateTime birthday, int sex) {
         long hours = calculateLuckHours(birthday, sex);
-        return LocalDate.of((int) hours / 72,(int) (hours % 72) / 6, (int) (hours % 6) * 5);
+        long year  = hours / 72;
+        long month = (hours % 72) / 6;
+        long day   = (hours % 6) * 5;
+        return year + "年" + month + "个月" + day + "天";
     }
 
-    public static LocalDate calculateLuckDate(LocalDateTime birthday, int sex) {
-        LocalDate luckAge = calculateLuckAge(birthday, sex);
-        return birthday.toLocalDate().plusYears(luckAge.getYear())
-                .plusMonths(luckAge.getMonthValue()).plusDays(luckAge.getDayOfMonth());
+    public  static LocalDate calculateLuckDate(LocalDateTime birthday, int sex) {
+        long hours = calculateLuckHours(birthday, sex);
+        return birthday.toLocalDate().plusYears(hours / 72)
+                .plusMonths((hours % 72) / 6).plusDays((hours % 6) * 5);
     }
 
     @Override
     public String getDate() {
         return String.valueOf(startTime.getYear());
-    }
-
-    @Override
-    public String getAge() {
-        return String.valueOf(startTime.getYear() - bazi.getBirthday().getYear());
     }
 
     public 运势 getParent() {

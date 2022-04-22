@@ -49,4 +49,9 @@ public class 干支 {
         return 长生.getByValue((长生.growValues[gan.getValue()].getValue()
                 + (gan.getYinYang().isYang() ? 1 : -1) * (zhi.getValue() - 长生.growValues[gan.getValue()].getValue()) + 12) % 12);
     }
+
+    @Override
+    public String toString() {
+        return gan.getName() + zhi.getName();
+    }
 }
