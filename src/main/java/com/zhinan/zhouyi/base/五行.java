@@ -7,6 +7,10 @@ public enum 五行 {
         return values()[value];
     }
 
+    public static 五行 getByName(String name) {
+        return valueOf(name);
+    }
+
     public int getValue() {return ordinal();}
 
     public String getName() {return name();}

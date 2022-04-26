@@ -1,6 +1,6 @@
 package com.zhinan.zhouyi.base;
 
-public enum 地支 {
+public enum 地支 implements 元素 {
     子(阴阳.阳, 五行.水, new 天干[]{天干.癸}),
     丑(阴阳.阴, 五行.土, new 天干[]{天干.己, 天干.癸, 天干.辛}),
     寅(阴阳.阳, 五行.木, new 天干[]{天干.甲, 天干.戊, 天干.丙}),

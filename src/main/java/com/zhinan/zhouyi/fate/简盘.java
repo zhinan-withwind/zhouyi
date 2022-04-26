@@ -7,6 +7,9 @@ import com.zhinan.zhouyi.base.生克;
 import com.zhinan.zhouyi.date.DateTimeFormatter;
 import com.zhinan.zhouyi.date.SolarDateTime;
 import com.zhinan.zhouyi.desc.Descriptor;
+import com.zhinan.zhouyi.effect.作用关系;
+import com.zhinan.zhouyi.effect.可作用;
+import com.zhinan.zhouyi.effect.合化冲;
 import com.zhinan.zhouyi.fate.luck.运势;
 import com.zhinan.zhouyi.util.DateUtil;
 import lombok.Getter;
@@ -94,6 +97,12 @@ public class 简盘 {
             自坐.add(pan.selfStatusList.get(i).getName());
         }
 
+        Map<String, List<可作用>> relations = 合化冲.getEffects(pan.ganzhiList);
+        天干本命 = toStringArray(relations.get("天干本命"));
+        地支本命 = toStringArray(relations.get("地支本命"));
+        天干运势 = toStringArray(relations.get("天干运势"));
+        地支运势 = toStringArray(relations.get("地支运势"));
+
         起运年岁 = pan.luckAge;
         起运日期 = pan.luckDate.format(java.time.format.DateTimeFormatter.ofPattern("yyyy年MM月dd日"));
 
@@ -102,6 +111,12 @@ public class 简盘 {
         流月 = buildLuckList(pan.monthLuckList);
         流日 = buildLuckList(pan.dayLuckList);
         流时 = buildLuckList(pan.hourLuckList);
+    }
+
+    private List<String> toStringArray(List<?> list) {
+        List<String> result = new ArrayList<>();
+        list.forEach(o -> result.add(o.toString()));
+        return result;
     }
 
     private String[] toStringArray(Enum<?>[] enumList) {

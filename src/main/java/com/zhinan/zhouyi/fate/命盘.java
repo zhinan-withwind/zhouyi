@@ -1,14 +1,16 @@
 package com.zhinan.zhouyi.fate;
 
 import com.zhinan.zhouyi.base.*;
+import com.zhinan.zhouyi.effect.可作用;
+import com.zhinan.zhouyi.effect.合化冲;
 import com.zhinan.zhouyi.fate.luck.*;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
+@Getter
 public class 命盘 {
     LocalDateTime birthday;
     阴阳         sex;
@@ -16,6 +18,7 @@ public class 命盘 {
     命主         zhu;
     命局         pattern;
 
+    List<干支>   ganzhiList     = new ArrayList<>();
     List<天干>   ganList        = new ArrayList<>();
     List<地支>   zhiList        = new ArrayList<>();
     List<十神>   ganGodList     = new ArrayList<>();
@@ -25,6 +28,8 @@ public class 命盘 {
     List<纳音>   soundList      = new ArrayList<>();
     List<长生>   starStatusList = new ArrayList<>();
     List<长生>   selfStatusList = new ArrayList<>();
+
+    Map<String, List<可作用>> effects = new HashMap<>();
 
     String      luckAge;
     LocalDate   luckDate;
@@ -41,16 +46,18 @@ public class 命盘 {
         命盘 pan  = new 命盘();
         八字 bazi = 八字.of(birthday, sex);
 
-        pan.birthday = birthday;
-        pan.sex      = 阴阳.getByValue(sex);
-        pan.ming     = bazi.getMing();
-        pan.zhu      = 命主.of(pan.ming);
-        pan.pattern  = bazi.getPattern();
+        pan.birthday  = birthday;
+        pan.sex       = 阴阳.getByValue(sex);
+        pan.ming      = bazi.getMing();
+        pan.zhu       = 命主.of(pan.ming);
+        pan.pattern   = bazi.getPattern();
 
         bazi.getFourColumn().forEach(pan::addGanZhi);
 
-        pan.luckAge  = 大运.calculateLuckAge (birthday, sex);
-        pan.luckDate = 大运.calculateLuckDate(birthday, sex);
+        pan.effects   = 合化冲.getEffects(bazi.getFourColumn());
+
+        pan.luckAge   = 大运.calculateLuckAge (birthday, sex);
+        pan.luckDate  = 大运.calculateLuckDate(birthday, sex);
 
         pan.decadeLuckList = 大运.list(birthday, sex);
 
@@ -58,6 +65,7 @@ public class 命盘 {
     }
 
     public void addGanZhi(干支 ganzhi) {
+        ganzhiList.add(ganzhi);
         ganList.add(ganzhi.getGan());
         zhiList.add(ganzhi.getZhi());
         ganGodList.add(ming.compare(ganzhi.getGan()));
@@ -69,6 +77,7 @@ public class 命盘 {
         soundList.add(ganzhi.getSound());
         selfStatusList.add(ganzhi.getStatus());
         starStatusList.add(new 干支(ming, ganzhi.getZhi()).getStatus());
+        effects = 合化冲.getEffects(ganzhiList);
     }
 
     public 命盘 atDecade(int year) {

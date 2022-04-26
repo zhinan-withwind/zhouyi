@@ -1,6 +1,6 @@
 package com.zhinan.zhouyi.base;
 
-public enum 天干 {
+public enum 天干 implements 元素 {
     甲(阴阳.阳, 五行.木),
     乙(阴阳.阴, 五行.木),
     丙(阴阳.阳, 五行.火),
@@ -44,5 +44,7 @@ public enum 天干 {
     public static 天干 getByValue(int value) {
         return values()[value];
     }
+
+    public static 天干 getByName(String name) { return valueOf(name); }
 
 }
