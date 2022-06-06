@@ -26,7 +26,7 @@ public enum 命局 {
     }
 
     public static 命局 of(八字 bazi) {
-        命局 result = getByValue(bazi.getMing().compare(bazi.getLing().getTianGan()).getValue());
+        命局 result = getByValue(bazi.getMing().getWuXing().compare(bazi.getLing().getTianGan().getWuXing()).getValue());
 
         result.masterGoodGod = bazi.getType().equals(八字.种类.寒局) ? 五行.火 : bazi.getType().equals(八字.种类.燥局) ? 五行.水 : null;
 

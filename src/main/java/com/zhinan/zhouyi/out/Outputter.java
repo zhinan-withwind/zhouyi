@@ -34,6 +34,13 @@ public class Outputter {
 
     List<Outputter> outputters = new ArrayList<>();
 
+    public Outputter() {
+        this.color = TEXT_COLOR.NO_COLOR.getColor();
+        this.width = 0;
+        this.height = 0;
+        this.lines = new ArrayList<>();
+    }
+
     public Outputter(DIRECTION_TYPE type, HORIZONTAL_ALIGN hAlign, VERTICAL_ALIGN vAlign, List<Outputter> outputter) {
         this.type = type;
         this.vAlign = vAlign;

@@ -6,7 +6,6 @@ import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.干支;
 
 import java.util.*;
-import java.util.function.Function;
 
 /**
  * @author withwind

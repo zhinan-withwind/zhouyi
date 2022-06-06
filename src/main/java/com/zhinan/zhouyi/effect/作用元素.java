@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 public class 作用元素 implements 元素 {
-    enum 位置 {
+    public enum 位置 {
         年柱, 月柱, 日柱, 时柱, 大运, 流年, 流月, 流日, 流时;
 
         public static 位置 getByValue(int value) {
@@ -22,6 +22,10 @@ public class 作用元素 implements 元素 {
     public 作用元素(元素 element, 位置 position) {
         this.element  = element;
         this.position = position;
+    }
+
+    public static 作用元素 of(元素 element, int position) {
+        return new 作用元素(element, 位置.getByValue(position));
     }
 
     @Override
@@ -49,7 +53,8 @@ public class 作用元素 implements 元素 {
     }
 
     public int getDistance(作用元素 other) {
-        return this.isOriginal() && other.isOriginal() ? Math.abs(this.position.ordinal() - other.position.ordinal()) : 1;
+        return (this.isOriginal() && other.isOriginal() ? Math.abs(this.position.ordinal() - other.position.ordinal()) : 1)
+                + (this.getClass().equals(other.getClass()) ? 0 : 1);
     }
 
     @Override
@@ -59,6 +64,6 @@ public class 作用元素 implements 元素 {
 
     @Override
     public String toString() {
-        return element.toString() + "(" + position.ordinal() + ")";
+        return element.toString() + "(" + position.name() + ")";
     }
 }

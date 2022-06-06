@@ -1,6 +1,8 @@
 package com.zhinan.zhouyi.fate;
 
+import com.zhinan.zhouyi.base.五行;
 import com.zhinan.zhouyi.base.天干;
+import com.zhinan.zhouyi.base.生克;
 
 public class 命主 {
     天干 gan;
@@ -20,4 +22,5 @@ public class 命主 {
     public String getName() {
         return gan.getName() + gan.getWuXing().getName();
     }
+
 }

@@ -91,7 +91,6 @@ public class PanOutputter extends Outputter {
         return hiddenGan;
     }
 
-
     public Outputter outputLuckList(List<String[]> yunList) {
         Outputter outputter = empty();
         for (String[] yun : yunList) {

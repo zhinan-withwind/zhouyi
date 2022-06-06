@@ -1,4 +1,4 @@
 package com.zhinan.zhouyi.energy;
 
-public class 五行能量 {
+public enum 旺衰 {
 }

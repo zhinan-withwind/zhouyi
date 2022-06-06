@@ -1,5 +1,10 @@
 package com.zhinan.zhouyi.base;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum 天干 implements 元素 {
     甲(阴阳.阳, 五行.木),
     乙(阴阳.阴, 五行.木),
@@ -15,19 +20,6 @@ public enum 天干 implements 元素 {
     private final 阴阳 yinYang;
     private final 五行 wuXing;
 
-    天干(阴阳 yinyang, 五行 wuxing) {
-        this.yinYang = yinyang;
-        this.wuXing = wuxing;
-    }
-
-    public 阴阳 getYinYang() {
-        return yinYang;
-    }
-
-    public 五行 getWuXing() {
-        return wuXing;
-    }
-
     public int getValue() {
         return ordinal();
     }
@@ -35,6 +27,8 @@ public enum 天干 implements 元素 {
     public String getName() {
         return name();
     }
+
+    public String getFullName() {return this.getName() + getWuXing().getName();}
 
     public 十神 compare(天干 other) {
         return 十神.results[this.getWuXing().compare(other.getWuXing()).getValue() * 2
@@ -46,5 +40,10 @@ public enum 天干 implements 元素 {
     }
 
     public static 天干 getByName(String name) { return valueOf(name); }
+
+    @Override
+    public String toString() {
+        return getFullName();
+    }
 
 }

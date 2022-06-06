@@ -1,5 +1,10 @@
 package com.zhinan.zhouyi.base;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum 地支 implements 元素 {
     子(阴阳.阳, 五行.水, new 天干[]{天干.癸}),
     丑(阴阳.阴, 五行.土, new 天干[]{天干.己, 天干.癸, 天干.辛}),
@@ -18,29 +23,22 @@ public enum 地支 implements 元素 {
     private final 五行 wuXing;
     private final 天干[] hiddenGan;
 
-    地支(阴阳 yinYang, 五行 wuXing, 天干[] hiddenGan) {
-        this.yinYang   = yinYang;
-        this.wuXing    = wuXing;
-        this.hiddenGan = hiddenGan;
-    }
-
     public static 地支 getByValue(int value) {
         return values()[value % 12];
     }
 
-    public 阴阳 getYinYang() {
-        return yinYang;
+    public 天干 getTianGan() {return get本气();}
+    public 天干 get本气() {
+        return hiddenGan[0];
+    }
+    public 天干 get余气() {
+        return hiddenGan.length > 1 ? hiddenGan[1] : get本气();
+    }
+    public 天干 get合气() {
+        return hiddenGan.length > 2 ? hiddenGan[2] : get余气();
     }
 
-    public 五行 getWuXing() {
-        return wuXing;
-    }
-
-    public 天干[] getHiddenGan() {return hiddenGan;}
-
-    public 天干 getTianGan() {return hiddenGan[0];}
-
-    public int getValue() {
+    public int    getValue() {
         return ordinal();
     }
 
@@ -48,5 +46,8 @@ public enum 地支 implements 元素 {
         return name();
     }
 
+    public String getFullName() { return this.getName() + getWuXing().getName(); }
 
+    @Override
+    public String toString() { return getFullName(); }
 }

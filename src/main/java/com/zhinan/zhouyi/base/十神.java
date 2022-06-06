@@ -1,5 +1,10 @@
 package com.zhinan.zhouyi.base;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum 十神 {
     正印("印", 阴阳.阳),
     偏印("枭", 阴阳.阴),
@@ -17,22 +22,9 @@ public enum 十神 {
     String shortName;
     阴阳    yinYang;
 
-    十神(String shortName, 阴阳 yinYang) {
-        this.shortName = shortName;
-        this.yinYang   = yinYang;
-    }
-
     public int getValue() {return ordinal();}
 
     public String getName() {return name();}
-
-    public String getShortName() {
-        return shortName;
-    }
-
-    public 阴阳 getYinYang() {
-        return yinYang;
-    }
 
     public 五行 getWuXing(天干 ming) {
         return 五行.getByValue((ming.getWuXing().getValue() + getShengKe().getValue() - 1 + 5) % 5);

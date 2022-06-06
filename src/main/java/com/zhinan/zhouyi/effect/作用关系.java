@@ -4,6 +4,12 @@ import lombok.Getter;
 
 import java.util.List;
 
+/**
+ * 一组元素相互作用的关系
+ * effect   作用项
+ * elements 参与作用的元素
+ * success  作用是否成功
+ */
 @Getter
 public class 作用关系 {
     可作用        effect;
@@ -15,6 +21,9 @@ public class 作用关系 {
         this.effect   = effect;
         this.elements = elements;
 
+        /*
+         * 计算元素之间的最大距离，若所有元素都距离为1，则作用成功
+         */
         int distance = 0;
         for (作用元素 element : elements) {
             for (作用元素 other : elements) {
