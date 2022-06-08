@@ -1,11 +1,11 @@
 package com.zhinan.zhouyi.out;
 
 import com.zhinan.zhouyi.base.阴阳;
-import com.zhinan.zhouyi.divine.liuyao.六爻;
+import com.zhinan.zhouyi.divine.liuyao.六爻排盘;
 import com.zhinan.zhouyi.divine.liuyao.卦爻;
 
 public class LiuYaoOutputter extends GuaOutputter {
-    public static Outputter output(六爻 gua) {
+    public static Outputter output(六爻排盘 gua) {
         Outputter changes    = output(TEXT_COLOR.NO_COLOR.getColor(), 8, getEmptyString(8));
         Outputter animals    = output(TEXT_COLOR.NO_COLOR.getColor(), 8, getEmptyString(8));
         Outputter hiddenGod  = output(TEXT_COLOR.NO_COLOR.getColor(), 8, getEmptyString(8));

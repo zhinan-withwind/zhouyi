@@ -1,12 +1,10 @@
 package com.zhinan.zhouyi.date;
 
-import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.util.DateUtil;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-public class SolarDateTime implements DateTimeHolder {
+public class SolarDateTime extends BaseDateTime implements DateTimeHolder {
     LocalDateTime dateTime;
 
     public SolarDateTime(LocalDateTime dateTime) {
@@ -43,17 +41,12 @@ public class SolarDateTime implements DateTimeHolder {
     }
 
     @Override
-    public boolean isLeap() {
-        return false;
-    }
-
-    @Override
     public LocalDateTime toLocalDateTime() {
         return dateTime;
     }
 
     @Override
-    public List<干支> toGanZhi() {
+    public GanZhiDateTime toGanZhi() {
         return DateUtil.toGanZhi(dateTime);
     }
 }

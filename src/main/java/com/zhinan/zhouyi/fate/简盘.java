@@ -4,8 +4,7 @@ import com.zhinan.zhouyi.base.十神;
 import com.zhinan.zhouyi.base.地支;
 import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.生克;
-import com.zhinan.zhouyi.date.DateTimeFormatter;
-import com.zhinan.zhouyi.date.SolarDateTime;
+import com.zhinan.zhouyi.date.*;
 import com.zhinan.zhouyi.desc.Descriptor;
 import com.zhinan.zhouyi.effect.作用关系;
 import com.zhinan.zhouyi.effect.可作用;
@@ -80,10 +79,8 @@ public class 简盘 {
         }
 
 
-        阳历生日 = DateTimeFormatter.getInstance(SolarDateTime.of(pan.birthday))
-                .format(DateTimeFormatter.DATE_FORMAT_TYPE.ARABIC_NUMBER);
-        阴历生日 = DateTimeFormatter.getInstance(DateUtil.toLunar(pan.birthday))
-                .format(DateTimeFormatter.DATE_FORMAT_TYPE.CHINESE_NUMBER);
+        阳历生日 = SolarDateTime.of(pan.birthday).format(DateFormatType.ARABIC_NUMBER);
+        阴历生日 = DateTimeFormatter.getInstance(LunarDateTime.from(pan.birthday)).format(DateFormatType.CHINESE_NUMBER);
 
         for (int i = 0; i < pan.ganList.size(); i++) {
             干神.add(pan.ganGodList.get(i).getName());

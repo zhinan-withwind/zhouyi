@@ -1,12 +1,17 @@
 package com.zhinan.zhouyi.date;
 
-import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.util.DateUtil;
+import lombok.Getter;
+import net.time4j.PlainDate;
+import net.time4j.calendar.ChineseCalendar;
+import net.time4j.calendar.CommonElements;
+import net.time4j.calendar.EastAsianMonth;
+import net.time4j.calendar.EastAsianYear;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-public class LunarDateTime implements DateTimeHolder {
+@Getter
+public class LunarDateTime extends BaseDateTime implements DateTimeHolder {
     private final int year;
     private final int month;
     private final int day;
@@ -27,36 +32,24 @@ public class LunarDateTime implements DateTimeHolder {
         return new LunarDateTime(year, month, day, hour, minute, leap);
     }
 
+    public static LunarDateTime from(LocalDateTime solarDateTime) {
+        ChineseCalendar calendar = PlainDate.from(solarDateTime.toLocalDate()).transform(ChineseCalendar.class);
+        return LunarDateTime.of(calendar.getInt(CommonElements.RELATED_GREGORIAN_YEAR),
+                calendar.getMonth().getNumber(), calendar.getDayOfMonth(),
+                solarDateTime.getHour(), solarDateTime.getMinute(), calendar.getMonth().isLeap());
+    }
+
     public LocalDateTime toLocalDateTime() {
-        return DateUtil.toSolar(this);
+        return ChineseCalendar.of(EastAsianYear.forGregorian(this.getYear()),
+                        this.isLeap() ?
+                                EastAsianMonth.valueOf(this.getMonth()).withLeap() :
+                                EastAsianMonth.valueOf(this.getMonth()), this.getDay())
+                .transform(PlainDate.class).toTemporalAccessor()
+                .atTime(this.getHour(), this.getMinute());
     }
 
-    public List<干支> toGanZhi() {
+    public GanZhiDateTime toGanZhi() {
         return DateUtil.toGanZhi(toLocalDateTime());
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public int getDay() {
-        return day;
-    }
-
-    public int getHour() {
-        return hour;
-    }
-
-    public int getMinute() {
-        return minute;
-    }
-
-    public boolean isLeap() {
-        return leap;
     }
 
     @Override

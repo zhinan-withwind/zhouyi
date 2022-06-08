@@ -1,7 +1,10 @@
 package com.zhinan.zhouyi.fate.luck;
 
 import com.zhinan.zhouyi.base.干支;
+import com.zhinan.zhouyi.date.DateFormatType;
 import com.zhinan.zhouyi.date.DateTimeFormatter;
+import com.zhinan.zhouyi.date.DateType;
+import com.zhinan.zhouyi.date.LunarDateTime;
 import com.zhinan.zhouyi.fate.八字;
 import com.zhinan.zhouyi.util.DateUtil;
 
@@ -51,7 +54,6 @@ public class 日运  extends 运势 {
 
     @Override
     public String getAge() {
-        return DateTimeFormatter.getInstance(DateUtil.toLunar(startTime))
-                .format(DateTimeFormatter.DATE_FORMAT_TYPE.CHINESE_NUMBER, DateTimeFormatter.DATE_TYPE.DAY);
+        return LunarDateTime.from(startTime).format(DateFormatType.CHINESE_NUMBER, DateType.DAY);
     }
 }

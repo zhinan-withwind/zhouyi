@@ -6,6 +6,7 @@ import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.date.DateTimeFormatter;
 import com.zhinan.zhouyi.date.SolarDateTime;
 import com.zhinan.zhouyi.date.SolarTerm;
+import com.zhinan.zhouyi.desc.十神描述器;
 import com.zhinan.zhouyi.fate.八字;
 import com.zhinan.zhouyi.util.DateUtil;
 import lombok.Getter;
@@ -79,5 +80,9 @@ public class 运势 extends 干支 {
 
     public boolean isZhiGodGood() {
         return bazi.getPattern().isGood(getZhi().getWuXing());
+    }
+
+    public String getDescription() {
+        return "";
     }
 }

@@ -32,9 +32,9 @@ public class 梅花易数 {
 
     private 梅花易数() {}
 
-    public static 梅花易数 init(String question, Integer number1, Integer number2) {
+    public static 梅花易数 init(String question, Integer number1, Integer number2, LocalDateTime divineTime) {
         梅花易数 divination      = new 梅花易数();
-        divination.divineTime   = LocalDateTime.now();
+        divination.divineTime   = divineTime == null ? LocalDateTime.now() : divineTime;
 
         divination.question     = question != null ? question : "你心中想问的问题";
         divination.number1      = number1  != null ?

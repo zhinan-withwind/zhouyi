@@ -1,17 +1,16 @@
 package com.zhinan.zhouyi.divine.liuyao;
 
 import com.zhinan.zhouyi.base.地支;
-import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.base.阴阳;
+import com.zhinan.zhouyi.date.*;
 import com.zhinan.zhouyi.util.DateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
-public class 六爻 {
+public class 六爻排盘 {
     @AllArgsConstructor
     public enum QUESTION_TYPE {
         财运(六亲.妻财.getName()), 学业(六亲.父母.getName()), 事业(六亲.官鬼.getName()),
@@ -50,37 +49,37 @@ public class 六爻 {
      *                  3 - 三个背     阳动爻
      *                  4 - 三个字     阴动爻
      */
-    private 六爻(String question, int questionType, LocalDateTime dateTime, int[] data) {
+    private 六爻排盘(String question, int questionType, LocalDateTime dateTime, int[] data) {
         this.question     = question;
         this.questionType = QUESTION_TYPE.getByValue(questionType);
         this.divineTime   = dateTime;
         this.data         = data;
-        List<干支> ganzhi  = DateUtil.toGanZhi(dateTime);
-        month = ganzhi.get(1).getZhi();
-        day   = ganzhi.get(2).getZhi();
-        date  = ganzhi.get(0).getName() + "年 " + ganzhi.get(1).getName() + "月 " + ganzhi.get(2).getName() + "日";
+        GanZhiDateTime ganZhiDateTime = DateUtil.toGanZhi(dateTime);
+        month = ganZhiDateTime.getGanZhiMonth().getZhi();
+        day   = ganZhiDateTime.getGanZhiDay().getZhi();
+        date  = ganZhiDateTime.format(DateFormatType.GANZHI_NUMBER, DateType.FULL_DATE);
 
-        originalGua = 卦象.of(data, ganzhi.get(2).getGan());
+        originalGua = 卦象.of(data, ganZhiDateTime.getGanZhiDay().getGan());
         resultGua   = 卦象.change(originalGua);
     }
 
-    public static 六爻 init(String question, int questionType, LocalDateTime dateTime, String data) {
+    public static 六爻排盘 init(String question, int questionType, LocalDateTime dateTime, String data) {
         int[] result =  new int[6];
         for (int i = 0; i < 6; i++) {
             result[i] = Integer.parseInt(String.valueOf(data.charAt(i)));
         }
-        return new 六爻(question, questionType, dateTime, result);
+        return new 六爻排盘(question, questionType, dateTime, result);
     }
 
-    public static 六爻 init(String question, int questionType) {
+    public static 六爻排盘 init(String question, int questionType) {
         int[] data = new int[6];
         for (int i = 0; i < 6; i++) {
             data[i] = (int) Math.floor(Math.random() * 4 + 1);
         }
-        return new 六爻(question, questionType, LocalDateTime.now(), data);
+        return new 六爻排盘(question, questionType, LocalDateTime.now(), data);
     }
 
-    public static String generateResult(六爻 divination, QUESTION_TYPE questionType, 阴阳 sex) {
+    public static String generateResult(六爻排盘 divination, QUESTION_TYPE questionType, 阴阳 sex) {
         String operateGodName = questionType.operateGod.equals("配偶") ?
                 (sex.equals(阴阳.阳) ? 六亲.妻财.getName() : 六亲.官鬼.getName()) : questionType.operateGod;
         int operateGodIndex = operateGodName.equals("世爻") ? divination.originalGua.shi :

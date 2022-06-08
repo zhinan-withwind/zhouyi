@@ -1,6 +1,7 @@
 package com.zhinan.zhouyi.fate;
 
 import com.zhinan.zhouyi.base.*;
+import com.zhinan.zhouyi.date.GanZhiDateTime;
 import com.zhinan.zhouyi.energy.能量;
 import com.zhinan.zhouyi.util.DateUtil;
 import lombok.Getter;
@@ -40,7 +41,7 @@ public class 八字 {
         bazi.birthday = birthday;
         bazi.sex = 阴阳.getByValue(sex);
 
-        bazi.fourColumn = DateUtil.toGanZhi(birthday);
+        bazi.fourColumn = GanZhiDateTime.from(birthday).toGanZhiList();
         bazi.year    = bazi.fourColumn.get(0);
         bazi.month   = bazi.fourColumn.get(1);
         bazi.day     = bazi.fourColumn.get(2);
@@ -77,6 +78,14 @@ public class 八字 {
 
     public 地支 getLing() {
         return getMonth().getZhi();
+    }
+
+    public 命主 getFate() {
+        return 命主.of(getMing());
+    }
+
+    public 命局 getPattern() {
+        return 命局.of(this);
     }
 
 }
