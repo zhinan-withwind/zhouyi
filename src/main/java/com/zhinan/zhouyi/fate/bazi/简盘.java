@@ -1,4 +1,4 @@
-package com.zhinan.zhouyi.fate;
+package com.zhinan.zhouyi.fate.bazi;
 
 import com.zhinan.zhouyi.base.十神;
 import com.zhinan.zhouyi.base.地支;
@@ -6,11 +6,9 @@ import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.生克;
 import com.zhinan.zhouyi.date.*;
 import com.zhinan.zhouyi.desc.Descriptor;
-import com.zhinan.zhouyi.effect.作用关系;
 import com.zhinan.zhouyi.effect.可作用;
 import com.zhinan.zhouyi.effect.合化冲;
 import com.zhinan.zhouyi.fate.luck.运势;
-import com.zhinan.zhouyi.util.DateUtil;
 import lombok.Getter;
 
 import java.util.*;
@@ -58,7 +56,7 @@ public class 简盘 {
     public 简盘(命盘 pan) {
         八字 bazi = 八字.of(pan.birthday, pan.sex.getValue());
         命主 = pan.zhu.getName();
-        命局 = bazi.getPattern().getName();
+        命局 = bazi.getFatePattern().getName();
 
         命主描述 = Descriptor.describe(pan.zhu);
         命局描述 = Descriptor.describe(pan.pattern);

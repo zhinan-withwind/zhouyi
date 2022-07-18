@@ -1,7 +1,7 @@
 package com.zhinan.zhouyi.base;
 
-import com.zhinan.zhouyi.fate.纳音;
-import com.zhinan.zhouyi.fate.长生;
+import com.zhinan.zhouyi.fate.bazi.纳音;
+import com.zhinan.zhouyi.fate.bazi.长生;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

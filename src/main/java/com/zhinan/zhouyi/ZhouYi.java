@@ -1,7 +1,7 @@
 package com.zhinan.zhouyi;
 
-import com.zhinan.zhouyi.fate.命盘;
-import com.zhinan.zhouyi.fate.简盘;
+import com.zhinan.zhouyi.fate.bazi.命盘;
+import com.zhinan.zhouyi.fate.bazi.简盘;
 import com.zhinan.zhouyi.out.PanOutputter;
 
 import java.time.LocalDateTime;

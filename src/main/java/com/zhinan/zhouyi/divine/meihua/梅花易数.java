@@ -1,28 +1,28 @@
 package com.zhinan.zhouyi.divine.meihua;
 
 import com.zhinan.zhouyi.base.生克;
+import com.zhinan.zhouyi.divine.八卦;
 import com.zhinan.zhouyi.divine.六十四卦;
+import com.zhinan.zhouyi.divine.占卜;
 import com.zhinan.zhouyi.util.ChineseUtil;
+import com.zhinan.zhouyi.util.DateUtil;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
-public class 梅花易数 {
-    private final static int[] effects = new int[] {5, 4, 1, -2, -5};
-
-    String question;
-    LocalDateTime divineTime;
-
-    Integer number1;
-    Integer number2;
-    Integer change;
+public class 梅花易数 extends 占卜 {
+    private final static int[] effects = new int[] {5, 4, 2, -2, -5};
 
     Boolean upperIsSelf;
 
     六十四卦 original;
     六十四卦 process;
     六十四卦 result;
+
+    Integer change;
 
     生克 originalStatus;
     生克 processStatus;
@@ -32,22 +32,30 @@ public class 梅花易数 {
 
     private 梅花易数() {}
 
-    public static 梅花易数 init(String question, Integer number1, Integer number2, LocalDateTime divineTime) {
-        梅花易数 divination      = new 梅花易数();
-        divination.divineTime   = divineTime == null ? LocalDateTime.now() : divineTime;
+    public static 梅花易数 init(String question, LocalDateTime divineTime, Integer number1, Integer number2, Integer change) {
+        梅花易数 divination = new 梅花易数();
+        divineTime = divineTime == null? LocalDateTime.now() : divineTime;
+        number1 = number1 != null ?
+                (ChineseUtil.isChineseCharacter((char) number1.intValue()) ?
+                        ChineseUtil.calculateNumberFromChineseCharacter((char) number1.intValue()) : number1)  :
+                divineTime.getYear() + divineTime.getMonthValue() + divineTime.getDayOfMonth();
+        number2 = number2 != null ?
+                (ChineseUtil.isChineseCharacter((char) number2.intValue()) ?
+                        ChineseUtil.calculateNumberFromChineseCharacter((char) number2.intValue()) : number2)  :
+                divineTime.getYear() + divineTime.getMonthValue() + divineTime.getDayOfMonth() + divineTime.getHour();
+        change  = change  != null ? change :
+                (number1 + number2 + DateUtil.toGanZhi(divineTime).getHour() + 5) % 6 + 1;
 
-        divination.question     = question != null ? question : "你心中想问的问题";
-        divination.number1      = number1  != null ?
-                (ChineseUtil.isChineseCharacter((char) number1.intValue()) ? ChineseUtil.calculateNumberFromChineseCharacter((char) number1.intValue()) : number1)  :
-                divination.divineTime.getYear() + divination.divineTime.getMonthValue() + divination.divineTime.getDayOfMonth();
-        divination.number2      = number2  != null ?
-                (ChineseUtil.isChineseCharacter((char) number2.intValue()) ? ChineseUtil.calculateNumberFromChineseCharacter((char) number2.intValue()) : number2)  :
-                divination.divineTime.getYear() + divination.divineTime.getMonthValue() + divination.divineTime.getDayOfMonth() + divination.divineTime.getHour();
-        divination.change       = (divination.number1 + divination.number2 + divination.divineTime.getSecond() + 5) % 6 + 1;
+        Map<String, String> initInfo = new HashMap<>();
+        initInfo.put("number1", number1.toString());
+        initInfo.put("number2", number2.toString());
+        initInfo.put("change" ,  change.toString());
+        divination.init(question, divineTime, initInfo);
+        divination.change = change;
 
         divination.upperIsSelf  = divination.change < 4;
 
-        divination.original     = 六十四卦.getByUpAndDown((divination.number1 + 7) % 8 + 1, (divination.number2 + 7) % 8 + 1);
+        divination.original     = 六十四卦.getByUpAndDown((number1 + 7) % 8 + 1, (number2 + 7) % 8 + 1);
         divination.process      = divination.original.to互卦();
         divination.result       = divination.original.change(divination.change);
 

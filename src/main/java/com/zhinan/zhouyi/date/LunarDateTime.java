@@ -1,5 +1,6 @@
 package com.zhinan.zhouyi.date;
 
+import com.zhinan.zhouyi.base.地支;
 import com.zhinan.zhouyi.util.DateUtil;
 import lombok.Getter;
 import net.time4j.PlainDate;
@@ -50,6 +51,10 @@ public class LunarDateTime extends BaseDateTime implements DateTimeHolder {
 
     public GanZhiDateTime toGanZhi() {
         return DateUtil.toGanZhi(toLocalDateTime());
+    }
+
+    public 地支 getTime() {
+        return 地支.getByValue((hour + 1) / 2 % 12);
     }
 
     @Override

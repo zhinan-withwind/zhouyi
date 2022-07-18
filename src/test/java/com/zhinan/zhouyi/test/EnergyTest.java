@@ -2,8 +2,7 @@ package com.zhinan.zhouyi.test;
 
 import com.zhinan.zhouyi.base.五行;
 import com.zhinan.zhouyi.energy.能量;
-import com.zhinan.zhouyi.fate.八字;
-import com.zhinan.zhouyi.fate.命盘;
+import com.zhinan.zhouyi.fate.bazi.命盘;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,8 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 class EnergyTest {

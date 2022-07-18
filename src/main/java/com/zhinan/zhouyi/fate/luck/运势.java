@@ -1,14 +1,9 @@
 package com.zhinan.zhouyi.fate.luck;
 
 import com.zhinan.zhouyi.base.十神;
-import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.干支;
-import com.zhinan.zhouyi.date.DateTimeFormatter;
-import com.zhinan.zhouyi.date.SolarDateTime;
 import com.zhinan.zhouyi.date.SolarTerm;
-import com.zhinan.zhouyi.desc.十神描述器;
-import com.zhinan.zhouyi.fate.八字;
-import com.zhinan.zhouyi.util.DateUtil;
+import com.zhinan.zhouyi.fate.bazi.八字;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -75,11 +70,11 @@ public class 运势 extends 干支 {
     }
 
     public boolean isGanGodGood() {
-        return bazi.getPattern().isGood(getGan().getWuXing());
+        return bazi.getFatePattern().isGood(getGan().getWuXing());
     }
 
     public boolean isZhiGodGood() {
-        return bazi.getPattern().isGood(getZhi().getWuXing());
+        return bazi.getFatePattern().isGood(getZhi().getWuXing());
     }
 
     public String getDescription() {

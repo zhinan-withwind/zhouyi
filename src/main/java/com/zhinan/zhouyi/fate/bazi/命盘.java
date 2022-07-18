@@ -1,4 +1,4 @@
-package com.zhinan.zhouyi.fate;
+package com.zhinan.zhouyi.fate.bazi;
 
 import com.zhinan.zhouyi.base.*;
 import com.zhinan.zhouyi.effect.可作用;
@@ -50,7 +50,7 @@ public class 命盘 {
         pan.sex       = 阴阳.getByValue(sex);
         pan.ming      = bazi.getMing();
         pan.zhu       = 命主.of(pan.ming);
-        pan.pattern   = bazi.getPattern();
+        pan.pattern   = bazi.getFatePattern();
 
         bazi.getFourColumn().forEach(pan::addGanZhi);
 

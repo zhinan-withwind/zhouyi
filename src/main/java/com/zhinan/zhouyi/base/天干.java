@@ -36,7 +36,7 @@ public enum 天干 implements 元素 {
     }
 
     public static 天干 getByValue(int value) {
-        return values()[value];
+        return values()[value % 10];
     }
 
     public static 天干 getByName(String name) { return valueOf(name); }

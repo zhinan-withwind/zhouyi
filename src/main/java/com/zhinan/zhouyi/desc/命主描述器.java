@@ -1,6 +1,6 @@
 package com.zhinan.zhouyi.desc;
 
-import com.zhinan.zhouyi.fate.命主;
+import com.zhinan.zhouyi.fate.bazi.命主;
 
 public class 命主描述器 {
     public final static String[] descriptions = {

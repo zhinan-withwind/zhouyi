@@ -1,6 +1,6 @@
 package com.zhinan.zhouyi.desc;
 
-import com.zhinan.zhouyi.fate.命局;
+import com.zhinan.zhouyi.fate.bazi.命局;
 
 import java.util.HashMap;
 import java.util.Map;

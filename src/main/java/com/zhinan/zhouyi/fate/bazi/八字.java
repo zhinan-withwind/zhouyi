@@ -1,9 +1,8 @@
-package com.zhinan.zhouyi.fate;
+package com.zhinan.zhouyi.fate.bazi;
 
 import com.zhinan.zhouyi.base.*;
 import com.zhinan.zhouyi.date.GanZhiDateTime;
 import com.zhinan.zhouyi.energy.能量;
-import com.zhinan.zhouyi.util.DateUtil;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -26,7 +25,8 @@ public class 八字 {
 
     阴阳 sex;
     能量 energy;
-    命局 pattern;
+    命局 fatePattern;
+    格局 gridPattern;
 
     double  selfPart;
     double otherPart;
@@ -48,12 +48,13 @@ public class 八字 {
         bazi.time    = bazi.fourColumn.get(3);
 
         bazi.energy  = 能量.of(bazi.fourColumn);
-        bazi.pattern = 命局.of(bazi);
         bazi.selfPart  = (bazi.energy.get(bazi.getMing().getWuXing().get生())
                 + bazi.energy.get(bazi.getMing().getWuXing().get同())) / bazi.energy.getTotal().doubleValue();
         bazi.otherPart = (bazi.energy.get(bazi.getMing().getWuXing().get泄())
                 + bazi.energy.get(bazi.getMing().getWuXing().get耗())
                 + bazi.energy.get(bazi.getMing().getWuXing().get克())) / bazi.energy.getTotal().doubleValue();
+        bazi.fatePattern = 命局.of(bazi);
+        bazi.gridPattern = 格局.of(bazi);
         return bazi;
     }
 
@@ -83,9 +84,4 @@ public class 八字 {
     public 命主 getFate() {
         return 命主.of(getMing());
     }
-
-    public 命局 getPattern() {
-        return 命局.of(this);
-    }
-
 }

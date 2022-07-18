@@ -1,8 +1,8 @@
 package com.zhinan.zhouyi.desc;
 
 import com.zhinan.zhouyi.base.十神;
-import com.zhinan.zhouyi.fate.命主;
-import com.zhinan.zhouyi.fate.命局;
+import com.zhinan.zhouyi.fate.bazi.命主;
+import com.zhinan.zhouyi.fate.bazi.命局;
 
 public class Descriptor {
     public static String describe(命主 zhu) {

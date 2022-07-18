@@ -2,10 +2,9 @@ package com.zhinan.zhouyi.fate.luck;
 
 import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.date.DateFormatType;
-import com.zhinan.zhouyi.date.DateTimeFormatter;
 import com.zhinan.zhouyi.date.DateType;
 import com.zhinan.zhouyi.date.LunarDateTime;
-import com.zhinan.zhouyi.fate.八字;
+import com.zhinan.zhouyi.fate.bazi.八字;
 import com.zhinan.zhouyi.util.DateUtil;
 
 import java.time.Duration;

@@ -3,8 +3,8 @@ package com.zhinan.zhouyi.test;
 import com.zhinan.zhouyi.effect.可作用;
 import com.zhinan.zhouyi.effect.可合化;
 import com.zhinan.zhouyi.effect.合化冲;
-import com.zhinan.zhouyi.fate.八字;
-import com.zhinan.zhouyi.fate.命盘;
+import com.zhinan.zhouyi.fate.bazi.八字;
+import com.zhinan.zhouyi.fate.bazi.命盘;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 

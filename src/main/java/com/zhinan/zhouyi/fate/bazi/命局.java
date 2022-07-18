@@ -1,4 +1,4 @@
-package com.zhinan.zhouyi.fate;
+package com.zhinan.zhouyi.fate.bazi;
 
 import com.zhinan.zhouyi.base.五行;
 import com.zhinan.zhouyi.base.生克;

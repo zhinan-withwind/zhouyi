@@ -1,7 +1,7 @@
 package com.zhinan.zhouyi.out;
 
 import com.zhinan.zhouyi.base.五行;
-import com.zhinan.zhouyi.fate.简盘;
+import com.zhinan.zhouyi.fate.bazi.简盘;
 
 import java.util.ArrayList;
 import java.util.HashMap;
