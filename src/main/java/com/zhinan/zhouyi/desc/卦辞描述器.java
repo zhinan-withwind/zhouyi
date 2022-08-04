@@ -1,6 +1,5 @@
 package com.zhinan.zhouyi.desc;
 
-import com.zhinan.zhouyi.base.十神;
 import com.zhinan.zhouyi.divine.六十四卦;
 
 import java.util.HashMap;
@@ -91,7 +90,6 @@ public class 卦辞描述器 {
 
         }
     };
-
 
     public static String describe(六十四卦 gua) {
         StringBuilder description = new StringBuilder();
