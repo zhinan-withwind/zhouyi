@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 public class 宫位 extends 干支 {
     星宫 palace;
-    List<星曜> stars = new ArrayList<>();
+    List<星位> stars = new ArrayList<>();
     int startAge;
     int endAge;
 

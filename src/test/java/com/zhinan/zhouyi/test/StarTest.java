@@ -3,10 +3,7 @@ package com.zhinan.zhouyi.test;
 import com.zhinan.zhouyi.date.DateFormatType;
 import com.zhinan.zhouyi.date.DateTimeFormatter;
 import com.zhinan.zhouyi.date.DateType;
-import com.zhinan.zhouyi.fate.star.化位;
-import com.zhinan.zhouyi.fate.star.宫位;
-import com.zhinan.zhouyi.fate.star.星曜;
-import com.zhinan.zhouyi.fate.star.星盘;
+import com.zhinan.zhouyi.fate.star.*;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -30,8 +27,8 @@ public class StarTest {
             System.out.println("宫位：" + palace.getPalace().name());
             System.out.println("大限：" + palace.getStartAge() + " - " + palace.getEndAge());
             StringBuilder sb = new StringBuilder();
-            for (星曜 star : palace.getStars()) {
-                sb.append(star.name()).append(", ");
+            for (星位 star : palace.getStars()) {
+                sb.append(star.getStar().getName()).append(", ");
             }
             System.out.println(sb);
         }

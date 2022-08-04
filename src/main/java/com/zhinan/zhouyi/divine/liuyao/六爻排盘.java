@@ -20,9 +20,19 @@ public class 六爻排盘 {
 
         String operateGod;
 
+        public int getValue() {
+            return ordinal();
+        }
+
+        public String getName() {
+            return name();
+        }
+
         public static QUESTION_TYPE getByValue(int value) {
             return values()[value];
         }
+
+        public static QUESTION_TYPE getByName(String name) { return valueOf(name); }
     }
 
     int[] data;

@@ -1,7 +1,7 @@
 package com.zhinan.zhouyi.fate.star;
 
-public enum 四化 {
-    化禄, 化权, 化科, 化忌;
+public enum 星级 {
+    主星, 辅星, 凶星, 煞星, 桃花;
 
     public int getValue() {
         return ordinal();
@@ -10,6 +10,4 @@ public enum 四化 {
     public String getName() {
         return name();
     }
-
-    public static 四化 getByValue(int value) { return 四化.values()[value % 4]; }
 }

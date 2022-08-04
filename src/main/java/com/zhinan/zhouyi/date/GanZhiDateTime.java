@@ -46,22 +46,22 @@ public class GanZhiDateTime extends BaseDateTime implements DateTimeHolder {
 
     @Override
     public int getYear() {
-        return year.getValue();
+        return year.getZhi().getValue() + 1;
     }
 
     @Override
     public int getMonth() {
-        return month.getValue();
+        return (month.getZhi().getValue() - 2 + 12) % 12;
     }
 
     @Override
     public int getDay() {
-        return day.getValue();
+        return day.getZhi().getValue() + 1;
     }
 
     @Override
     public int getHour() {
-        return hour.getValue();
+        return hour.getZhi().getValue() + 1;
     }
 
     @Override

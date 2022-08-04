@@ -45,8 +45,6 @@ public class 能量 {
     }
 
     public 能量 effect(能量 power, 作用元素 orgElement, 作用元素 newElement) {
-        log.debug("{} {} {}",
-                newElement, orgElement.getElement().getWuXing().compare(newElement.getElement().getWuXing()), orgElement);
         int d = 1 << (orgElement.getDistance(newElement) - 1);
         switch (orgElement.getWuXing().compare(newElement.getWuXing())) {
             case 生:

@@ -10,6 +10,14 @@ public enum 命局 {
     五行 wuXing;
     int value;
 
+    public int getValue() {
+        return ordinal();
+    }
+
+    public String getName() {
+        return name();
+    }
+
     public static 命局 getByWuXing(五行 wuXing) {
         命局 result = null;
         for (命局 ju : values()) {

@@ -1,10 +1,12 @@
 package com.zhinan.zhouyi.fate.star;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 @AllArgsConstructor
 public class 化位 {
     四化 change;

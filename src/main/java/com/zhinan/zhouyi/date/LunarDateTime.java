@@ -33,6 +33,35 @@ public class LunarDateTime extends BaseDateTime implements DateTimeHolder {
         return new LunarDateTime(year, month, day, hour, minute, leap);
     }
 
+    public static LunarDateTime of(String dateString) {
+        int l = dateString.indexOf(" ") + 1;
+        if (l == 0) {
+            l = dateString.length();
+        }
+        String date = dateString.substring(0, l - 1);
+        String time = dateString.substring(l);
+
+        String[] ymd = date.split("-");
+
+        int year = Integer.parseInt(ymd[0]);
+        int month = Integer.parseInt(ymd[1]);
+        int day = Integer.parseInt(ymd[2]);
+
+        boolean isLeap = false;
+        if (month > 20) {
+            isLeap = true;
+            month -= 20;
+        }
+
+        int hour = 0,minute = 0,second = 0;
+        if (l != dateString.length()) {
+            String[] hms = time.split(":");
+            hour   = hms.length > 0 && !hms[0].equals("") ? Integer.parseInt(hms[0]) : 0;
+            minute = hms.length > 1 && !hms[1].equals("") ? Integer.parseInt(hms[1]) : 0;
+        }
+        return LunarDateTime.of(year, month, day, hour, minute, isLeap);
+    }
+
     public static LunarDateTime from(LocalDateTime solarDateTime) {
         ChineseCalendar calendar = PlainDate.from(solarDateTime.toLocalDate()).transform(ChineseCalendar.class);
         return LunarDateTime.of(calendar.getInt(CommonElements.RELATED_GREGORIAN_YEAR),

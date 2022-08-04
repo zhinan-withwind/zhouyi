@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class 卦辞描述器 {
     public enum 描述类型 {
-        基本含义, 卦辞, 象传, 彖传
+        基本含义    //, 卦辞, 象传, 彖传
     }
 
     public final static String[] 基本含义 = {

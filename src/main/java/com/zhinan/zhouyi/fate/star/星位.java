@@ -2,17 +2,22 @@ package com.zhinan.zhouyi.fate.star;
 
 import com.zhinan.zhouyi.date.GanZhiDateTime;
 import com.zhinan.zhouyi.date.LunarDateTime;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@AllArgsConstructor
 public class 星位 {
     星曜 star;
+    状态 status;
     int position;
+
+    public 星位(星曜 star, int position) {
+        this.star     = star;
+        this.position = position;
+        this.status   = 状态.getByStarAndPalace(this);
+    }
 
     public static List<星位> of(LunarDateTime birthday, 命局 pattern) {
         List<星位> stars = new ArrayList<>();

@@ -7,6 +7,7 @@ import com.zhinan.zhouyi.base.阴阳;
 import com.zhinan.zhouyi.date.GanZhiDateTime;
 import com.zhinan.zhouyi.date.LunarDateTime;
 import com.zhinan.zhouyi.fate.bazi.八字;
+import com.zhinan.zhouyi.fate.bazi.命主;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -66,7 +67,7 @@ public class 星盘 {
 
         List<星位> stars = 星位.of(lunarTime, pan.pattern);
         for (星位 star : stars) {
-            pan.starPalaceList.get((star.getPosition() + 10) % 12).getStars().add(star.getStar());
+            pan.starPalaceList.get((star.getPosition() + 10) % 12).getStars().add(star);
         }
 
         pan.changeList = 化位.of(ganzhiTime.getGanZhiYear().getGan().getValue());
@@ -77,9 +78,21 @@ public class 星盘 {
         return pan;
     }
 
-    public 星盘 shift(int fatePalace) {
-        星盘 pan = new 星盘();
-        pan.fatePalace = fatePalace;
-        return pan;
+    public 星曜 getFateMaster() {
+        return 命主[getStarPalaceList().get(getFatePalace()).getZhi().getValue()];
     }
+
+    public 星曜 getBodyMaster() {
+        return 身主[bazi.getYear().getZhi().getValue()];
+    }
+
+    private static final 星曜[] 命主 = {
+            星曜.贪狼, 星曜.巨门, 星曜.禄存, 星曜.文曲, 星曜.廉贞, 星曜.武曲,
+            星曜.破军, 星曜.武曲, 星曜.廉贞, 星曜.文曲, 星曜.禄存, 星曜.巨门,
+    };
+
+    private static final 星曜[] 身主 = {
+            星曜.火星, 星曜.天相, 星曜.天梁, 星曜.天同, 星曜.天机, 星曜.文昌,
+            星曜.火星, 星曜.天相, 星曜.天梁, 星曜.天同, 星曜.天机, 星曜.文昌,
+    };
 }

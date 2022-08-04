@@ -13,6 +13,14 @@ public enum 六神 {
     五行 wuXing;
     阴阳 yinYang;
 
+    public int getValue() {
+        return ordinal();
+    }
+
+    public String getName() {
+        return name();
+    }
+
     public static 六神 getByValue(int value) {
         return values()[value];
     }

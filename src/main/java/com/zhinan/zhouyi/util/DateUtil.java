@@ -94,14 +94,13 @@ public class DateUtil {
 
     public static LocalDateTime toMeanSolarTime(LocalDateTime dateTime, String regionCode) {
         Region region = Region.getByCode(regionCode);
-        return region != null ? dateTime.plusSeconds((long) ((region.getLongitude() - 116.407170) * 240)) : dateTime;
+        return region != null ? dateTime.plusSeconds((long) ((region.getLongitude() - 120) * 240)) : dateTime;
     }
 
     public static LocalDateTime toApparentSolarTime(LocalDateTime dateTime, String region) {
         double N0   = 79.6764 + 0.2422 *(dateTime.getYear() - 1985) - Math.floor(0.25 * (dateTime.getYear() - 1985));
         double sita = 2 * Math.PI * (dateTime.getDayOfYear() - N0) / 365.2422;
         double t = 0.0028 - 1.9857 * Math.sin(sita) + 9.9059 * Math.sin(2 * sita) - 7.0924 * Math.cos(sita) - 0.6882 * Math.cos(2 * sita);
-//        System.out.println(dateTime.getMonthValue() + "-" + dateTime.getDayOfMonth() + " -- " + t);
         return toMeanSolarTime(dateTime, region)
                 .plusMinutes(new Double(Math.floor(t)).longValue())
                 .plusSeconds(new Double(Math.floorMod(new Double(t * 100).intValue(), 100) * 0.6).longValue());

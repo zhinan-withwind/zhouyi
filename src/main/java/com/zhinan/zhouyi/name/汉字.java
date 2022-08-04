@@ -4,14 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zhinan.zhouyi.base.五行;
+import com.zhinan.zhouyi.util.FileUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Data
 @Accessors(chain = true)
@@ -21,10 +18,8 @@ public class 汉字 {
     static Map<String, 汉字> load() {
         dictionary = new HashMap<>();
         dictMap    = new HashMap<>();
-        InputStream is = 汉字.class.getClassLoader().getResourceAsStream("data/dictionary.json");
         try {
-            assert is != null;
-            JSONArray characters = JSON.parseObject(is, JSONArray.class);
+            JSONArray characters = JSON.parseArray(FileUtil.loadResource("data/dictionary.json"));
             for (Object o : characters) {
                 JSONObject c = (JSONObject) o;
                 汉字 hz = new 汉字()
