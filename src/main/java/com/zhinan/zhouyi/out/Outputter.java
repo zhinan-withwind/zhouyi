@@ -21,7 +21,7 @@ public class Outputter {
     }
 
     public static int[] colors = new int[] {
-            TEXT_COLOR.GREEN.getColor(), TEXT_COLOR.RED.getColor(), TEXT_COLOR.YELLOW.getColor(), TEXT_COLOR.WHITE.getColor(), TEXT_COLOR.BLUE.getColor()};
+            TEXT_COLOR.GREEN.getColor(), TEXT_COLOR.RED.getColor(), TEXT_COLOR.YELLOW.getColor(), TEXT_COLOR.WHITE.getColor(), TEXT_COLOR.BLUE.getColor(), TEXT_COLOR.NO_COLOR.getColor()};
 
     int color;
     int width;

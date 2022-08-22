@@ -18,17 +18,18 @@ public class DateTimeFormatter {
         String result = "";
         switch (dateType) {
             case DAY:
-                result = String.valueOf(dateTime.getDay());
+                result = (dateTime.getDay() < 10 ? "0" : "") + dateTime.getDay();
                 break;
             case SHORT_DATE:
-                result = dateTime.getMonth() + (dateTime.isLeap() ? "(Leap)" : "") + "-" + toArabicNumberString(DateType.DAY);
+                result = (dateTime.getMonth() < 10 ? "0" : "") + dateTime.getMonth() + (dateTime.isLeap() ? "(Leap)" : "") + "-" + toArabicNumberString(DateType.DAY);
                 break;
             case FULL_DATE:
                 result = dateTime.getYear() + "-" + toArabicNumberString(DateType.SHORT_DATE);
                 break;
             case DATETIME:
-                result = dateTime.getYear()+"-" + dateTime.getMonth() + (dateTime.isLeap() ? "(Leap)" : "")
-                        + "-" + dateTime.getDay() + " " + dateTime.getHour() + ":" + dateTime.getMinute();
+                result = toArabicNumberString(DateType.FULL_DATE)
+                        + " " + (dateTime.getHour()   < 10 ? "0" : "") + dateTime.getHour()
+                        + ":" + (dateTime.getMinute() < 10 ? "0" : "") + dateTime.getMinute();
         }
         return result;
     }
@@ -37,10 +38,10 @@ public class DateTimeFormatter {
         String result = "";
         switch (dateType) {
             case DAY:
-                result = DATE_NAME[dateTime.getDay() - 1];
+                result = DateTimeConstants.DATE_NAME.values()[dateTime.getDay() - 1].name();
                 break;
             case SHORT_DATE:
-                result = (dateTime.isLeap() ? "闰" : "") + MONTH_NAME[dateTime.getMonth() - 1] + "月"
+                result = (dateTime.isLeap() ? "闰" : "") + DateTimeConstants.MONTH_NAME.values()[dateTime.getMonth() - 1].name() + "月"
                         + toChineseNumberString(DateType.DAY);
                 break;
             case FULL_DATE:
@@ -114,19 +115,6 @@ public class DateTimeFormatter {
     }
 
     private static String toChineseNumber(int number) {
-        return number == 0 ? "" : toChineseNumber(number / 10) + 数字[number % 10];
+        return number == 0 ? "" : toChineseNumber(number / 10) + DateTimeConstants.NUMBERS.values()[number % 10].name();
     }
-
-
-    private final static String[] 数字 = new String[] {
-            "零", "一", "二", "三", "四", "五", "六", "七", "八", "九",
-    };
-    private final static String[] MONTH_NAME = new String[] {
-            "正", "二", "三", "四", "五", "六", "七", "八", "九", "十", "冬", "腊"
-    };
-    private final static String[] DATE_NAME  = new String[] {
-            "初一", "初二", "初三", "初四", "初五", "初六", "初七", "初八", "初九", "初十",
-            "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十",
-            "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十", "卅一"
-    };
 }

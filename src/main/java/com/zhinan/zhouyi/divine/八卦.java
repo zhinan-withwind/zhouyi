@@ -55,7 +55,9 @@ public enum 八卦 {
         return result;
     }
 
-    public static 八卦 getByInitValue(Integer value) {
-        return value == null ? null : initValues[value - 1];
+    public static 八卦 getByInitValue (Integer value) {
+        return value == null ? null :  initValues[value - 1];
     }
+
+    public static 八卦 getByAlterValue(Integer value) { return value == null ? null : alterValues[value - 1]; }
 }

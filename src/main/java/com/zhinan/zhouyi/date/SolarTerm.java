@@ -34,7 +34,7 @@ public enum SolarTerm {
     }
 
     public SolarTerm roll(int amount) {
-        return values()[(ordinal() + amount + 12) % 12];
+        return values()[(getValue() + amount + 24) % 24];
     }
 
 }

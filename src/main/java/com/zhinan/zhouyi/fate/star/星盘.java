@@ -7,7 +7,6 @@ import com.zhinan.zhouyi.base.阴阳;
 import com.zhinan.zhouyi.date.GanZhiDateTime;
 import com.zhinan.zhouyi.date.LunarDateTime;
 import com.zhinan.zhouyi.fate.bazi.八字;
-import com.zhinan.zhouyi.fate.bazi.命主;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -71,9 +70,9 @@ public class 星盘 {
         }
 
         pan.changeList = 化位.of(ganzhiTime.getGanZhiYear().getGan().getValue());
-        for (化位 change : pan.changeList) {
-            change.position = stars.get(change.position).position - 2;
-        }
+//        for (化位 change : pan.changeList) {
+//            change.position = (stars.get(change.position).position - 2 + 12) % 12;
+//        }
 
         return pan;
     }
