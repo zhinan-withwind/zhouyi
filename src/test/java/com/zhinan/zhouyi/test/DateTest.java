@@ -32,4 +32,10 @@ public class DateTest {
         System.out.println(DateTimeFormatter.getInstance(SolarDateTime.of(dateTime))
                 .format(DateFormatType.ARABIC_NUMBER, DateType.DATETIME));
     }
+
+    @Test
+    public void testTranslateDate() {
+        LocalDateTime dateTime = LocalDateTime.of(1998, 1, 1, 14, 5);
+        System.out.println(DateTimeFormatter.getInstance(GanZhiDateTime.from(dateTime)).format(DateFormatType.GANZHI_NUMBER));
+    }
 }

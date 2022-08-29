@@ -37,7 +37,7 @@ public class 星盘 {
         pan.type = 类型.原命;
         pan.starPalaceList = new ArrayList<>();
 
-        LunarDateTime  lunarTime  = LunarDateTime.from(birthday);
+        LunarDateTime  lunarTime  = LunarDateTime .from(birthday);
         GanZhiDateTime ganzhiTime = GanZhiDateTime.from(birthday);
         pan.birthday = lunarTime;
         pan.bazi = 八字.of(birthday, sex);
@@ -48,7 +48,7 @@ public class 星盘 {
         int startGan = ((ganzhiTime.getGanZhiYear().getGan().getValue() + 1) * 2) % 10;
 
         pan.fatePalace = (month - 1 - hour + 12) % 12;
-        pan.bodyPalace = (month - 1 + hour) % 12;
+        pan.bodyPalace = (month - 1 + hour + 12) % 12;
 
         pan.pattern = 命局.getByWuXing(
                 new 干支(天干.getByValue((startGan + pan.fatePalace) % 10), 地支.getByValue(pan.fatePalace + 2))
@@ -70,9 +70,9 @@ public class 星盘 {
         }
 
         pan.changeList = 化位.of(ganzhiTime.getGanZhiYear().getGan().getValue());
-//        for (化位 change : pan.changeList) {
-//            change.position = (stars.get(change.position).position - 2 + 12) % 12;
-//        }
+        for (化位 change : pan.changeList) {
+            change.position = (stars.get(change.position).position - 2 + 12) % 2;
+        }
 
         return pan;
     }

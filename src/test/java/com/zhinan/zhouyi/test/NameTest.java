@@ -34,9 +34,15 @@ public class NameTest {
 //        System.out.println(Arrays.toString(nameList.toArray()));
 //        System.out.println(nameList.size());
 
-        List<汉字> charList= 汉字.get(14, 五行.火);
-        for (汉字 c : charList) {
-            System.out.println("张高" + c.getSimplified());
-        }
+//        List<汉字> charList= 汉字.get(14, 五行.火);
+//        for (汉字 c : charList) {
+//            System.out.println("张高" + c.getSimplified());
+//        }
+
+        int[] second = {1, 3, 9, 11, 13};
+
+        int[][] third = {
+                {10, 20}, {14, 22}, {4, 12, 24}, {10, }, {10}
+        };
     }
 }

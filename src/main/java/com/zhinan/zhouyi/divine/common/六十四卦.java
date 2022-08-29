@@ -1,4 +1,4 @@
-package com.zhinan.zhouyi.divine;
+package com.zhinan.zhouyi.divine.common;
 
 import com.zhinan.zhouyi.base.五行;
 import com.zhinan.zhouyi.base.阴阳;

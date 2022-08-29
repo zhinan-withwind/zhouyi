@@ -3,8 +3,8 @@ package com.zhinan.zhouyi.out;
 import com.zhinan.zhouyi.base.生克;
 import com.zhinan.zhouyi.desc.卦辞描述器;
 import com.zhinan.zhouyi.divine.meihua.梅花易数;
-import com.zhinan.zhouyi.divine.八卦;
-import com.zhinan.zhouyi.divine.六十四卦;
+import com.zhinan.zhouyi.divine.common.八卦;
+import com.zhinan.zhouyi.divine.common.六十四卦;
 
 public class MeiHuaOutputter extends GuaOutputter {
 

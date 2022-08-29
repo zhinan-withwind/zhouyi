@@ -4,9 +4,9 @@ import com.zhinan.zhouyi.base.五行;
 import com.zhinan.zhouyi.base.地支;
 import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.阴阳;
-import com.zhinan.zhouyi.divine.世名;
-import com.zhinan.zhouyi.divine.京房八宫;
-import com.zhinan.zhouyi.divine.六十四卦;
+import com.zhinan.zhouyi.divine.common.世名;
+import com.zhinan.zhouyi.divine.common.京房八宫;
+import com.zhinan.zhouyi.divine.common.六十四卦;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 

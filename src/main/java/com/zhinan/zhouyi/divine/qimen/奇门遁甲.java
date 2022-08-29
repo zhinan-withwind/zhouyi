@@ -3,7 +3,7 @@ package com.zhinan.zhouyi.divine.qimen;
 import com.zhinan.zhouyi.base.*;
 import com.zhinan.zhouyi.date.GanZhiDateTime;
 import com.zhinan.zhouyi.date.SolarTerm;
-import com.zhinan.zhouyi.divine.占卜;
+import com.zhinan.zhouyi.divine.common.占卜;
 import com.zhinan.zhouyi.effect.地支三合;
 import lombok.Getter;
 

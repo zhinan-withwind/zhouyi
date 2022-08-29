@@ -26,14 +26,7 @@ public class GanZhiDateTime extends BaseDateTime implements DateTimeHolder {
     }
 
     public static GanZhiDateTime from(LocalDateTime dateTime) {
-        GanZhiDateTime ganZhiDateTime = new GanZhiDateTime(
-                DateUtil.toGanZhi(dateTime.getYear()),
-                DateUtil.toGanZhi(dateTime.getYear(), dateTime.getMonthValue()),
-                DateUtil.toGanZhi(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth()),
-                DateUtil.toGanZhi(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth(), dateTime.getHour())
-        );
-        ganZhiDateTime.dateTime = dateTime;
-        return ganZhiDateTime;
+        return DateUtil.toGanZhi(dateTime);
     }
 
     public 干支 getGanZhiYear() { return year; }
@@ -51,7 +44,7 @@ public class GanZhiDateTime extends BaseDateTime implements DateTimeHolder {
 
     @Override
     public int getMonth() {
-        return (month.getZhi().getValue() - 2 + 12) % 12;
+        return (month.getZhi().getValue() - 2 + 12) % 12 + 1;
     }
 
     @Override

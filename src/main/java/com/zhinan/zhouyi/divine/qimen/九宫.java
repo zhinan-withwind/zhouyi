@@ -1,7 +1,7 @@
 package com.zhinan.zhouyi.divine.qimen;
 
 import com.zhinan.zhouyi.base.地支;
-import com.zhinan.zhouyi.divine.八卦;
+import com.zhinan.zhouyi.divine.common.八卦;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

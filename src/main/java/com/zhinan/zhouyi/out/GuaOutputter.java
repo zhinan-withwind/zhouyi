@@ -1,8 +1,8 @@
 package com.zhinan.zhouyi.out;
 
 import com.zhinan.zhouyi.base.阴阳;
-import com.zhinan.zhouyi.divine.八卦;
-import com.zhinan.zhouyi.divine.六十四卦;
+import com.zhinan.zhouyi.divine.common.八卦;
+import com.zhinan.zhouyi.divine.common.六十四卦;
 
 public class GuaOutputter extends Outputter {
     public static Outputter output(阴阳 yao, int color) {

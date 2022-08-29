@@ -1,4 +1,4 @@
-package com.zhinan.zhouyi.divine;
+package com.zhinan.zhouyi.divine.common;
 
 import lombok.Getter;
 

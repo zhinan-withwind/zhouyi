@@ -1,4 +1,4 @@
-package com.zhinan.zhouyi.divine;
+package com.zhinan.zhouyi.divine.common;
 
 public enum 世名 {
     主卦, 一世, 二世, 三世, 四世, 五世, 游魂, 归魂;

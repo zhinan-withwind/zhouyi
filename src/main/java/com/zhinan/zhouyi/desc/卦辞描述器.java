@@ -1,6 +1,6 @@
 package com.zhinan.zhouyi.desc;
 
-import com.zhinan.zhouyi.divine.六十四卦;
+import com.zhinan.zhouyi.divine.common.六十四卦;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -100,6 +100,6 @@ public class 卦辞描述器 {
     }
 
     public static String describe(六十四卦 gua, 卦辞描述器.描述类型 type) {
-        return descriptions.get(type)[gua.getValue()];
+        return descriptions.get(type)[gua.getValue() - 1];
     }
 }

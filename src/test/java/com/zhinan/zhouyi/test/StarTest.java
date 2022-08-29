@@ -4,6 +4,7 @@ import com.zhinan.zhouyi.date.DateFormatType;
 import com.zhinan.zhouyi.date.DateTimeFormatter;
 import com.zhinan.zhouyi.date.DateType;
 import com.zhinan.zhouyi.fate.star.*;
+import com.zhinan.zhouyi.util.DateUtil;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -14,8 +15,13 @@ public class StarTest {
 
     @Test
     void testPaiPan() {
-        星盘 pan = 星盘.of(LocalDateTime.of(1976, 2, 11, 11, 40), 0);
-//        星盘 pan = 星盘.of(LocalDateTime.of(1987, 2, 20, 15, 40), 0);
+//        LocalDateTime birthday = LocalDateTime.of(1976, 2, 11, 11, 40);
+//        LocalDateTime birthday = LocalDateTime.of(1987, 2, 20, 15, 40);
+        LocalDateTime birthday = LocalDateTime.of(1998, 1, 1, 13, 5);
+        LocalDateTime apparentSolarTime = DateUtil.toApparentSolarTime(birthday, "320700");
+//        星盘 pan = 星盘.of(, 1);
+        星盘 pan = 星盘.of(apparentSolarTime, 1);
+//        星盘 pan = 星盘.of(, 0);
         System.out.println("生日：" + DateTimeFormatter.getInstance(pan.getBirthday()).format(DateFormatType.CHINESE_NUMBER, DateType.DATETIME));
         System.out.println("命局：" + pan.getPattern().name());
         System.out.println("身宫：" + pan.getBodyPalace());

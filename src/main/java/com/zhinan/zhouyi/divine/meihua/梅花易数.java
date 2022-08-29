@@ -1,9 +1,8 @@
 package com.zhinan.zhouyi.divine.meihua;
 
 import com.zhinan.zhouyi.base.生克;
-import com.zhinan.zhouyi.divine.八卦;
-import com.zhinan.zhouyi.divine.六十四卦;
-import com.zhinan.zhouyi.divine.占卜;
+import com.zhinan.zhouyi.divine.common.六十四卦;
+import com.zhinan.zhouyi.divine.common.占卜;
 import com.zhinan.zhouyi.util.ChineseUtil;
 import com.zhinan.zhouyi.util.DateUtil;
 import lombok.Getter;
