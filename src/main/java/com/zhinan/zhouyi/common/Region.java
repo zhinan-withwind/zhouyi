@@ -47,6 +47,10 @@ public class Region {
         if (codeMap == null) {
             load();
         }
-        return codeMap.get(code);
+        return codeMap.get(code) == null ? codeMap.get(code.substring(0, 4) + "00") : codeMap.get(code);
+    }
+
+    public Region getParent() {
+        return parentId == null ? null : idMap.get(parentId);
     }
 }

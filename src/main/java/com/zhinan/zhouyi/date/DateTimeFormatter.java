@@ -74,7 +74,7 @@ public class DateTimeFormatter {
     }
 
     public String toGanZhiString(DateType dateType) {
-        GanZhiDateTime dateTime = this.dateTime.toGanZhi();
+        GanZhiDateTime dateTime = this.dateTime.toGanZhiDateTime();
         String result = "";
         switch (dateType) {
             case DAY:

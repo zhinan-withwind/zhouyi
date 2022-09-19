@@ -31,7 +31,7 @@ public class 奇门遁甲 extends 占卜 {
     }
 
     public static int calculatePattern(LocalDateTime divineTime) {
-        GanZhiDateTime ganZhiDateTime = GanZhiDateTime.from(divineTime);
+        GanZhiDateTime ganZhiDateTime = GanZhiDateTime.of(divineTime);
         阴阳 yinYang = !SolarTerm.夏至.of(divineTime.getYear()).isAfter(divineTime)
                 && SolarTerm.冬至.of(divineTime.getYear()).isAfter(divineTime) ? 阴阳.阴 : 阴阳.阳;
         return (1 - yinYang.getValue()) * 10 +
@@ -44,7 +44,7 @@ public class 奇门遁甲 extends 占卜 {
     public static 奇门遁甲 init(String question, LocalDateTime divineTime, Integer pattern) {
         奇门遁甲 pan = new 奇门遁甲();
         divineTime = divineTime == null ? LocalDateTime.now() : divineTime;
-        pan.ganZhiDateTime = GanZhiDateTime.from(divineTime);
+        pan.ganZhiDateTime = GanZhiDateTime.of(divineTime);
         if (pattern == null) pattern = calculatePattern(divineTime);
         Map<String, String> initInfo = new HashMap<>();
         initInfo.put("pattern", pattern.toString());

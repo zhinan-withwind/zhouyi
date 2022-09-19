@@ -21,7 +21,7 @@ public class 星位 {
 
     public static List<星位> of(LunarDateTime birthday, 命局 pattern) {
         List<星位> stars = new ArrayList<>();
-        GanZhiDateTime ganZhiDateTime = birthday.toGanZhi();
+        GanZhiDateTime ganZhiDateTime = birthday.toGanZhiDateTime();
         星位 紫微 = new 星位(星曜.紫微, masterStarPosition[pattern.wuXing.getValue()][birthday.getDay() - 1]);
         stars.add(紫微);
         int[] mainPosition = mainStarPosition[紫微.getPosition()];

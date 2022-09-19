@@ -20,7 +20,7 @@ public class 大运 extends 运势 {
 
     public static 大运 of(LocalDateTime dateTime, LocalDateTime birthday, int sex) {
         八字 bazi = 八字.of(birthday, sex);
-        int direction = bazi.getYear().getGan().getYinYang().equals(阴阳.getByValue(sex)) ? 1: -1;
+        int direction = bazi.getDirection();
 
         LocalDate luckDate = calculateLuckDate(birthday, sex);
 
@@ -76,7 +76,7 @@ public class 大运 extends 运势 {
     }
 
     public 大运 getNext() {
-        return new 大运(roll(1), bazi,
+        return new 大运(roll(bazi.getDirection()), bazi,
                 startTime.plus(10, ChronoUnit.YEARS), endTime.plus(10, ChronoUnit.YEARS));
     }
 

@@ -46,7 +46,22 @@ public class SolarDateTime extends BaseDateTime implements DateTimeHolder {
     }
 
     @Override
-    public GanZhiDateTime toGanZhi() {
-        return DateUtil.toGanZhi(dateTime);
+    public SolarDateTime toSolarDateTime() {
+        return this;
+    }
+
+    @Override
+    public LunarDateTime toLunarDateTime() {
+        return LunarDateTime.of(toLocalDateTime());
+    }
+
+    @Override
+    public GanZhiDateTime toGanZhiDateTime() {
+        return GanZhiDateTime.of(toLocalDateTime());
+    }
+
+    @Override
+    public String toString() {
+        return format(DateFormatType.ARABIC_NUMBER);
     }
 }

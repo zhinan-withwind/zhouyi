@@ -39,10 +39,26 @@ public class NameTest {
 //            System.out.println("张高" + c.getSimplified());
 //        }
 
-        int[] second = {1, 3, 9, 11, 13};
+        int[] second = {9, 11, 13, 19, 20, 23};
 
         int[][] third = {
-                {10, 20}, {14, 22}, {4, 12, 24}, {10, }, {10}
+                {4, 12, 14, 16, 22, 24}, {10, }, {10, 12, 20}, {4, 14, 16}, {5, 15}, {10, 12}
         };
+
+        for(int s = 0; s < second.length; s++) {
+            List<汉字> sList = 汉字.get(second[s], 五行.火);
+            for (int t = 0; t < third[s].length; t++) {
+                List<汉字> tList = 汉字.get(third[s][t], 五行.土);
+                System.out.println("笔画组合：" + second[s] + " - " + third[s][t]);
+                int n = 0;
+                for (汉字 sc : sList) {
+                    for (汉字 tc : tList) {
+                        System.out.print("景" + sc.getSimplified() + tc.getSimplified() + ", \t");
+                        System.out.print(++n % 10 == 0 ? System.lineSeparator() : "");
+                    }
+                }
+                System.out.println();
+            }
+        }
     }
 }

@@ -78,7 +78,7 @@ public class 简盘 {
 
 
         阳历生日 = SolarDateTime.of(pan.birthday).format(DateFormatType.ARABIC_NUMBER);
-        阴历生日 = DateTimeFormatter.getInstance(LunarDateTime.from(pan.birthday)).format(DateFormatType.CHINESE_NUMBER);
+        阴历生日 = DateTimeFormatter.getInstance(LunarDateTime.of(pan.birthday)).format(DateFormatType.CHINESE_NUMBER);
 
         for (int i = 0; i < pan.ganList.size(); i++) {
             干神.add(pan.ganGodList.get(i).getName());

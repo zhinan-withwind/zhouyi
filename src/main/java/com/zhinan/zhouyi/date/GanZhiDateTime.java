@@ -4,7 +4,10 @@ import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.util.DateUtil;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import net.time4j.PlainDate;
+import net.time4j.calendar.ChineseCalendar;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -25,8 +28,29 @@ public class GanZhiDateTime extends BaseDateTime implements DateTimeHolder {
         this.hour = hour;
     }
 
-    public static GanZhiDateTime from(LocalDateTime dateTime) {
-        return DateUtil.toGanZhi(dateTime);
+    /**
+     * 将日期转为干支历
+     * @param dateTime  要转化的日期
+     * @param flag  是否区分早晚子时，
+     *              true  - 区分早晚子时，23:00 - 24:00 算当天的日子，第二天的子时。
+     *              false - 不区分早晚子时，23:00 - 24:00 算第二天。
+     * @return 转换后的干支时间
+     */
+    public static GanZhiDateTime of(LocalDateTime dateTime, boolean flag) {
+        dateTime = !flag && dateTime.getHour() == 23 ? dateTime.toLocalDate().plusDays(1).atTime(0, 0) : dateTime;
+        ChineseCalendar springDay = ChineseCalendar.ofNewYear(dateTime.getYear());
+        ChineseCalendar calendar  = DateUtil.toChineseCalendar(dateTime.toLocalDate());
+        干支 year  = 干支.getByValue(dateTime.isBefore(SolarTerm.立春.of(dateTime.getYear())) ?
+                springDay.getYear().getNumber() - 2 : springDay.getYear().getNumber() - 1);
+        干支 month = 干支.getByValue(dateTime.isBefore(DateUtil.getMajorSolarTerm(dateTime).of(dateTime.getYear())) ?
+                calendar.getSexagesimalMonth().getNumber() - 2 : calendar.getSexagesimalMonth().getNumber() - 1);
+        干支 day   = 干支.getByValue(calendar.getSexagesimalDay()  .getNumber() - 1);
+        干支 hour  = DateUtil.toGanZhi(day, dateTime.getHour());
+        return new GanZhiDateTime(year, month, day, hour).setDateTime(dateTime);
+    }
+
+    public static GanZhiDateTime of(LocalDateTime dateTime) {
+        return of(dateTime, false);
     }
 
     public 干支 getGanZhiYear() { return year; }
@@ -68,11 +92,26 @@ public class GanZhiDateTime extends BaseDateTime implements DateTimeHolder {
     }
 
     @Override
-    public GanZhiDateTime toGanZhi() {
+    public SolarDateTime toSolarDateTime() {
+        return SolarDateTime.of(toLocalDateTime());
+    }
+
+    @Override
+    public LunarDateTime toLunarDateTime() {
+        return LunarDateTime.of(toLocalDateTime());
+    }
+
+    @Override
+    public GanZhiDateTime toGanZhiDateTime() {
         return this;
     }
 
     public List<干支> toGanZhiList() {
         return Arrays.asList(year, month, day, hour);
+    }
+
+    @Override
+    public String toString() {
+        return DateTimeFormatter.getInstance(this).format(DateFormatType.GANZHI_NUMBER);
     }
 }

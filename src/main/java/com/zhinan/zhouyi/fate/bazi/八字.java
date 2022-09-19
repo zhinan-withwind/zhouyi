@@ -41,7 +41,7 @@ public class 八字 {
         bazi.birthday = birthday;
         bazi.sex = 阴阳.getByValue(sex);
 
-        bazi.fourColumn = GanZhiDateTime.from(birthday).toGanZhiList();
+        bazi.fourColumn = GanZhiDateTime.of(birthday).toGanZhiList();
         bazi.year    = bazi.fourColumn.get(0);
         bazi.month   = bazi.fourColumn.get(1);
         bazi.day     = bazi.fourColumn.get(2);
@@ -83,5 +83,18 @@ public class 八字 {
 
     public 命主 getFate() {
         return 命主.of(getMing());
+    }
+
+    /**
+     * 计算大运的排序方向：阳年阳造，阴年阴造为顺排，阳年阴造，阴年阳造为逆排
+     * @return 顺排返回 1， 逆排返回 01
+     */
+    public int getDirection() {
+        return getYear().getGan().getYinYang().equals(sex) ? 1 : -1;
+    }
+
+    @Override
+    public String toString() {
+        return year + " " + month + " " + day + " " + time;
     }
 }

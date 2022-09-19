@@ -27,6 +27,8 @@ public class 星盘 {
     LunarDateTime birthday;
     命局 pattern;
     八字 bazi;
+    星曜 fateMaster;
+    星曜 bodyMaster;
     int bodyPalace;
     int fatePalace;
     List<宫位> starPalaceList;
@@ -37,8 +39,8 @@ public class 星盘 {
         pan.type = 类型.原命;
         pan.starPalaceList = new ArrayList<>();
 
-        LunarDateTime  lunarTime  = LunarDateTime .from(birthday);
-        GanZhiDateTime ganzhiTime = GanZhiDateTime.from(birthday);
+        LunarDateTime  lunarTime  = LunarDateTime .of(birthday);
+        GanZhiDateTime ganzhiTime = GanZhiDateTime.of(birthday);
         pan.birthday = lunarTime;
         pan.bazi = 八字.of(birthday, sex);
 
@@ -70,19 +72,11 @@ public class 星盘 {
         }
 
         pan.changeList = 化位.of(ganzhiTime.getGanZhiYear().getGan().getValue());
-        for (化位 change : pan.changeList) {
-            change.position = (stars.get(change.position).position - 2 + 12) % 2;
-        }
+
+        pan.fateMaster = 命主[pan.starPalaceList.get(pan.fatePalace).getZhi().getValue()];
+        pan.bodyMaster = 身主[pan.bazi.getYear().getZhi().getValue()];
 
         return pan;
-    }
-
-    public 星曜 getFateMaster() {
-        return 命主[getStarPalaceList().get(getFatePalace()).getZhi().getValue()];
-    }
-
-    public 星曜 getBodyMaster() {
-        return 身主[bazi.getYear().getZhi().getValue()];
     }
 
     private static final 星曜[] 命主 = {

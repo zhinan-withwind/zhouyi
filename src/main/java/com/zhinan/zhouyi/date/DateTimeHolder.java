@@ -10,6 +10,8 @@ public interface DateTimeHolder {
     int getMinute();
     boolean isLeap();
     LocalDateTime  toLocalDateTime();
-    GanZhiDateTime toGanZhi();
+    SolarDateTime  toSolarDateTime();
+    LunarDateTime  toLunarDateTime();
+    GanZhiDateTime toGanZhiDateTime();
     String format(DateFormatType formatType, DateType dateType);
 }

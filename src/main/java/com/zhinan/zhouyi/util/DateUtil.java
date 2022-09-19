@@ -5,20 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.common.Region;
 import com.zhinan.zhouyi.date.GanZhiDateTime;
-import com.zhinan.zhouyi.date.LunarDateTime;
 import com.zhinan.zhouyi.date.SolarTerm;
 import lombok.extern.slf4j.Slf4j;
 import net.time4j.PlainDate;
 import net.time4j.calendar.ChineseCalendar;
-import net.time4j.calendar.CommonElements;
 import net.time4j.calendar.EastAsianMonth;
-import net.time4j.calendar.EastAsianYear;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 @Slf4j
 public class DateUtil {
@@ -32,14 +26,20 @@ public class DateUtil {
         return PlainDate.from(date).transform(ChineseCalendar.class);
     }
 
+    /**
+     * 将日期转为八字
+     * @param dateTime  要转化的日期
+     * @param flag  是否区分早晚子时，
+     *              true  - 区分早晚子时，23:00 - 24:00 算当天的日子，第二天的子时。
+     *              false - 不区分早晚子时，23:00 - 24:00 算第二天。
+     * @return 转换后的干支时间
+     */
+    public static GanZhiDateTime toGanZhi(LocalDateTime dateTime, boolean flag) {
+        return GanZhiDateTime.of(dateTime, flag);
+    }
+
     public static GanZhiDateTime toGanZhi(LocalDateTime dateTime) {
-        ChineseCalendar calendar = toChineseCalendar(dateTime.toLocalDate());
-        return new GanZhiDateTime(
-                干支.getByValue(calendar.getYear().getNumber() - 1),
-                干支.getByValue(calendar.getSexagesimalMonth().getNumber() - 1),
-                干支.getByValue(calendar.getSexagesimalDay().getNumber() - 1),
-                toGanZhi(干支.getByValue(calendar.getSexagesimalDay().getNumber() - 1), dateTime.getHour()))
-                .setDateTime(dateTime);
+        return toGanZhi(dateTime, false);
     }
 
     public static 干支 toGanZhi(干支 day, int hour) {
@@ -68,8 +68,18 @@ public class DateUtil {
         return SolarTerm.ofMajor((dateTime.getMonthValue() - 2 + 12) % 12);
     }
 
-    public static LocalDateTime getLastMajorSolarTerm(LocalDateTime dateTime) {
+    private static int getSolarTermYear(LocalDateTime dateTime) {
         int year = dateTime.getYear();
+        // 在元旦之后，立春之前，则需要算是上一年
+        if (!dateTime.isBefore(LocalDateTime.of(year, 1, 1, 0, 0)) &&
+                dateTime.isBefore(SolarTerm.立春.of(year))) {
+            year -= 1;
+        }
+        return year;
+    }
+
+    public static LocalDateTime getLastMajorSolarTerm(LocalDateTime dateTime) {
+        int year = getSolarTermYear(dateTime);
         SolarTerm solarTerm = getMajorSolarTerm(dateTime);
         if (solarTerm.of(year).isAfter(dateTime)) {
             if (solarTerm.getValue() - 2 < 0) {
@@ -81,9 +91,9 @@ public class DateUtil {
     }
 
     public static LocalDateTime getNextMajorSolarTerm(LocalDateTime dateTime) {
-        int year = dateTime.getYear();
+        int year = getSolarTermYear(dateTime);
         SolarTerm solarTerm = getMajorSolarTerm(dateTime);
-        if (solarTerm.of(year).isBefore(dateTime)) {
+        if (!solarTerm.of(year).isAfter(dateTime)) {
             if (solarTerm.getValue() + 2 > 23) {
                 year += 1;
             }

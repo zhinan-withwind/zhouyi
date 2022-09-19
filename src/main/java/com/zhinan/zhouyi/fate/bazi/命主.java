@@ -51,4 +51,8 @@ public class 命主 {
     public 五行 get(生克 shengKe) {
         return gan.getWuXing().getByShengKe(shengKe);
     }
+
+    public static 命主 getByValue(int value) {
+        return 命主.of(天干.getByValue(value));
+    }
 }

@@ -53,6 +53,6 @@ public class 日运  extends 运势 {
 
     @Override
     public String getAge() {
-        return LunarDateTime.from(startTime).format(DateFormatType.CHINESE_NUMBER, DateType.DAY);
+        return LunarDateTime.of(startTime).format(DateFormatType.CHINESE_NUMBER, DateType.DAY);
     }
 }

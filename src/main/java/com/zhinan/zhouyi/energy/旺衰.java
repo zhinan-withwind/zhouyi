@@ -6,7 +6,7 @@ import com.zhinan.zhouyi.divine.meihua.吉凶;
 public enum 旺衰 {
     旺, 相, 休, 囚, 死;
 
-    private final static 旺衰[] valueByShengKe = {囚, 旺, 相, 死, 囚};
+    private final static 旺衰[] valueByShengKe = {休, 旺, 相, 死, 囚};
 
     public int getValue() {
         return ordinal();

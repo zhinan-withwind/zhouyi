@@ -62,7 +62,7 @@ public class LunarDateTime extends BaseDateTime implements DateTimeHolder {
         return LunarDateTime.of(year, month, day, hour, minute, isLeap);
     }
 
-    public static LunarDateTime from(LocalDateTime solarDateTime) {
+    public static LunarDateTime of(LocalDateTime solarDateTime) {
         ChineseCalendar calendar = PlainDate.from(solarDateTime.toLocalDate()).transform(ChineseCalendar.class);
         return LunarDateTime.of(calendar.getInt(CommonElements.RELATED_GREGORIAN_YEAR),
                 calendar.getMonth().getNumber(), calendar.getDayOfMonth(),
@@ -78,8 +78,19 @@ public class LunarDateTime extends BaseDateTime implements DateTimeHolder {
                 .atTime(this.getHour(), this.getMinute());
     }
 
-    public GanZhiDateTime toGanZhi() {
-        return DateUtil.toGanZhi(toLocalDateTime());
+    @Override
+    public SolarDateTime toSolarDateTime() {
+        return SolarDateTime.of(toLocalDateTime());
+    }
+
+    @Override
+    public LunarDateTime toLunarDateTime() {
+        return this;
+    }
+
+    @Override
+    public GanZhiDateTime toGanZhiDateTime() {
+        return GanZhiDateTime.of(toLocalDateTime());
     }
 
     public 地支 getTime() {
@@ -88,6 +99,6 @@ public class LunarDateTime extends BaseDateTime implements DateTimeHolder {
 
     @Override
     public String toString() {
-        return "";
+        return format(DateFormatType.CHINESE_NUMBER);
     }
 }

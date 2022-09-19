@@ -26,7 +26,7 @@ public class MeiHuaOutputter extends GuaOutputter {
 
         String[] 状态 = {"大吉", "中吉", "较差", "小吉", "不宜"};
 
-        String description = 卦辞描述器.describe(gua, 卦辞描述器.描述类型.基本含义);
+        String description = 卦辞描述器.describe(gua, 卦辞描述器.描述类型.含义);
 
         Outputter name = output(TEXT_COLOR.NO_COLOR.getColor(),             8, "\t\t")
                 .append(output(colors[gua.get上卦().getWuXing().getValue()], 8, " " + gua.get上卦().getName() + gua.get上卦().getWuXing().getName() + "\t"), HORIZONTAL_ALIGN.LEFT, VERTICAL_ALIGN.BOTTOM)
