@@ -16,7 +16,7 @@ public class 月运 extends 运势 {
 
     public static 月运 of(LocalDateTime dateTime, LocalDateTime birthday, int sex) {
         干支 ganzhi    = DateUtil.toGanZhi(dateTime.getYear(), dateTime.getMonthValue());
-        LocalDateTime startTime = DateUtil.getLastMajorSolarTerm(dateTime);
+        LocalDateTime startTime = DateUtil.getLastMajorSolarTermDateTime(dateTime);
         LocalDateTime endTime   = startTime.plusMonths(1);
         return new 月运(ganzhi, 八字.of(birthday, sex), startTime, endTime);
     }

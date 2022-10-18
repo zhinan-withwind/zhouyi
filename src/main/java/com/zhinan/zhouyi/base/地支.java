@@ -11,7 +11,7 @@ public enum 地支 implements 元素 {
     寅(阴阳.阳, 五行.木, new 天干[]{天干.甲, 天干.丙, 天干.戊}),
     卯(阴阳.阴, 五行.木, new 天干[]{天干.乙}),
     辰(阴阳.阳, 五行.土, new 天干[]{天干.戊, 天干.乙, 天干.癸}),
-    巳(阴阳.阴, 五行.火, new 天干[]{天干.丙, 天干.庚, 天干.戊}),
+    巳(阴阳.阴, 五行.火, new 天干[]{天干.丙, 天干.戊, 天干.庚}),
     午(阴阳.阳, 五行.火, new 天干[]{天干.丁, 天干.己}),
     未(阴阳.阴, 五行.土, new 天干[]{天干.己, 天干.丁, 天干.乙}),
     申(阴阳.阳, 五行.金, new 天干[]{天干.庚, 天干.壬, 天干.戊}),
@@ -26,6 +26,7 @@ public enum 地支 implements 元素 {
     public static 地支 getByValue(int value) {
         return values()[value % 12];
     }
+    public static 地支 getByName (String name) { return valueOf(name); }
 
     public 天干 getTianGan() {return get本气();}
     public 天干 get本气() {

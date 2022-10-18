@@ -1,5 +1,6 @@
 package com.zhinan.zhouyi.util;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -19,5 +20,11 @@ public class FileUtil {
             e.printStackTrace();
         }
         return sb.toString();
+    }
+
+    public static void saveToFile(String path, String content) throws Exception {
+        FileWriter writer = new FileWriter(path);
+        writer.write(content);
+        writer.close();
     }
 }

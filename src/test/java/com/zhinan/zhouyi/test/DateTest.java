@@ -49,13 +49,13 @@ public class DateTest {
     @Test
     public void testCalculateMajorSolarTerm() {
         LocalDateTime dateTime = LocalDateTime.of(1900, 1, 1, 22, 0);
-        System.out.println(DateUtil.getNextMajorSolarTerm(dateTime));
-        System.out.println(DateUtil.getLastMajorSolarTerm(dateTime));
+        System.out.println(DateUtil.getNextMajorSolarTermDateTime(dateTime));
+        System.out.println(DateUtil.getLastMajorSolarTermDateTime(dateTime));
 
         for (int i = 0; i < 73200; i++) {
             LocalDateTime d = dateTime.plusDays(i);
-            LocalDateTime lastMajorSolarTerm = DateUtil.getLastMajorSolarTerm(d);
-            LocalDateTime nextMajorSolarTerm = DateUtil.getNextMajorSolarTerm(d);
+            LocalDateTime lastMajorSolarTerm = DateUtil.getLastMajorSolarTermDateTime(d);
+            LocalDateTime nextMajorSolarTerm = DateUtil.getNextMajorSolarTermDateTime(d);
             if (!(lastMajorSolarTerm.isBefore(nextMajorSolarTerm) &&
                     Duration.between(lastMajorSolarTerm, nextMajorSolarTerm).getSeconds() < 32 * 24 * 3600)) {
                 System.out.println("当前日期：" + d);
@@ -76,7 +76,7 @@ public class DateTest {
 
     @Test
     public void testBazi() {
-        LocalDateTime birthday = LocalDateTime.of(1988, 8, 7, 7, 58);
+        LocalDateTime birthday = LocalDateTime.of(1988, 8, 7, 8, 58);
         System.out.println(GanZhiDateTime.of(birthday));
     }
 }

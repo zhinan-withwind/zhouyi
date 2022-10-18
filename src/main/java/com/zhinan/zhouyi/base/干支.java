@@ -5,6 +5,8 @@ import com.zhinan.zhouyi.fate.bazi.长生;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Objects;
+
 @Getter
 @AllArgsConstructor
 public class 干支 {
@@ -17,6 +19,10 @@ public class 干支 {
 
     public static 干支 getByValue(int value) {
         return 干支.getByValue(value % 10, value % 12);
+    }
+
+    public static 干支 getByName(String name) {
+        return new 干支(天干.getByName(name.substring(0, 1)), 地支.getByName(name.substring(1)));
     }
 
     public int getValue() {
@@ -48,5 +54,10 @@ public class 干支 {
     @Override
     public String toString() {
         return getName();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof 干支 && ((干支) o).getValue() == this.getValue();
     }
 }

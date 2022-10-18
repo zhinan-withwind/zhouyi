@@ -43,11 +43,21 @@ public class Region {
 
     }
 
+    public static Region getDefault() {
+        if (codeMap == null) {
+            load();
+        }
+        return codeMap.get("110000");
+    }
+
     public static Region getByCode(String code) {
         if (codeMap == null) {
             load();
         }
-        return codeMap.get(code) == null ? codeMap.get(code.substring(0, 4) + "00") : codeMap.get(code);
+        // 如果没给地区code，则返回默认地区（默认返回北京）
+        // 如果未找到地区，就取上级市的地区
+        return code == null ? getDefault() :
+                codeMap.get(code) == null ? codeMap.get(code.substring(0, 4) + "00") : codeMap.get(code);
     }
 
     public Region getParent() {

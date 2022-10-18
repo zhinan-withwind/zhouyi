@@ -43,9 +43,9 @@ public class DateUtil {
     }
 
     public static 干支 toGanZhi(干支 day, int hour) {
-        return 干支.getByValue(
-                ((day.getGan().getValue() % 5) * 2 + (hour + 1) / 2) % 10,
-                (hour + 1) / 2);
+        int dayGanValue = ((day.getGan().getValue() % 5) * 2 + (hour + 1) / 2) % 10;
+        int dayZhiValue = (hour + 1) / 2;
+        return 干支.getByValue(dayGanValue, dayZhiValue);
     }
 
     public static 干支 toGanZhi(int year) {
@@ -78,28 +78,32 @@ public class DateUtil {
         return year;
     }
 
-    public static LocalDateTime getLastMajorSolarTerm(LocalDateTime dateTime) {
+    public static SolarTerm getLastMajorSolarTerm(LocalDateTime dateTime) {
         int year = getSolarTermYear(dateTime);
-        SolarTerm solarTerm = getMajorSolarTerm(dateTime);
-        if (solarTerm.of(year).isAfter(dateTime)) {
-            if (solarTerm.getValue() - 2 < 0) {
-                year -= 1;
-            }
-            solarTerm = solarTerm.roll(-2);
-        }
-        return solarTerm.of(year);
-    }
-
-    public static LocalDateTime getNextMajorSolarTerm(LocalDateTime dateTime) {
-        int year = getSolarTermYear(dateTime);
-        SolarTerm solarTerm = getMajorSolarTerm(dateTime);
-        if (!solarTerm.of(year).isAfter(dateTime)) {
-            if (solarTerm.getValue() + 2 > 23) {
-                year += 1;
+        SolarTerm solarTerm = SolarTerm.立春;
+        for (int i = 0; i < 12; i++) {
+            LocalDateTime currentSolarTermDateTime = solarTerm.of(year);
+            LocalDateTime nextSolarTermDateTime    = solarTerm.roll(2).of(i < 11 ? year : year + 1);
+            if (!currentSolarTermDateTime.isAfter(dateTime) && nextSolarTermDateTime.isAfter(dateTime)) {
+                break;
             }
             solarTerm = solarTerm.roll(2);
         }
-        return solarTerm.of(year);
+        return solarTerm;
+    }
+
+    public static LocalDateTime getLastMajorSolarTermDateTime(LocalDateTime dateTime) {
+        return getLastMajorSolarTerm(dateTime).of(getSolarTermYear(dateTime));
+    }
+
+    public static SolarTerm getNextMajorSolarTerm(LocalDateTime dateTime) {
+        return getLastMajorSolarTerm(dateTime).roll(2);
+    }
+
+    public static LocalDateTime getNextMajorSolarTermDateTime(LocalDateTime dateTime) {
+        SolarTerm solarTerm = getNextMajorSolarTerm(dateTime);
+        // 如果下一个节气是立春，那么则是下一年的立春
+        return solarTerm.of(getSolarTermYear(dateTime) + (solarTerm.equals(SolarTerm.立春) ? 1 : 0));
     }
 
     public static LocalDateTime toMeanSolarTime(LocalDateTime dateTime, String regionCode) {

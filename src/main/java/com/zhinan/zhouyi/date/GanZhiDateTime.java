@@ -4,10 +4,7 @@ import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.util.DateUtil;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import net.time4j.PlainDate;
-import net.time4j.calendar.ChineseCalendar;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -38,14 +35,22 @@ public class GanZhiDateTime extends BaseDateTime implements DateTimeHolder {
      */
     public static GanZhiDateTime of(LocalDateTime dateTime, boolean flag) {
         dateTime = !flag && dateTime.getHour() == 23 ? dateTime.toLocalDate().plusDays(1).atTime(0, 0) : dateTime;
-        ChineseCalendar springDay = ChineseCalendar.ofNewYear(dateTime.getYear());
-        ChineseCalendar calendar  = DateUtil.toChineseCalendar(dateTime.toLocalDate());
-        干支 year  = 干支.getByValue(dateTime.isBefore(SolarTerm.立春.of(dateTime.getYear())) ?
-                springDay.getYear().getNumber() - 2 : springDay.getYear().getNumber() - 1);
-        干支 month = 干支.getByValue(dateTime.isBefore(DateUtil.getMajorSolarTerm(dateTime).of(dateTime.getYear())) ?
-                calendar.getSexagesimalMonth().getNumber() - 2 : calendar.getSexagesimalMonth().getNumber() - 1);
-        干支 day   = 干支.getByValue(calendar.getSexagesimalDay()  .getNumber() - 1);
+        // 计算年份干支
+        int yearGanValue = (dateTime.getYear() - 3 - 1) % 10;
+        int yearZhiValue = (dateTime.getYear() - 3 - 1) % 12;
+        干支 year  = 干支.getByValue(yearGanValue, yearZhiValue);
+        if (dateTime.isBefore(SolarTerm.立春.of(dateTime.getYear()))) {
+            year  = year.roll(-1);
+        }
+        // 计算月份干支
+        int monthZhiValue = DateUtil.getLastMajorSolarTermDateTime(dateTime).getMonthValue();
+        int monthGanValue = (year.getGan().getValue() * 2 + 2 + (monthZhiValue - 2 + 12) % 12) % 10;
+        干支 month = 干支.getByValue(monthGanValue, monthZhiValue);
+        // 计算日期干支
+        干支 day   = DateUtil.toGanZhi(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth());
+        // 计算时间干支
         干支 hour  = DateUtil.toGanZhi(day, dateTime.getHour());
+
         return new GanZhiDateTime(year, month, day, hour).setDateTime(dateTime);
     }
 

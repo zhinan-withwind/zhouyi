@@ -43,10 +43,10 @@ public class 大运 extends 运势 {
 
         long hours;
         if (direction > 0) {
-            LocalDateTime nextMajorSolarTerm = DateUtil.getNextMajorSolarTerm(birthday);
+            LocalDateTime nextMajorSolarTerm = DateUtil.getNextMajorSolarTermDateTime(birthday);
             hours = Duration.between(birthday, nextMajorSolarTerm).toHours();
         } else {
-            LocalDateTime lastMajorSolarTerm = DateUtil.getLastMajorSolarTerm(birthday);
+            LocalDateTime lastMajorSolarTerm = DateUtil.getLastMajorSolarTermDateTime(birthday);
             hours = Duration.between(lastMajorSolarTerm, birthday).toHours();
         }
         return hours;
@@ -82,10 +82,10 @@ public class 大运 extends 运势 {
 
     public static List<大运> list(LocalDateTime birthday, int sex) {
         List<大运> result = new ArrayList<>();
-        result.add(大运.of(birthday, birthday, sex));
+//        result.add(大运.of(birthday, birthday, sex));
         大运 luck = 大运.of(calculateLuckDate(birthday, sex).atTime(0, 0), birthday, sex);
         result.add(luck);
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 9; i++) {
             luck = luck.getNext();
             result.add(luck);
         }
