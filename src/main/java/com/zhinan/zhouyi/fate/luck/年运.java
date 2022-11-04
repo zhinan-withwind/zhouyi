@@ -31,6 +31,15 @@ public class 年运 extends 运势 {
         return result;
     }
 
+    public static List<年运> list(LocalDateTime birthday, int sex) {
+        List<年运> result = new ArrayList<>();
+        List<大运> luckList = 大运.list(birthday, sex);
+        for (大运 luck : luckList) {
+            result.addAll(list(luck.getStartTime().getYear(), birthday, sex));
+        }
+        return result;
+    }
+
     public 大运 getParent() {
         return 大运.of(this.startTime, bazi.getBirthday(), bazi.getSex().getValue());
     }

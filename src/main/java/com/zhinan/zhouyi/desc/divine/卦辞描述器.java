@@ -1,4 +1,4 @@
-package com.zhinan.zhouyi.desc;
+package com.zhinan.zhouyi.desc.divine;
 
 import com.zhinan.zhouyi.divine.common.六十四卦;
 

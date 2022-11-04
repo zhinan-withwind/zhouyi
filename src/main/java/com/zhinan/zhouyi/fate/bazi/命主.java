@@ -3,7 +3,7 @@ package com.zhinan.zhouyi.fate.bazi;
 import com.zhinan.zhouyi.base.五行;
 import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.生克;
-import com.zhinan.zhouyi.desc.命主描述器;
+import com.zhinan.zhouyi.desc.fate.命主描述器;
 
 public class 命主 {
     天干 gan;

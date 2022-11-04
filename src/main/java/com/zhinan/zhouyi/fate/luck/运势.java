@@ -4,18 +4,47 @@ import com.zhinan.zhouyi.base.十神;
 import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.date.SolarTerm;
 import com.zhinan.zhouyi.fate.bazi.八字;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-public class 运势 extends 干支 {
+public abstract class 运势 extends 干支 {
+    @Getter
+    @AllArgsConstructor
     public enum 类型 {
-        大运, 年运, 月运, 日运, 时运;
+        大运("十年"), 年运("一年"), 月运("一月"), 日运("一天"), 时运("时辰");
+
+        String unit;
 
         public static 类型 getByValue(int value) {
             return values()[value];
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public enum 级别 {
+        优("极旺"), 良("较好"), 中("中平"), 差("较低");
+        String name;
+
+        @Override
+        public String toString() {
+            return name;
+        }
+
+        public static 级别 getByScore(int score) {
+            级别 result = 级别.差;
+            if (score >= 80) {
+                result = 级别.优;
+            } else if (score >= 60) {
+                result = 级别.良;
+            } else if (score > 30) {
+                result = 级别.中;
+            }
+            return result;
         }
     }
 
@@ -70,11 +99,20 @@ public class 运势 extends 干支 {
     }
 
     public boolean isGanGodGood() {
-        return bazi.getFatePattern().isGood(getGan().getWuXing());
+        return bazi.getGridPattern().isGood(getGan().getWuXing());
     }
 
     public boolean isZhiGodGood() {
-        return bazi.getFatePattern().isGood(getZhi().getWuXing());
+        return bazi.getGridPattern().isGood(getZhi().getWuXing());
+    }
+
+    abstract 运势 getParent();
+
+    public int getScore() {
+        int score = new Double(40 * (isGanGodGood() ? 0.8 : 0.3) + 60 * (isZhiGodGood() ? 0.8 : 0.3)).intValue();
+        运势 parent = getParent();
+        int parentScore = parent == null ? score : parent.getScore();
+        return new Double(parentScore * 0.4 + score * 0.6).intValue();
     }
 
     public String getDescription() {

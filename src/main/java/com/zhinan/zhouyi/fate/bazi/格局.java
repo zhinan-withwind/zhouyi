@@ -25,6 +25,14 @@ public enum 格局 {
 
     List<五行> goodList = new ArrayList<>();
 
+    public int getValue() {
+        return ordinal();
+    }
+
+    public String getName() {
+        return name();
+    }
+
     public static 格局 of(八字 bazi) {
         格局 pattern;
         int 生 = bazi.getEnergy().get(bazi.getFate().get生());
@@ -86,5 +94,13 @@ public enum 格局 {
 
     public boolean isGood(五行 wuXing) {
         return getGoodList().contains(wuXing);
+    }
+
+    public boolean isFirstGoodGod(五行 wuXing) {
+        return wuXing.equals(getFirstGoodGod());
+    }
+
+    public boolean isSecondGoodGod(五行 wuXing) {
+        return wuXing.equals(getSecondGoodGod());
     }
 }

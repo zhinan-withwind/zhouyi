@@ -5,9 +5,8 @@ package com.zhinan.zhouyi.base;
  * 元素包含十 天干，十二 地支
  */
 public interface 元素 {
-    int    getValue();
-    String getName ();
-
+    int getValue();
+    String getName();
     五行 getWuXing();
     阴阳 getYinYang();
 }

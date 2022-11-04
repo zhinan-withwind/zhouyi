@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum 属相 {
+public enum 属相 implements 元素 {
     鼠(地支.子, "🐭"),
     牛(地支.丑, "🐂"),
     虎(地支.寅, "🐯"),
@@ -30,7 +30,19 @@ public enum 属相 {
         return valueOf(name);
     }
 
-    public int getValue() {return ordinal();}
+    @Override
+    public int getValue() {return zhi.getValue();}
 
+    @Override
     public String getName() {return name();}
+
+    @Override
+    public 五行 getWuXing() {
+        return zhi.getWuXing();
+    }
+
+    @Override
+    public 阴阳 getYinYang() {
+        return zhi.getYinYang();
+    }
 }

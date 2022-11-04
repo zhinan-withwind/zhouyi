@@ -19,6 +19,10 @@ public enum 阴阳 {
         return ordinal();
     }
 
+    public String getName() {
+        return name();
+    }
+
     public 阴阳 compare(阴阳 other) {
         return getByValue(Math.abs(this.getValue() - other.getValue()));
     }

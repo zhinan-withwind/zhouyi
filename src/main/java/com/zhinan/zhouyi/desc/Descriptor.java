@@ -1,6 +1,9 @@
 package com.zhinan.zhouyi.desc;
 
 import com.zhinan.zhouyi.base.十神;
+import com.zhinan.zhouyi.desc.fate.十神描述器;
+import com.zhinan.zhouyi.desc.fate.命主描述器;
+import com.zhinan.zhouyi.desc.fate.命局描述器;
 import com.zhinan.zhouyi.fate.bazi.命主;
 import com.zhinan.zhouyi.fate.bazi.命局;
 

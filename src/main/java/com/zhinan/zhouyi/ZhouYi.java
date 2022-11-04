@@ -3,26 +3,54 @@ package com.zhinan.zhouyi;
 import com.alibaba.fastjson.JSONObject;
 import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.date.SolarDateTime;
+import com.zhinan.zhouyi.desc.fate.八字描述器;
+import com.zhinan.zhouyi.desc.fate.合婚描述器;
+import com.zhinan.zhouyi.desc.fate.运势描述器;
 import com.zhinan.zhouyi.fate.bazi.八字;
+import com.zhinan.zhouyi.fate.luck.*;
+import com.zhinan.zhouyi.out.LuckOutputter;
 import com.zhinan.zhouyi.util.FileUtil;
 import okhttp3.*;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class ZhouYi {
+    private final static String dir = "/Users/withwind/Downloads/LuckChart";
+    private final static String name = "胡南";
+    private final static int sex = 1;
+    private static LocalDateTime ww = LocalDateTime.of(1976, 2, 11, 11, 40);
+    private static LocalDateTime tt = LocalDateTime.of(1987, 2, 20, 3 , 40);
+
     public static void main(String[] args) {
-        LocalDateTime birthday = LocalDateTime.of(1900, 1, 6, 0, 15);
+//        System.out.println(运势描述器.describe(日运.of(LocalDateTime.now(), ww, sex)));
+//        System.out.println(合婚描述器.describe(八字.of(ww, 1), 八字.of(tt, 0)));
+        System.out.println(八字描述器.describe(八字.of(ww, 1)));
+    }
+
+    public static void createLuckChart() throws IOException {
+        LuckOutputter.output(name, 大运.list(ww, sex), dir);
+        LuckOutputter.output(name, 年运.list(ww, sex), dir);
+        LuckOutputter.output(name, 年运.list(LocalDateTime.now().getYear(), ww, sex), dir);
+        LuckOutputter.output(name, 月运.list(LocalDateTime.now().getYear(), ww, sex), dir);
+        LuckOutputter.output(name, 日运.list(LocalDateTime.now().getYear(),
+                LocalDateTime.now().getMonthValue(), ww, sex), dir);
+        LuckOutputter.output(name, 时运.list(LocalDateTime.now().getYear(),
+                LocalDateTime.now().getMonthValue(), LocalDateTime.now().getDayOfMonth(), ww, sex), dir);
+    }
+
+    public static void checkBazi() {
         int sex = 1;
         String url = "https://bzapi2.iwzbz.com/getbasebz.php";
         OkHttpClient client = new OkHttpClient();
-        while (birthday.getYear() < 2023) {
-            System.out.print("\r" + SolarDateTime.of(birthday));
+        while (ww.getYear() < 2023) {
+            System.out.print("\r" + SolarDateTime.of(ww));
 
-            八字 bazi = 八字.of(birthday, sex);
+            八字 bazi = 八字.of(ww, sex);
 
             HttpUrl httpUrl = Objects.requireNonNull(HttpUrl.parse(url)).newBuilder()
-                    .addQueryParameter("d", SolarDateTime.of(birthday).toString())
+                    .addQueryParameter("d", SolarDateTime.of(ww).toString())
                     .addQueryParameter("s", String.valueOf(sex)).build();
             Request request = new Request.Builder().url(httpUrl).get().build();
             Call call = client.newCall(request);
@@ -58,8 +86,8 @@ public class ZhouYi {
                     System.out.println("=============================");
                 }
 
-                birthday = birthday.plusHours(1);
-                FileUtil.saveToFile("/opt/projects/zhouyi_test/wenzhen/" + SolarDateTime.of(birthday), body);
+                ww = ww.plusHours(1);
+                FileUtil.saveToFile("/opt/projects/zhouyi_test/wenzhen/" + SolarDateTime.of(ww), body);
             } catch (Exception e) {
                 e.printStackTrace();
             }

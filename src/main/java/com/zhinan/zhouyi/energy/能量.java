@@ -6,35 +6,34 @@ import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.effect.作用元素;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 public class 能量 {
-    private final List<干支> ganzhiList = new ArrayList<>();
+    private final List<干支> ganZhiList = new ArrayList<>();
     private final int[] values = new int[5];
 
     private 能量() {}
 
-    public static 能量 of(List<干支> ganzhiList) {
+    public static 能量 of(List<干支> ganZhiList) {
         int start = 0;
         能量 power;
-        if (ganzhiList.size() >= 4) {
-            power = ofOriginal(ganzhiList.subList(0, 4));
+        if (ganZhiList.size() >= 4) {
+            power = ofOriginal(ganZhiList.subList(0, 4));
             start = 4;
         } else {
             power = new 能量();
         }
-        for (int i = start; i < ganzhiList.size(); i++) {
-            power = power.add(ganzhiList.get(i), i);
+        for (int i = start; i < ganZhiList.size(); i++) {
+            power = power.add(ganZhiList.get(i), i);
         }
         return power;
     }
 
-    public static 能量 ofOriginal(List<干支> ganzhiList) {
+    public static 能量 ofOriginal(List<干支> ganZhiList) {
         能量 power = new 能量();
-        for (int i = 0; i < ganzhiList.size(); i++) {
-            power.add(ganzhiList.get(i), i);
+        for (int i = 0; i < ganZhiList.size(); i++) {
+            power.add(ganZhiList.get(i), i);
         }
 
         return power;
@@ -70,20 +69,20 @@ public class 能量 {
         return power;
     }
 
-    public 能量 add(干支 ganzhi) {
+    public 能量 add(干支 ganZhi) {
         /* 第一步: 本命能量
          *        本命每个 + 10
          */
-        this.add(ganzhi.getGan().getWuXing(), 40);
-        this.add(ganzhi.getZhi().getWuXing(), 70);
+        this.add(ganZhi.getGan().getWuXing(), 40);
+        this.add(ganZhi.getZhi().getWuXing(), 70);
 
 
         /*
          * 第二步: 禄根能量
          *        如果是一柱或是禄根 + 5
          */
-        if (禄根.is(ganzhi) || ganzhi.getGan().getWuXing().equals(ganzhi.getZhi().getWuXing())) {
-            this.add(ganzhi.getGan().getWuXing(), 10);
+        if (禄根.is(ganZhi) || ganZhi.getGan().getWuXing().equals(ganZhi.getZhi().getWuXing())) {
+            this.add(ganZhi.getGan().getWuXing(), 10);
         }
 
         /* 第三步: 藏干能量
@@ -92,12 +91,12 @@ public class 能量 {
          *        如果根是本气则再        + 5
          *        如果是一柱的话再        + 5
          */
-        for (int j = 0; j < ganzhi.getZhi().getHiddenGan().length; j++) {
-            天干 gan = ganzhi.getZhi().getHiddenGan()[j];
-            if (!gan.getWuXing().equals(ganzhi.getZhi().getWuXing())) {
+        for (int j = 0; j < ganZhi.getZhi().getHiddenGan().length; j++) {
+            天干 gan = ganZhi.getZhi().getHiddenGan()[j];
+            if (!gan.getWuXing().equals(ganZhi.getZhi().getWuXing())) {
                 this.add(gan.getWuXing(), 5);
             }
-            for (干支 column : ganzhiList) {
+            for (干支 column : ganZhiList) {
                 if (gan.getWuXing().equals(column.getGan().getWuXing())) {
                     this.add(gan.getWuXing(), 5);
                     if (j == 0) {
@@ -117,25 +116,25 @@ public class 能量 {
          *        克：-10
          *        同时，生克的关系还随着距离远近的变化而变化的，距离每家1，作用减少一半
          */
-        for (int i = 0; i < this.ganzhiList.size(); i++) {
-            this.effect(this, 作用元素.of(this.ganzhiList.get(i).getGan(), i), 作用元素.of(ganzhi.getGan(), this.ganzhiList.size()))
-                .effect(this, 作用元素.of(this.ganzhiList.get(i).getGan(), i), 作用元素.of(ganzhi.getZhi(), this.ganzhiList.size()))
-                .effect(this, 作用元素.of(this.ganzhiList.get(i).getZhi(), i), 作用元素.of(ganzhi.getGan(), this.ganzhiList.size()))
-                .effect(this, 作用元素.of(this.ganzhiList.get(i).getZhi(), i), 作用元素.of(ganzhi.getZhi(), this.ganzhiList.size()))
-                .effect(this, 作用元素.of(ganzhi.getGan(), this.ganzhiList.size()), 作用元素.of(ganzhi.getZhi(), this.ganzhiList.size()));
+        for (int i = 0; i < this.ganZhiList.size(); i++) {
+            this.effect(this, 作用元素.of(this.ganZhiList.get(i).getGan(), i), 作用元素.of(ganZhi.getGan(), this.ganZhiList.size()))
+                .effect(this, 作用元素.of(this.ganZhiList.get(i).getGan(), i), 作用元素.of(ganZhi.getZhi(), this.ganZhiList.size()))
+                .effect(this, 作用元素.of(this.ganZhiList.get(i).getZhi(), i), 作用元素.of(ganZhi.getGan(), this.ganZhiList.size()))
+                .effect(this, 作用元素.of(this.ganZhiList.get(i).getZhi(), i), 作用元素.of(ganZhi.getZhi(), this.ganZhiList.size()))
+                .effect(this, 作用元素.of(ganZhi.getGan(), this.ganZhiList.size()), 作用元素.of(ganZhi.getZhi(), this.ganZhiList.size()));
         }
 
-        this.ganzhiList.add(ganzhi);
+        this.ganZhiList.add(ganZhi);
 
         return this;
     }
 
-    public 能量 add(干支 ganzhi, int index) {
+    public 能量 add(干支 ganZhi, int index) {
         int amount = index == 1 ? 150 : 100;
-        this.add(ganzhi.getGan().getWuXing(), 作用.天干.effect);
-        this.add(ganzhi.getZhi().get本气().getWuXing(), amount * 作用.本气.effect / 100);
-        this.add(ganzhi.getZhi().get余气().getWuXing(), amount * 作用.余气.effect / 100);
-        this.add(ganzhi.getZhi().get合气().getWuXing(), amount * 作用.合气.effect / 100);
+        this.add(ganZhi.getGan().getWuXing(), 作用.天干.effect);
+        this.add(ganZhi.getZhi().get本气().getWuXing(), amount * 作用.本气.effect / 100);
+        this.add(ganZhi.getZhi().get余气().getWuXing(), amount * 作用.余气.effect / 100);
+        this.add(ganZhi.getZhi().get合气().getWuXing(), amount * 作用.合气.effect / 100);
         return this;
     }
 
@@ -154,6 +153,27 @@ public class 能量 {
 
     public Integer getTotal() {
         return values[0] + values[1] + values[2] + values[3] +values[4];
+    }
+
+    public List<五行> sortAsc() {
+        List<五行> result =  new ArrayList<>();
+        List<Integer> source = new ArrayList<>();
+        for (int i = 0; i < values.length; i++) {
+            source.add(values[i] * 10 + i);
+        }
+        source.sort(Comparator.comparingInt(o -> o));
+        for (Integer i : source) {
+            result.add(五行.getByValue(i % 10));
+        }
+        return result;
+    }
+
+    public 五行 getMax() {
+        return sortAsc().get(4);
+    }
+
+    public 五行 getMin() {
+        return sortAsc().get(0);
     }
 
     @Override

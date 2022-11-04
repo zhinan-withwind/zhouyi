@@ -1,4 +1,4 @@
-package com.zhinan.zhouyi.desc;
+package com.zhinan.zhouyi.desc.fate;
 
 import com.zhinan.zhouyi.fate.bazi.命局;
 
@@ -7,8 +7,12 @@ import java.util.Map;
 
 public class 命局描述器 {
     public enum 描述类型 {
-        优点, 缺点
+        名称, 优点, 缺点
     }
+
+    public final static String[] 名称 = new String[] {
+            "自信的命旺局", "聪明的伤官局", "有目标的财旺局", "谨慎的煞重局", "爱思考的严重局"
+    };
 
     public final static String[] 优点 = new String[] {
             "很自信，内在非常有力量，有强大的拯救情结，好胜，做事喜欢体验过程，不太在乎结果，一心多用，热情，胆大，有领导气质，能操心，不服输，喜欢占山为王，热爱体育运动，能折腾，竞争心强，有使命感",
@@ -27,11 +31,12 @@ public class 命局描述器 {
     };
 
     public final static Map<描述类型, String[]> descriptions = new HashMap<描述类型, String[]>() {
-        { put(描述类型.优点, 优点); put(描述类型.缺点, 缺点); }
+        { put(描述类型.名称, 名称); put(描述类型.优点, 优点); put(描述类型.缺点, 缺点); }
     };
 
     public static String describe(命局 pattern) {
-        return 描述类型.优点.name() + ": " + describe(pattern, 描述类型.优点) + System.lineSeparator()
+        return 描述类型.名称.name() + ": " + describe(pattern, 描述类型.名称) + System.lineSeparator()
+             + 描述类型.优点.name() + ": " + describe(pattern, 描述类型.优点) + System.lineSeparator()
              + 描述类型.缺点.name() + ": " + describe(pattern, 描述类型.缺点);
     }
 

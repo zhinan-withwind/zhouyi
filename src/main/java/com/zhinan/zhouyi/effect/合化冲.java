@@ -56,6 +56,25 @@ public class 合化冲 {
         return relation;
     }
 
+    public static boolean exactMatch(可作用 effect, List<? extends 元素> elements) {
+        boolean result = effect.getElements().size() == elements.size();
+        if (result) {
+            List<元素> requiredElements = new ArrayList<>(effect.getElements());
+            for (元素 element : elements) {
+                boolean match = false;
+                for (元素 e : requiredElements) {
+                    if (e.equals(element)) {
+                        match = true;
+                        requiredElements.remove(e);
+                        break;
+                    }
+                }
+                result = result && match;
+            }
+        }
+        return result;
+    }
+
     public static List<作用关系> apply(可作用 effect, List<? extends 元素> elements) {
         List<作用关系> relations = new ArrayList<>();
         int num = effect.getElements().size();
@@ -123,5 +142,71 @@ public class 合化冲 {
             if (!effects.contains(relation.getEffect())) effects.add(relation.getEffect());
         }
         return result;
+    }
+
+    public static boolean match(List<可作用> effects, List<? extends 元素> elements) {
+        boolean result = false;
+        for (可作用 effect : effects) {
+            if (exactMatch(effect, elements)) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
+
+    public static boolean is合(List<? extends 元素> elements) {
+        List<可作用> effects = new ArrayList<>();
+        effects.addAll(Arrays.asList(天干五合.values()));
+        effects.addAll(Arrays.asList(地支三合.values()));
+        effects.addAll(Arrays.asList(地支六合.values()));
+        effects.addAll(Arrays.asList(地支半合.values()));
+        effects.addAll(Arrays.asList(地支暗合.values()));
+
+        return match(effects, elements);
+    }
+
+    public static boolean is冲(List<? extends 元素> elements) {
+        List<可作用> effects = new ArrayList<>();
+        effects.addAll(Arrays.asList(天干四冲.values()));
+        effects.addAll(Arrays.asList(地支六冲.values()));
+
+        return match(effects, elements);
+    }
+
+    public static boolean is刑(List<? extends 元素> elements) {
+        return match(Arrays.asList(地支相刑.values()), elements);
+    }
+
+    public static boolean is破(List<? extends 元素> elements) {
+        return match(Arrays.asList(地支相破.values()), elements);
+    }
+
+    public static boolean is害(List<? extends 元素> elements) {
+        return match(Arrays.asList(地支六穿.values()), elements);
+    }
+
+    public static boolean is刑冲破害(List<? extends 元素> elements) {
+        return is刑(elements) || is冲(elements) || is破(elements) || is害(elements);
+    }
+
+    public static 作用类别 getRelation(元素 a, 元素 b) {
+        List<元素> elements = Arrays.asList(a, b);
+        if (is合(elements)) {
+            return 作用类别.合;
+        }
+        if (is冲(elements)) {
+            return 作用类别.冲;
+        }
+        if (is刑(elements)) {
+            return 作用类别.刑;
+        }
+        if (is破(elements)) {
+            return 作用类别.破;
+        }
+        if (is害(elements)) {
+            return 作用类别.害;
+        }
+        return 作用类别.无;
     }
 }
