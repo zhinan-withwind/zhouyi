@@ -1,11 +1,14 @@
 package com.zhinan.zhouyi.fate.bazi;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zhinan.zhouyi.base.十神;
 import com.zhinan.zhouyi.base.地支;
 import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.生克;
 import com.zhinan.zhouyi.date.*;
-import com.zhinan.zhouyi.desc.Descriptor;
+import com.zhinan.zhouyi.desc.fate.十神描述器;
+import com.zhinan.zhouyi.desc.fate.命主描述器;
+import com.zhinan.zhouyi.desc.fate.命局描述器;
 import com.zhinan.zhouyi.effect.可作用;
 import com.zhinan.zhouyi.effect.合化冲;
 import com.zhinan.zhouyi.fate.luck.运势;
@@ -18,9 +21,11 @@ public class 简盘 {
     Map<String, String> 十神描述 = new HashMap<>();
     Map<String, String> 十神属性 = new HashMap<>();
     Map<String, String> 五行关系 = new HashMap<>();
-    Map<String, String> 五行能量 = new HashMap<>();
     Map<String, String> 天干属性 = new HashMap<>();
     Map<String, String> 地支属性 = new HashMap<>();
+
+    Map<String, Object> 原局能量;
+    Map<String, Object> 五行能量;
 
     String         命主;
     String         命主描述;
@@ -56,10 +61,10 @@ public class 简盘 {
     public 简盘(命盘 pan) {
         八字 bazi = 八字.of(pan.birthday, pan.sex.getValue());
         命主 = pan.zhu.getName();
-        命局 = bazi.getFatePattern().getName();
+        命局 = 命局描述器.describe(pan.pattern, 命局描述器.描述类型.名称);
 
-        命主描述 = Descriptor.describe(pan.zhu);
-        命局描述 = Descriptor.describe(pan.pattern);
+        命主描述 = 命主描述器.describe(pan.zhu);
+        命局描述 = 命局描述器.describe(pan.pattern);
 
         for (生克 xing : 生克.values()) {
             五行关系.put(xing.getName(), bazi.getMing().getWuXing().getByShengKe(xing).getName());
@@ -67,7 +72,7 @@ public class 简盘 {
         for (十神 shen : 十神.values()) {
             十神属性.put(shen.getName(),      shen.getWuXing(bazi.getMing()).getName());
             十神属性.put(shen.getShortName(), shen.getWuXing(bazi.getMing()).getName());
-            十神描述.put(shen.getName(),      Descriptor.describe(shen));
+            十神描述.put(shen.getName(),      十神描述器.describe(shen));
         }
         for (天干 gan  : com.zhinan.zhouyi.base.天干.values()) {
             天干属性.put(gan.getName(), gan.getWuXing().getName());
@@ -76,6 +81,8 @@ public class 简盘 {
             地支属性.put(zhi.getName(), zhi.getWuXing().getName());
         }
 
+        原局能量 = pan.origin.simplify();
+        五行能量 = pan.energy.simplify();
 
         阳历生日 = SolarDateTime.of(pan.birthday).format(DateFormatType.ARABIC_NUMBER);
         阴历生日 = DateTimeFormatter.getInstance(LunarDateTime.of(pan.birthday)).format(DateFormatType.CHINESE_NUMBER);
@@ -110,7 +117,9 @@ public class 简盘 {
 
     private List<String> toStringArray(List<?> list) {
         List<String> result = new ArrayList<>();
-        list.forEach(o -> result.add(o.toString()));
+        if (list != null) {
+            list.forEach(o -> result.add(o.toString()));
+        }
         return result;
     }
 

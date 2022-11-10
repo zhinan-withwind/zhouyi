@@ -36,7 +36,7 @@ public enum 命局 {
     public static 命局 of(八字 bazi) {
         命局 result = getByValue(bazi.getMing().getWuXing().compare(bazi.getLing().getTianGan().getWuXing()).getValue());
 
-        result.masterGoodGod = bazi.getType().equals(八字.种类.寒局) ? 五行.火 : bazi.getType().equals(八字.种类.燥局) ? 五行.水 : null;
+        result.masterGoodGod = bazi.getMasterGoodGod();
 
         if (result.getType().equals(种类.命强)) {
             result.ministerGoodGod.add(bazi.getMing().getWuXing().getByShengKe(生克.泄));
@@ -66,9 +66,10 @@ public enum 命局 {
     }
 
     List<五行> getGoodList() {
-        List<五行> result = new ArrayList<>();
-        result.add(getMasterGoodGod());
-        result.addAll(getMinisterGoodGod());
+        List<五行> result = new ArrayList<>(getMinisterGoodGod());
+        if (!getMinisterGoodGod().contains(getMasterGoodGod())) {
+            result.add(getMasterGoodGod());
+        }
         return result;
     }
 

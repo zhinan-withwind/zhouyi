@@ -60,4 +60,23 @@ public enum 八卦 {
     }
 
     public static 八卦 getByAlterValue(Integer value) { return value == null ? null : alterValues[value - 1]; }
+
+    public static 八卦 getByCode(String code) {
+        八卦 result = null;
+        for (八卦 value : values()) {
+            if (value.code.equals(code)) {
+                result = value;
+                break;
+            }
+        }
+        return result;
+    }
+
+    public 八卦 change(int change) {
+        StringBuilder code = new StringBuilder();
+        for (int i = 0; i < 3; i++) {
+            code.append(i + 1 == change ? 1 - getYao(i + 1).getValue() : getYao(i + 1).getValue());
+        }
+        return getByCode(code.toString());
+    }
 }

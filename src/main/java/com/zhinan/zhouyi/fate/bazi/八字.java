@@ -85,6 +85,11 @@ public class 八字 {
         return 命主.of(getMing());
     }
 
+    public 五行 getMasterGoodGod() {
+        种类 type = getType();
+        return type.equals(八字.种类.寒局) ? 五行.火 : type.equals(八字.种类.燥局) ? 五行.水 : null;
+    }
+
     /**
      * 计算大运的排序方向：阳年阳造，阴年阴造为顺排，阳年阴造，阴年阳造为逆排
      * @return 顺排返回 1， 逆排返回 01

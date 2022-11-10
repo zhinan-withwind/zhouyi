@@ -3,6 +3,7 @@ package com.zhinan.zhouyi.fate.bazi;
 import com.zhinan.zhouyi.base.*;
 import com.zhinan.zhouyi.effect.可作用;
 import com.zhinan.zhouyi.effect.合化冲;
+import com.zhinan.zhouyi.energy.能量;
 import com.zhinan.zhouyi.fate.luck.*;
 import lombok.Getter;
 
@@ -40,6 +41,9 @@ public class 命盘 {
     List<日运>   dayLuckList;
     List<时运>   hourLuckList;
 
+    能量 origin;
+    能量 energy;
+
     private 命盘() {}
 
     public static 命盘 of(LocalDateTime birthday, int sex) {
@@ -61,6 +65,8 @@ public class 命盘 {
 
         pan.decadeLuckList = 大运.list(birthday, sex);
 
+        pan.origin = 能量.of(bazi.getFourColumn());
+        pan.energy = 能量.of(pan.getGanzhiList());
         return pan;
     }
 

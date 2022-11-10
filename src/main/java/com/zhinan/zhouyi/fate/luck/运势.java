@@ -99,11 +99,11 @@ public abstract class 运势 extends 干支 {
     }
 
     public boolean isGanGodGood() {
-        return bazi.getGridPattern().isGood(getGan().getWuXing());
+        return bazi.getFatePattern().isGood(getGan().getWuXing());
     }
 
     public boolean isZhiGodGood() {
-        return bazi.getGridPattern().isGood(getZhi().getWuXing());
+        return bazi.getFatePattern().isGood(getZhi().getWuXing());
     }
 
     abstract 运势 getParent();

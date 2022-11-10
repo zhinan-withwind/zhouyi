@@ -135,6 +135,7 @@ public class 能量 {
         this.add(ganZhi.getZhi().get本气().getWuXing(), amount * 作用.本气.effect / 100);
         this.add(ganZhi.getZhi().get余气().getWuXing(), amount * 作用.余气.effect / 100);
         this.add(ganZhi.getZhi().get合气().getWuXing(), amount * 作用.合气.effect / 100);
+        this.ganZhiList.add(ganZhi);
         return this;
     }
 
@@ -176,6 +177,38 @@ public class 能量 {
         return sortAsc().get(0);
     }
 
+    public int getPercentage(五行 wuXing) {
+        return getTotal() == 0 ? 0 : get(wuXing) * 100 / getTotal();
+    }
+
+    public 五行 getMing() {
+        return ganZhiList.get(2).getGan().getWuXing();
+    }
+
+    public int getMyPart() {
+        return get(getMing().get生()) + get(getMing().get同());
+    }
+
+    public int getOtherPart() {
+        return get(getMing().get泄()) + get(getMing().get克()) + get(getMing().get耗());
+    }
+
+    public Map<String, Object> simplify() {
+        Map<String, Object> power = new HashMap<>();
+        for (五行 wuXing : 五行.values()) {
+            HashMap<String, String> value = new HashMap<>();
+            value.put("值"  , String.valueOf(this.get(wuXing)));
+            value.put("占比", String.valueOf(this.getPercentage(wuXing)));
+            power.put(wuXing.getName(), value);
+        }
+        power.put("最强", this.getMax());
+        power.put("最弱", this.getMin());
+        power.put("总和", this.getTotal());
+        power.put("同党", this.getMyPart());
+        power.put("异党", this.getOtherPart());
+        return power;
+    }
+
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder("[");
@@ -185,6 +218,8 @@ public class 能量 {
             total += get(wuXing);
         }
         result.append("总和 - ").append(total).append("]");
+        result.append("最高的是").append(getMax());
+        result.append("最低的是").append(getMin());
         return result.toString();
     }
 }

@@ -28,7 +28,32 @@ import java.util.List;
  * 8. 以毒攻毒（如果两方的婚姻都不好，反而比较相配）
  */
 public class 合婚描述器 {
+
     public static String describe(八字 mBazi, 八字 wBazi) {
+        JSONObject result = 描述(mBazi, wBazi);
+        return describe("总体状况", result)
+                + describe("纳音关系", result.getJSONObject("纳音关系"))
+                + describe("属相关系", result.getJSONObject("属相关系"))
+                + describe("月令关系", result.getJSONObject("月令关系"))
+                + describe("日支关系", result.getJSONObject("日支关系"))
+                + describe("日主关系", result.getJSONObject("日主关系"))
+                + describe("男命能量", result.getJSONObject("男命能量"))
+                + describe("女命能量", result.getJSONObject("女命能量"))
+                + describe("婚运关系", result.getJSONObject("婚运关系"))
+                ;
+    }
+
+    private static String describe(String key, JSONObject description) {
+        return  "从" + key + "上分析，" +
+                "男命是：" + description.get("男命") + "，" +
+                "女命是：" + description.get("女命") + "，" +
+                "两者之间的关系是：" + description.get("关系") + "，" +
+                "你们的配对得分是：" + description.get("分数") + "分，" +
+                "这部分的匹配度是：" + description.get("吉凶") + "，" +
+                System.lineSeparator() + System.lineSeparator();
+    }
+
+    public static JSONObject 描述(八字 mBazi, 八字 wBazi) {
         JSONObject result = new JSONObject();
         int total = 0;
         result.put("男命", mBazi);
@@ -127,10 +152,22 @@ public class 合婚描述器 {
         );
         total += result.getJSONObject("婚运关系").getInteger("分数") * 1.0;
 
-        result.put("总分", total);
-        result.put("吉凶", total > 400 ? "吉" : total < 200 ? "凶" : "中平");
+        result.put("分数", total);
+        result.put("吉凶", total > 360 ? "吉" : total <= 240 ? "凶" : "中平");
+        if (total > 480) {
+            relation = "天作之合，五百次回眸遇见你";
+        } else if (total > 360) {
+            relation = "红尘作伴，和和睦睦相守到底";
+        } else if (total > 240) {
+            relation = "欢喜冤家，分分合合不离不弃";
+        } else if (total > 120) {
+            relation = "恋人未满，一辈子都做好朋友";
+        } else {
+            relation = "今生无缘，等来生还要在一起";
+        }
+        result.put("关系", relation);
 
-        return JSON.toJSONString(result, true);
+        return result;
     }
 
     public static JSONObject getElementScore(元素 mZhi, 元素 wZhi) {

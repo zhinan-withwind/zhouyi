@@ -1,16 +1,13 @@
 package com.zhinan.zhouyi.desc.fate;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zhinan.zhouyi.common.Source;
+import com.zhinan.zhouyi.desc.基础描述器;
 import com.zhinan.zhouyi.fate.bazi.命主;
 
-import java.util.HashMap;
 import java.util.Map;
 
-public class 命主描述器 {
-    public enum 描述类型 {
-        意向, 五常, 优势, 提醒, 相处
-    }
-
+public class 命主描述器 extends 基础描述器 {
     public final static String[] 描述 = {
             "大树之木，仁慈，有领导力，掌控欲强，不喜欢被人管",
             "花草之木，仁爱，八面玲珑",
@@ -73,25 +70,32 @@ public class 命主描述器 {
     };
 
 
-    public final static Map<描述类型, String[]> descriptions = new HashMap<描述类型, String[]>() {
-        {
-            put(描述类型.意向, 意向);
-            put(描述类型.五常, 五常);
-            put(描述类型.优势, 优势);
-            put(描述类型.提醒, 提醒);
-            put(描述类型.相处, 相处);
-        }
-    };
+   static  {
+       register(Source.明易.getName(), 命主描述器.class.getSimpleName(), "描述", 描述);
+
+       register(Source.星鹤.getName(), 命主描述器.class.getSimpleName(), "意向", 意向);
+       register(Source.星鹤.getName(), 命主描述器.class.getSimpleName(), "五常", 五常);
+       register(Source.星鹤.getName(), 命主描述器.class.getSimpleName(), "优势", 优势);
+       register(Source.星鹤.getName(), 命主描述器.class.getSimpleName(), "提醒", 提醒);
+       register(Source.星鹤.getName(), 命主描述器.class.getSimpleName(), "相处", 相处);
+    }
+
 
     public static String describe(命主 zhu) {
-        return 描述[zhu.getValue()];
+        JSONObject descriptions = 描述(zhu);
+        StringBuilder result = new StringBuilder();
+        for (String key : descriptions.keySet()) {
+            result.append(key).append(": ").append(descriptions.get(key)).append(System.lineSeparator());
+        }
+        return result.toString();
     }
 
     public static JSONObject 描述(命主 zhu) {
         JSONObject result = new JSONObject();
         result.put("名称", zhu.getName());
-        for (描述类型 type : 描述类型.values()) {
-            result.put(type.name(), descriptions.get(type)[zhu.getValue()]);
+        Map<String, String[]> descriptions = getDescriptions(命主描述器.class.getSimpleName());
+        for (String type : descriptions.keySet()) {
+            result.put(type, descriptions.get(type)[zhu.getValue()]);
         }
         return result;
     }

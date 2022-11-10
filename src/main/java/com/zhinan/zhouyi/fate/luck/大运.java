@@ -91,4 +91,8 @@ public class 大运 extends 运势 {
         }
         return result;
     }
+
+    public static List<大运> list(八字 bazi) {
+        return list(bazi.getBirthday(), bazi.getSex().getValue());
+    }
 }
