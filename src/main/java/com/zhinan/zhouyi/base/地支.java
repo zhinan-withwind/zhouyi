@@ -19,6 +19,8 @@ public enum 地支 implements 元素 {
     戌(阴阳.阳, 五行.土, new 天干[]{天干.戊, 天干.辛, 天干.丁}),
     亥(阴阳.阴, 五行.水, new 天干[]{天干.壬, 天干.甲});
 
+    public final static 地支[] 墓库 = new 地支[] {未, 戌, null, 丑, 辰};
+
     private final 阴阳 yinYang;
     private final 五行 wuXing;
     private final 天干[] hiddenGan;
@@ -27,6 +29,18 @@ public enum 地支 implements 元素 {
         return values()[value % 12];
     }
     public static 地支 getByName (String name) { return valueOf(name); }
+    public static 地支 getByYYWX(阴阳 yinYang, 五行 wuXing) {
+        地支 result = null;
+        for (地支 zhi : values()) {
+            if (yinYang.equals(zhi.getYinYang()) && wuXing.equals(zhi.getWuXing())) {
+                result = zhi;
+            }
+        }
+        return result;
+    }
+    public static 地支 getBank(五行 wuXing) {
+        return 墓库[wuXing.getValue()];
+    }
 
     public 天干 getTianGan() {return get本气();}
     public 天干 get本气() {

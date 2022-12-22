@@ -39,6 +39,6 @@ class EffectTest {
         log.info(合化冲.getEffects(bazi.getFourColumn()).toString());
         log.info(合化冲.getEffects(
                 命盘.of(birthday, 1).atHour(now.getYear(), now.getMonthValue(), now.getDayOfMonth(), now.getHour())
-                        .getGanzhiList()).toString());
+                        .getGanZhiList()).toString());
     }
 }

@@ -30,6 +30,10 @@ public enum 属相 implements 元素 {
         return valueOf(name);
     }
 
+    public static 属相 getByZhi(地支 zhi) {
+        return values()[zhi.getValue()];
+    }
+
     @Override
     public int getValue() {return zhi.getValue();}
 

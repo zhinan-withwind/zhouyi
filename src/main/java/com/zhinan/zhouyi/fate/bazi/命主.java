@@ -3,8 +3,10 @@ package com.zhinan.zhouyi.fate.bazi;
 import com.zhinan.zhouyi.base.五行;
 import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.生克;
-import com.zhinan.zhouyi.desc.fate.命主描述器;
+import com.zhinan.zhouyi.desc.周易描述器;
+import lombok.Getter;
 
+@Getter
 public class 命主 {
     天干 gan;
 
@@ -25,7 +27,7 @@ public class 命主 {
     }
 
     public String getDescription() {
-        return 命主描述器.describe(this);
+        return 周易描述器.describe(this);
     }
 
     public 五行 get生() {

@@ -8,7 +8,6 @@ import com.zhinan.zhouyi.util.DateUtil;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,15 +28,15 @@ public class 大运 extends 运势 {
         LocalDateTime endTime = luckDate.atTime(0, 0);
 
         if (!dateTime.toLocalDate().isBefore(luckDate)) {
-            startTime = dateTime.minusYears((dateTime.getYear() - luckDate.getYear()) % 10);
-            endTime   = startTime.plusYears(10);
+            startTime = getStartTimeOfYear(dateTime.getYear());
+            endTime   = getStartTimeOfYear(dateTime.getYear() + 10);
             ganzhi    = bazi.getMonth().roll(direction * ((dateTime.getYear() - luckDate.getYear()) / 10 + 1));
         }
 
         return new 大运(ganzhi, bazi, startTime, endTime);
     }
 
-    private static long calculateLuckHours(LocalDateTime birthday, int sex) {
+    public static long calculateLuckHours(LocalDateTime birthday, int sex) {
         八字 bazi = 八字.of(birthday, sex);
         int direction = bazi.getYear().getGan().getYinYang().equals(阴阳.getByValue(sex)) ? 1: -1;
 
@@ -52,7 +51,7 @@ public class 大运 extends 运势 {
         return hours;
     }
 
-    public  static String calculateLuckAge(LocalDateTime birthday, int sex) {
+    public static String calculateLuckAge(LocalDateTime birthday, int sex) {
         long hours = calculateLuckHours(birthday, sex);
         long year  = hours / 72;
         long month = (hours % 72) / 6;
@@ -60,7 +59,7 @@ public class 大运 extends 运势 {
         return year + "年" + month + "个月" + day + "天";
     }
 
-    public  static LocalDate calculateLuckDate(LocalDateTime birthday, int sex) {
+    public static LocalDate calculateLuckDate(LocalDateTime birthday, int sex) {
         long hours = calculateLuckHours(birthday, sex);
         return birthday.toLocalDate().plusYears(hours / 72)
                 .plusMonths((hours % 72) / 6).plusDays((hours % 6) * 5);
@@ -77,7 +76,7 @@ public class 大运 extends 运势 {
 
     public 大运 getNext() {
         return new 大运(roll(bazi.getDirection()), bazi,
-                startTime.plus(10, ChronoUnit.YEARS), endTime.plus(10, ChronoUnit.YEARS));
+                endTime, getStartTimeOfYear(endTime.getYear() + 10));
     }
 
     public static List<大运> list(LocalDateTime birthday, int sex) {

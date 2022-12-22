@@ -21,8 +21,8 @@ public class 学业描述器 {
 
     public static String describe(LocalDateTime birthday, int sex) {
         八字 bazi   = 八字.of(birthday, sex);
-        int 印绶分数 = 能量.of(bazi.getFourColumn()).get(bazi.getFate().get同());
-        int 食伤分数 = 能量.of(bazi.getFourColumn()).get(bazi.getFate().get泄());
+        int 印绶分数 = 能量.of(bazi.getFourColumn()).getValue(bazi.getFate().get同());
+        int 食伤分数 = 能量.of(bazi.getFourColumn()).getValue(bazi.getFate().get泄());
         格局 pattern = 格局.of(bazi);
         int result  = 4;
         return 八字维度[result];

@@ -28,8 +28,23 @@ public enum 地支六冲 implements 可作用 {
 
     public 元素类别 getElementType() { return 元素类别.地支; }
 
+    public 元素 getOther(元素 zhi) {
+        return zhi.equals(elements.get(0)) ? elements.get(1) : elements.get(0);
+    }
+
     @Override
     public 可作用 getParent() {
         return null;
+    }
+
+    public static 地支六冲 getByElement(元素 element) {
+        地支六冲 result = null;
+        for (地支六冲 c : values()) {
+            if (c.elements.contains(element)) {
+                result = c;
+                break;
+            }
+        }
+        return result;
     }
 }

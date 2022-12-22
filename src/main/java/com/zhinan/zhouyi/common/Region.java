@@ -23,7 +23,7 @@ public class Region {
     private static Map<Long, Region> idMap;
     private static Map<String, Region> codeMap;
 
-    public static void load() {
+    private static void load() {
         idMap = new HashMap<>();
         codeMap = new HashMap<>();
 
@@ -43,24 +43,45 @@ public class Region {
 
     }
 
-    public static Region getDefault() {
+    private static Map<String, Region> getCodeMap() {
         if (codeMap == null) {
             load();
         }
-        return codeMap.get("110000");
+        return codeMap;
+    }
+
+    private static Map<Long, Region> getIdMap() {
+        if (idMap == null) {
+            load();
+        }
+        return idMap;
+    }
+
+    public static Region getDefault() {
+        return getCodeMap().values().iterator().next();
     }
 
     public static Region getByCode(String code) {
-        if (codeMap == null) {
-            load();
-        }
         // 如果没给地区code，则返回默认地区（默认返回北京）
         // 如果未找到地区，就取上级市的地区
         return code == null ? getDefault() :
-                codeMap.get(code) == null ? codeMap.get(code.substring(0, 4) + "00") : codeMap.get(code);
+                getCodeMap().get(code) == null ?
+                        getCodeMap().get(code.substring(0, 4) + "00") :
+                        getCodeMap().get(code);
+    }
+
+    public static Region getByName(String name) {
+        Region result = null;
+        for (Region r : getIdMap().values()) {
+            if (name.equals(r.getName())) {
+                result = r;
+                break;
+            }
+        }
+        return result;
     }
 
     public Region getParent() {
-        return parentId == null ? null : idMap.get(parentId);
+        return parentId == null ? null : getIdMap().get(parentId);
     }
 }

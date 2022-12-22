@@ -1,6 +1,5 @@
 package com.zhinan.zhouyi.fate.star;
 
-import com.zhinan.zhouyi.base.地支;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

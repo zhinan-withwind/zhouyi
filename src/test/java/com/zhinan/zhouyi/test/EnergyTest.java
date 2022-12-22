@@ -23,14 +23,14 @@ class EnergyTest {
             now = now.plus(1, ChronoUnit.DAYS);
             能量 energy = 能量.of(命盘.of(ww, 1)
 //                    .atDay(now.getYear(), now.getMonthValue(), now.getDayOfMonth())
-                    .getGanzhiList());
+                    .getGanZhiList());
             log.info("{} - {}", now.toLocalDate(), energy.toString().replace("|", "\t|"));
         }
     }
 
     void outputEnergy(能量 energy) {
         for (五行 wuXing : 五行.values()) {
-            log.info("{} 能量是：{}", wuXing.getName(), energy.get(wuXing));
+            log.info("{} 能量是：{}", wuXing.getName(), energy.getValue(wuXing));
         }
     }
 

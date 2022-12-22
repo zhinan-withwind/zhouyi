@@ -1,14 +1,11 @@
 package com.zhinan.zhouyi.fate.bazi;
 
-import com.alibaba.fastjson.JSONObject;
 import com.zhinan.zhouyi.base.十神;
 import com.zhinan.zhouyi.base.地支;
 import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.生克;
 import com.zhinan.zhouyi.date.*;
-import com.zhinan.zhouyi.desc.fate.十神描述器;
-import com.zhinan.zhouyi.desc.fate.命主描述器;
-import com.zhinan.zhouyi.desc.fate.命局描述器;
+import com.zhinan.zhouyi.desc.周易描述器;
 import com.zhinan.zhouyi.effect.可作用;
 import com.zhinan.zhouyi.effect.合化冲;
 import com.zhinan.zhouyi.fate.luck.运势;
@@ -61,10 +58,10 @@ public class 简盘 {
     public 简盘(命盘 pan) {
         八字 bazi = 八字.of(pan.birthday, pan.sex.getValue());
         命主 = pan.zhu.getName();
-        命局 = 命局描述器.describe(pan.pattern, 命局描述器.描述类型.名称);
+        命局 = 周易描述器.getName(pan.pattern);
 
-        命主描述 = 命主描述器.describe(pan.zhu);
-        命局描述 = 命局描述器.describe(pan.pattern);
+        命主描述 = 周易描述器.describe(pan.zhu);
+        命局描述 = 周易描述器.describe(pan.pattern);
 
         for (生克 xing : 生克.values()) {
             五行关系.put(xing.getName(), bazi.getMing().getWuXing().getByShengKe(xing).getName());
@@ -72,7 +69,7 @@ public class 简盘 {
         for (十神 shen : 十神.values()) {
             十神属性.put(shen.getName(),      shen.getWuXing(bazi.getMing()).getName());
             十神属性.put(shen.getShortName(), shen.getWuXing(bazi.getMing()).getName());
-            十神描述.put(shen.getName(),      十神描述器.describe(shen));
+            十神描述.put(shen.getName(),      周易描述器.describe(shen));
         }
         for (天干 gan  : com.zhinan.zhouyi.base.天干.values()) {
             天干属性.put(gan.getName(), gan.getWuXing().getName());
@@ -99,7 +96,7 @@ public class 简盘 {
             自坐.add(pan.selfStatusList.get(i).getName());
         }
 
-        Map<String, List<可作用>> relations = 合化冲.getEffects(pan.ganzhiList);
+        Map<String, List<可作用>> relations = 合化冲.getEffects(pan.ganZhiList);
         天干本命 = toStringArray(relations.get("天干本命"));
         地支本命 = toStringArray(relations.get("地支本命"));
         天干运势 = toStringArray(relations.get("天干运势"));

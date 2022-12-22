@@ -23,6 +23,10 @@ public enum 阴阳 {
         return name();
     }
 
+    public 阴阳 inverse() {
+        return getByValue(1 - getValue());
+    }
+
     public 阴阳 compare(阴阳 other) {
         return getByValue(Math.abs(this.getValue() - other.getValue()));
     }

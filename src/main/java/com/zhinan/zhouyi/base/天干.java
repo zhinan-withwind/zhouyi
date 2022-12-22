@@ -41,6 +41,16 @@ public enum 天干 implements 元素 {
 
     public static 天干 getByName(String name) { return valueOf(name); }
 
+    public static 天干 getByYYWX(阴阳 yinYang, 五行 wuXing) {
+        天干 result = null;
+        for (天干 gan : values()) {
+            if (yinYang.equals(gan.getYinYang()) && wuXing.equals(gan.getWuXing())) {
+                result = gan;
+            }
+        }
+        return result;
+    }
+
     @Override
     public String toString() {
         return getFullName();

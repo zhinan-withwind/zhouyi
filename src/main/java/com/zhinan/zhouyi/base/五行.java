@@ -46,4 +46,26 @@ public enum 五行 {
         return getByShengKe(生克.克);
     }
 
+    public 五行 get对宫() {
+        五行 result = null;
+        switch (this) {
+            case 木:
+                result = 五行.金;
+                break;
+            case 火:
+                result = 五行.水;
+                break;
+            case 土:
+                result = 五行.土;
+                break;
+            case 金:
+                result = 五行.木;
+                break;
+            case 水:
+                result = 五行.火;
+                break;
+        }
+        return result;
+    }
+
 }

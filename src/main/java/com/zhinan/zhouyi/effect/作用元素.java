@@ -13,6 +13,10 @@ public class 作用元素 implements 元素 {
         public static 位置 getByValue(int value) {
             return values()[value];
         }
+
+        public int getValue() { return ordinal(); }
+
+        public String getName() { return name(); }
     }
 
     元素 element;

@@ -1,11 +1,15 @@
 package com.zhinan.zhouyi.desc.divine;
 
+import com.zhinan.zhouyi.common.Descriptor;
+import com.zhinan.zhouyi.common.Source;
+import com.zhinan.zhouyi.desc.基础描述器;
 import com.zhinan.zhouyi.divine.common.六十四卦;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class 卦辞描述器 {
+@Descriptor(source = Source.通用, isDefault = true)
+public class 卦辞描述器 extends 基础描述器<六十四卦> {
     public enum 描述类型 {
         含义, 卦辞, // 象传, 彖传
     }
@@ -162,7 +166,7 @@ public class 卦辞描述器 {
     public static String describe(六十四卦 gua) {
         StringBuilder description = new StringBuilder();
         for (卦辞描述器.描述类型 type : 卦辞描述器.描述类型.values()) {
-            description.append(type.name()).append(": ").append(describe(gua, type)).append(System.lineSeparator());
+            description.append(type.name()).append(": ").append(describe(gua, type)).append(lineSeparator);
         }
         return description.toString();
     }

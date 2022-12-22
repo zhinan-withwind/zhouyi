@@ -48,11 +48,11 @@ public class 八字 {
         bazi.time    = bazi.fourColumn.get(3);
 
         bazi.energy  = 能量.of(bazi.fourColumn);
-        bazi.selfPart  = (bazi.energy.get(bazi.getMing().getWuXing().get生())
-                + bazi.energy.get(bazi.getMing().getWuXing().get同())) / bazi.energy.getTotal().doubleValue();
-        bazi.otherPart = (bazi.energy.get(bazi.getMing().getWuXing().get泄())
-                + bazi.energy.get(bazi.getMing().getWuXing().get耗())
-                + bazi.energy.get(bazi.getMing().getWuXing().get克())) / bazi.energy.getTotal().doubleValue();
+        bazi.selfPart  = (bazi.energy.getValue(bazi.getMing().getWuXing().get生())
+                + bazi.energy.getValue(bazi.getMing().getWuXing().get同())) / bazi.energy.getTotal().doubleValue();
+        bazi.otherPart = (bazi.energy.getValue(bazi.getMing().getWuXing().get泄())
+                + bazi.energy.getValue(bazi.getMing().getWuXing().get耗())
+                + bazi.energy.getValue(bazi.getMing().getWuXing().get克())) / bazi.energy.getTotal().doubleValue();
         bazi.fatePattern = 命局.of(bazi);
         bazi.gridPattern = 格局.of(bazi);
         return bazi;

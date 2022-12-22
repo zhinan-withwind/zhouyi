@@ -1,5 +1,6 @@
 package com.zhinan.zhouyi.energy;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zhinan.zhouyi.base.五行;
 import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.干支;
@@ -12,6 +13,7 @@ import java.util.*;
 public class 能量 {
     private final List<干支> ganZhiList = new ArrayList<>();
     private final int[] values = new int[5];
+    private final int[] number = new int[5];
 
     private 能量() {}
 
@@ -39,8 +41,20 @@ public class 能量 {
         return power;
     }
 
-    public int get(五行 wuXing) {
+    public int getValue(五行 wuXing) {
         return values[wuXing.getValue()];
+    }
+
+    public 能量 setValue(五行 wuXing, int value) {
+        this.values[wuXing.getValue()] = value;
+        return this;
+    }
+
+    public int getNumber(五行 wuXing) { return number[wuXing.getValue()]; }
+
+    public 能量 setNumber(五行 wuXing, int number) {
+        this.number[wuXing.getValue()] = number;
+        return this;
     }
 
     public 能量 effect(能量 power, 作用元素 orgElement, 作用元素 newElement) {
@@ -70,6 +84,12 @@ public class 能量 {
     }
 
     public 能量 add(干支 ganZhi) {
+        /*
+         * 计数
+         */
+        this.add(ganZhi.getGan().getWuXing());
+        this.add(ganZhi.getZhi().getWuXing());
+
         /* 第一步: 本命能量
          *        本命每个 + 10
          */
@@ -129,6 +149,10 @@ public class 能量 {
         return this;
     }
 
+    public 能量 add(五行 wuXing) {
+        return setNumber(wuXing, getNumber(wuXing) + 1);
+    }
+
     public 能量 add(干支 ganZhi, int index) {
         int amount = index == 1 ? 150 : 100;
         this.add(ganZhi.getGan().getWuXing(), 作用.天干.effect);
@@ -139,17 +163,14 @@ public class 能量 {
         return this;
     }
 
-    public 能量 set(五行 wuXing, int value) {
-        values[wuXing.getValue()] = value;
-        return this;
-    }
-
     public 能量 add(五行 wuXing, int value) {
-        if (get(wuXing) + value < 0) {
-            value = - get(wuXing);
+        if (getValue(wuXing) + value < 0) {
+            value = - getValue(wuXing);
         }
+        // 记一下数
+        add(wuXing);
         log.debug("{} {} {}", wuXing.getName(), value < 0 ? "-" : "+", Math.abs(value));
-        return set(wuXing, get(wuXing) + value);
+        return setValue(wuXing, getValue(wuXing) + value);
     }
 
     public Integer getTotal() {
@@ -178,7 +199,7 @@ public class 能量 {
     }
 
     public int getPercentage(五行 wuXing) {
-        return getTotal() == 0 ? 0 : get(wuXing) * 100 / getTotal();
+        return getTotal() == 0 ? 0 : getValue(wuXing) * 100 / getTotal();
     }
 
     public 五行 getMing() {
@@ -186,20 +207,21 @@ public class 能量 {
     }
 
     public int getMyPart() {
-        return get(getMing().get生()) + get(getMing().get同());
+        return getValue(getMing().get生()) + getValue(getMing().get同());
     }
 
     public int getOtherPart() {
-        return get(getMing().get泄()) + get(getMing().get克()) + get(getMing().get耗());
+        return getValue(getMing().get泄()) + getValue(getMing().get克()) + getValue(getMing().get耗());
     }
 
-    public Map<String, Object> simplify() {
-        Map<String, Object> power = new HashMap<>();
+    public JSONObject simplify() {
+        JSONObject power = new JSONObject();
         for (五行 wuXing : 五行.values()) {
-            HashMap<String, String> value = new HashMap<>();
-            value.put("值"  , String.valueOf(this.get(wuXing)));
-            value.put("占比", String.valueOf(this.getPercentage(wuXing)));
-            power.put(wuXing.getName(), value);
+            power.put(wuXing.getName(), new JSONObject()
+                    .fluentPut("值"  , this.getValue(wuXing))
+                    .fluentPut("占比", String.valueOf(this.getPercentage(wuXing)))
+                    .fluentPut("个数", this.getNumber(wuXing))
+            );
         }
         power.put("最强", this.getMax());
         power.put("最弱", this.getMin());
@@ -214,8 +236,8 @@ public class 能量 {
         StringBuilder result = new StringBuilder("[");
         int total = 0;
         for (五行 wuXing : 五行.values()) {
-            result.append(wuXing.getName()).append(" - ").append(get(wuXing)).append(" | ");
-            total += get(wuXing);
+            result.append(wuXing.getName()).append(" - ").append(getValue(wuXing)).append(" | ");
+            total += getValue(wuXing);
         }
         result.append("总和 - ").append(total).append("]");
         result.append("最高的是").append(getMax());

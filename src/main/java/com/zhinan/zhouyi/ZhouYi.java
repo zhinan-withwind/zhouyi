@@ -1,17 +1,15 @@
 package com.zhinan.zhouyi;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.common.Source;
 import com.zhinan.zhouyi.date.SolarDateTime;
-import com.zhinan.zhouyi.desc.divine.称骨描述器;
-import com.zhinan.zhouyi.desc.fate.八字描述器;
-import com.zhinan.zhouyi.desc.fate.合婚描述器;
-import com.zhinan.zhouyi.desc.fate.命局描述器;
-import com.zhinan.zhouyi.desc.fate.运势描述器;
+import com.zhinan.zhouyi.desc.周易描述器;
 import com.zhinan.zhouyi.fate.bazi.八字;
 import com.zhinan.zhouyi.fate.bazi.命盘;
 import com.zhinan.zhouyi.fate.luck.*;
+import com.zhinan.zhouyi.fate.util.健康;
 import com.zhinan.zhouyi.out.LuckOutputter;
 import com.zhinan.zhouyi.util.FileUtil;
 import okhttp3.*;
@@ -30,12 +28,27 @@ public class ZhouYi {
     private final static LocalDateTime wh = LocalDateTime.of(1980, 4, 19, 0 , 40);
 
     public static void main(String[] args) {
-        Source.init(Source.星鹤);
-//        System.out.println(运势描述器.describe(日运.of(LocalDateTime.now(), ww, sex)));
+        Source.init(Source.明易);
+        周易描述器.autoInit();
+
+//        日运 yun = 日运.of(LocalDateTime.now(), ww, sex);
 //        System.out.println(合婚描述器.describe(八字.of(wh, 1), 八字.of(yx, 0)));
+//        System.out.println(周易描述器.描述(八字.of(ww, 1).getFate()));
+//        Arrays.asList(十神.values()).forEach(shen -> System.out.println(周易描述器.describe(shen)));
+//        System.out.println(周易描述器.describe(yun));
 //        System.out.println(命局描述器.describe(八字.of(wh, 1).getFatePattern()));
-//        System.out.println(八字描述器.describe(八字.of(ww, 1)));
-        System.out.println(称骨描述器.describe(ww, 1));
+//        System.out.println(周易描述器.describe(健康.of(ww, 1)));
+//        System.out.println(周易描述器.describe(财运.of(wh, 1)));
+//        System.out.println(周易描述器.describe(财运.of(LocalDateTime.of(2019, 9, 19, 10, 20), 0)));
+//        System.out.println(能量描述器.describe(命盘.of(ww, 1).atYear(LocalDateTime.now().getYear()).getEnergy()));
+//        System.out.println(称骨描述器.describe(ww, 1));
+        System.out.println(JSON.toJSONString(命盘.of(LocalDateTime.of(1969,2,18,22,0), 1).simplify().get大运(), true));
+//                .atDay(2022, 12, 1).simplify().get大运(), true));
+//        System.out.println(干支.getByName("壬寅").getStatus());
+//        System.out.println(干支.getByName("壬寅").getStatus());
+//        System.out.println(干支.getByName("壬寅").getStatus());
+//        System.out.println(干支.getByName("壬寅").getStatus());
+//        System.out.println(大运.calculateLuckDate(LocalDateTime.of(1969,2,18,22,4), 1));
     }
 
     public static void createLuckChart() throws IOException {

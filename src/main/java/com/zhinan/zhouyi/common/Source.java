@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public enum Source {
-    明易, 星鹤;
+    通用, 明易, 星鹤;
 
     private static Source current = 星鹤;
 

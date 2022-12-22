@@ -5,6 +5,7 @@ import com.zhinan.zhouyi.effect.可作用;
 import com.zhinan.zhouyi.effect.合化冲;
 import com.zhinan.zhouyi.energy.能量;
 import com.zhinan.zhouyi.fate.luck.*;
+import com.zhinan.zhouyi.util.DateUtil;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -19,7 +20,7 @@ public class 命盘 {
     命主         zhu;
     命局         pattern;
 
-    List<干支>   ganzhiList     = new ArrayList<>();
+    List<干支>   ganZhiList     = new ArrayList<>();
     List<天干>   ganList        = new ArrayList<>();
     List<地支>   zhiList        = new ArrayList<>();
     List<十神>   ganGodList     = new ArrayList<>();
@@ -35,11 +36,11 @@ public class 命盘 {
     String      luckAge;
     LocalDate   luckDate;
 
-    List<大运>   decadeLuckList;
-    List<年运>   yearLuckList;
-    List<月运>   monthLuckList;
-    List<日运>   dayLuckList;
-    List<时运>   hourLuckList;
+    List<大运>   decadeLuckList = new ArrayList<>();
+    List<年运>   yearLuckList   = new ArrayList<>();
+    List<月运>   monthLuckList  = new ArrayList<>();
+    List<日运>   dayLuckList    = new ArrayList<>();
+    List<时运>   hourLuckList   = new ArrayList<>();
 
     能量 origin;
     能量 energy;
@@ -66,12 +67,12 @@ public class 命盘 {
         pan.decadeLuckList = 大运.list(birthday, sex);
 
         pan.origin = 能量.of(bazi.getFourColumn());
-        pan.energy = 能量.of(pan.getGanzhiList());
+        pan.energy = 能量.of(pan.getGanZhiList());
         return pan;
     }
 
     public void addGanZhi(干支 ganzhi) {
-        ganzhiList.add(ganzhi);
+        ganZhiList.add(ganzhi);
         ganList.add(ganzhi.getGan());
         zhiList.add(ganzhi.getZhi());
         ganGodList.add(ming.compare(ganzhi.getGan()));
@@ -83,7 +84,9 @@ public class 命盘 {
         soundList.add(ganzhi.getSound());
         selfStatusList.add(ganzhi.getStatus());
         starStatusList.add(new 干支(ming, ganzhi.getZhi()).getStatus());
-        effects = 合化冲.getEffects(ganzhiList);
+        effects = 合化冲.getEffects(ganZhiList);
+        origin = 能量.of(ganZhiList.size() > 4 ? ganZhiList.subList(0, 3) : ganZhiList);
+        energy = 能量.of(ganZhiList);
     }
 
     public 命盘 atDecade(int year) {
@@ -99,29 +102,34 @@ public class 命盘 {
         命盘 pan = atDecade(year);
         运势 yun = 运势.select(yearLuckList, 运势.getStartTimeOfYear(year));
         if (yun != null) {
-            addGanZhi(yun);
-            monthLuckList = 月运.list(year, birthday, sex.getValue());
+            pan.addGanZhi(yun);
+            pan.monthLuckList = 月运.list(year, birthday, sex.getValue());
         }
         return pan;
     }
 
     public 命盘 atMonth(int year, int month) {
-        命盘 pan = atYear(year);
+        命盘 pan = atYear(month == 1 ? year - 1 : year);
         运势 yun = 运势.select(monthLuckList,
                 月运.of(LocalDateTime.of(year, month, 15, 0 ,0), birthday, sex.getValue()).getStartTime());
         if (yun != null) {
-            addGanZhi(yun);
-            dayLuckList = 日运.list(year, month, birthday, sex.getValue());
+            pan.addGanZhi(yun);
+            pan.dayLuckList = 日运.list(year, month, birthday, sex.getValue());
         }
         return pan;
+
     }
 
     public 命盘 atDay(int year, int month, int day) {
-        命盘 pan = atMonth(year, month);
-        运势 yun = 运势.select(dayLuckList, LocalDateTime.of(year, month, day, 0, 0));
+        LocalDateTime dateTime = LocalDateTime.of(year, month, day, 23, 59);
+        dateTime = dateTime.isBefore(DateUtil.getMajorSolarTerm(dateTime).of(year)) ||
+                dateTime.isBefore(运势.getStartTimeOfYear(year)) ?
+                dateTime.minusMonths(1) : dateTime;
+        命盘 pan = atMonth(dateTime.getYear(), dateTime.getMonthValue());
+        运势 yun = 运势.select(dayLuckList, LocalDateTime.of(year, month, day, 1, 0));
         if (yun != null) {
-            addGanZhi(yun);
-            hourLuckList = 时运.list(year, month, day, birthday, sex.getValue());
+            pan.addGanZhi(yun);
+            pan.hourLuckList = 时运.list(year, month, day, birthday, sex.getValue());
         }
         return pan;
     }
@@ -130,7 +138,7 @@ public class 命盘 {
         命盘 pan = atDay(year, month, day);
         运势 yun = 运势.select(hourLuckList, LocalDateTime.of(year, month, day, hour, 0));
         if (yun != null) {
-            addGanZhi(yun);
+            pan.addGanZhi(yun);
         }
         return pan;
     }

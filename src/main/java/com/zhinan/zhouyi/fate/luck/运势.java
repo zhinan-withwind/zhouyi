@@ -3,13 +3,18 @@ package com.zhinan.zhouyi.fate.luck;
 import com.zhinan.zhouyi.base.十神;
 import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.date.SolarTerm;
+import com.zhinan.zhouyi.desc.周易描述器;
 import com.zhinan.zhouyi.fate.bazi.八字;
+import com.zhinan.zhouyi.fate.bazi.命局;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Getter
 public abstract class 运势 extends 干支 {
     @Getter
@@ -99,11 +104,13 @@ public abstract class 运势 extends 干支 {
     }
 
     public boolean isGanGodGood() {
-        return bazi.getFatePattern().isGood(getGan().getWuXing());
+        log.info("天干是{}，君药是：{}，臣药是：{}", getGan(), 命局.getMasterGoodGod(bazi),
+                Arrays.deepToString(命局.getMinisterGoodGod(bazi).toArray()));
+        return bazi.getFatePattern().isGood(bazi, getGan().getWuXing());
     }
 
     public boolean isZhiGodGood() {
-        return bazi.getFatePattern().isGood(getZhi().getWuXing());
+        return bazi.getFatePattern().isGood(bazi, getZhi().getWuXing());
     }
 
     abstract 运势 getParent();
@@ -116,6 +123,6 @@ public abstract class 运势 extends 干支 {
     }
 
     public String getDescription() {
-        return "";
+        return 周易描述器.describe(this);
     }
 }

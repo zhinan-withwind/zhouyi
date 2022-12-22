@@ -35,11 +35,11 @@ public enum 格局 {
 
     public static 格局 of(八字 bazi) {
         格局 pattern;
-        int 生 = bazi.getEnergy().get(bazi.getFate().get生());
-        int 同 = bazi.getEnergy().get(bazi.getFate().get同());
-        int 泄 = bazi.getEnergy().get(bazi.getFate().get泄());
-        int 耗 = bazi.getEnergy().get(bazi.getFate().get耗());
-        int 克 = bazi.getEnergy().get(bazi.getFate().get克());
+        int 生 = bazi.getEnergy().getValue(bazi.getFate().get生());
+        int 同 = bazi.getEnergy().getValue(bazi.getFate().get同());
+        int 泄 = bazi.getEnergy().getValue(bazi.getFate().get泄());
+        int 耗 = bazi.getEnergy().getValue(bazi.getFate().get耗());
+        int 克 = bazi.getEnergy().getValue(bazi.getFate().get克());
         if (bazi.selfPart > bazi.otherPart) {
             if (bazi.otherPart >= 80.0 / 610.0) {
                 if (生 >= 同) {

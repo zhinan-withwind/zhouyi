@@ -17,7 +17,7 @@ public class 年运 extends 运势 {
     public static 年运 of(LocalDateTime dateTime, LocalDateTime birthday, int sex) {
         干支 ganzhi    = DateUtil.toGanZhi(dateTime.getYear());
         LocalDateTime startTime = getStartTimeOfYear(dateTime.getYear());
-        LocalDateTime endTime   = startTime.plusYears(1);
+        LocalDateTime endTime   = getStartTimeOfYear(dateTime.getYear() + 1);
         return new 年运(ganzhi, 八字.of(birthday, sex), startTime, endTime);
     }
 
@@ -46,6 +46,6 @@ public class 年运 extends 运势 {
 
     public 年运 getNext() {
         return new 年运(roll(1), bazi,
-                startTime.plus(1, ChronoUnit.YEARS), endTime.plus(1, ChronoUnit.YEARS));
+                endTime, getStartTimeOfYear(endTime.getYear() + 1));
     }
 }

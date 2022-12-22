@@ -20,8 +20,8 @@ public class 日运  extends 运势 {
 
     public static 日运 of(LocalDateTime dateTime, LocalDateTime birthday, int sex) {
         干支 ganzhi    = DateUtil.toGanZhi(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth());
-        LocalDateTime startTime = dateTime.toLocalDate().atTime(0, 0);
-        LocalDateTime endTime   = dateTime.plusDays(1);
+        LocalDateTime startTime = dateTime.toLocalDate().atTime(1, 0);
+        LocalDateTime endTime   = startTime.plusDays(1);
         return new 日运(ganzhi, 八字.of(birthday, sex), startTime, endTime);
     }
 

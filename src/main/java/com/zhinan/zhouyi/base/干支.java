@@ -47,8 +47,7 @@ public class 干支 {
     }
 
     public 长生 getStatus() {
-        return 长生.getByValue((长生.growValues[gan.getValue()].getValue()
-                + (gan.getYinYang().isYang() ? 1 : -1) * (zhi.getValue() - 长生.growValues[gan.getValue()].getValue()) + 12) % 12);
+        return 长生.getByValue(((gan.getYinYang().isYang() ? 1 : -1) * (zhi.getValue() - 长生.getGrow(gan).getValue()) + 12) % 12);
     }
 
     @Override

@@ -1,9 +1,13 @@
 package com.zhinan.zhouyi.desc.fate;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.zhinan.zhouyi.base.五行;
 import com.zhinan.zhouyi.base.元素;
+import com.zhinan.zhouyi.base.属相;
+import com.zhinan.zhouyi.common.Descriptor;
+import com.zhinan.zhouyi.common.Source;
+import com.zhinan.zhouyi.desc.基础描述器;
+import com.zhinan.zhouyi.divine.other.合婚;
 import com.zhinan.zhouyi.effect.作用类别;
 import com.zhinan.zhouyi.effect.合化冲;
 import com.zhinan.zhouyi.energy.能量;
@@ -18,16 +22,17 @@ import java.util.List;
 /**
  * 合婚
  *
- * 1. 男命纳音克或者同女命纳音
- * 2. 女命纳音生或者同男命纳音
- * 3. 男命属相与女命属相相合则吉，相克，相冲，相刑，相害，相破凶
- * 4. 男命月令与女命月令相合则吉，相克，相冲，相刑，相害，相破凶
- * 5. 男命日支与女命日支相合则吉，相克，相冲，相刑，相害，相破凶
- * 6. 男命日干与女命日干相生，相合吉
- * 7. 一方的主要能量是另一方的药，或者相互为药
- * 8. 以毒攻毒（如果两方的婚姻都不好，反而比较相配）
+ * 1. 男命纳音克或者同女命纳音 - 男克女 100， 男同女 80， 女生男 60，男生女 40，男克女 20。 权重 100%
+ * 2. 女命纳音生或者同男命纳音 在上一个里面已经参考了。
+ * 3. 男命属相与女命属相相合则吉，相克，相冲，相刑，相害，相破凶 - 相合 100，相冲 40，相刑 30，相破 20，无作用 50。权重 100%
+ * 4. 男命月令与女命月令相合则吉，相克，相冲，相刑，相害，相破凶 - 相合 100，相冲 40，相刑 30，相破 20，无作用 50。权重  80%
+ * 5. 男命日支与女命日支相合则吉，相克，相冲，相刑，相害，相破凶 - 相合 100，相冲 40，相刑 30，相破 20，无作用 50。权重  70%
+ * 6. 男命日干与女命日干相生，相合则吉                       - 相合 100，相冲 40，相刑 30，相破 20，无作用 50。权重  50%
+ * 7. 一方的主要能量是另一方的药，或者相互为药                - 是药 100，不是药 0。权重 50%，分男女各自计算，
+ * 8. 以毒攻毒（如果两方的婚姻都不好，反而比较相配）           - 都好或都不好 100，一个好一个不好 0，没关联 50。权重 100%
  */
-public class 合婚描述器 {
+@Descriptor(source = Source.明易, isDefault = true)
+public class 合婚描述器 extends 基础描述器<合婚> {
 
     public static String describe(八字 mBazi, 八字 wBazi) {
         JSONObject result = 描述(mBazi, wBazi);
@@ -50,7 +55,7 @@ public class 合婚描述器 {
                 "两者之间的关系是：" + description.get("关系") + "，" +
                 "你们的配对得分是：" + description.get("分数") + "分，" +
                 "这部分的匹配度是：" + description.get("吉凶") + "，" +
-                System.lineSeparator() + System.lineSeparator();
+                lineSeparator + lineSeparator;
     }
 
     public static JSONObject 描述(八字 mBazi, 八字 wBazi) {
@@ -102,7 +107,9 @@ public class 合婚描述器 {
         total += result.getJSONObject("纳音关系").getInteger("分数") * 1.0;
 
         // 3. 男命属相与女命属相相合则吉，相克，相冲，相刑，相害，相破凶
-        result.put("属相关系",  getElementScore(mBazi.getYear().getZhi(), wBazi.getYear().getZhi()));
+        result.put("属相关系",  getElementScore(mBazi.getYear().getZhi(), wBazi.getYear().getZhi())
+                .fluentPut("男命", 属相.getByZhi(mBazi.getYear().getZhi()))
+                .fluentPut("女命", 属相.getByZhi(wBazi.getYear().getZhi())));
         total += result.getJSONObject("属相关系").getInteger("分数") * 1.0;
 
         // 4. 男命月令与女命月令相合则吉，相克，相冲，相刑，相害，相破凶
@@ -214,7 +221,7 @@ public class 合婚描述器 {
         JSONObject result = new JSONObject();
         五行 wx = null;
         for (五行 wuXing : 五行.values()) {
-            if (energy.get(wuXing) > energy.getTotal() / 2 && gridPattern.isGood(wuXing)) {
+            if (energy.getValue(wuXing) > energy.getTotal() / 2 && gridPattern.isGood(wuXing)) {
                 wx = wuXing;
                 break;
             }
