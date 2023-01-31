@@ -77,10 +77,10 @@ public enum 格局 {
         for (生克 shengKe : pattern.goodShengKeList) {
             pattern.goodList.add(bazi.getFate().get(shengKe));
         }
-        五行 masterGoodGod = bazi.getMasterGoodGod();
-        if (!pattern.goodList.contains(masterGoodGod)) {
-            pattern.goodList.add(masterGoodGod);
-        }
+//        五行 masterGoodGod = bazi.getMasterGoodGod();
+//        if (!pattern.goodList.contains(masterGoodGod)) {
+//            pattern.goodList.add(masterGoodGod);
+//        }
         return pattern;
     }
 

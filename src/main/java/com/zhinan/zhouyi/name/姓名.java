@@ -40,10 +40,10 @@ public class 姓名 {
         this.bazi = bazi;
         for (汉字 c : this.chars) {
             int cScore = 10;
-            if (bazi.getGridPattern().isGood(c.getWuXing())) {
-                if (c.getWuXing().equals(bazi.getGridPattern().getFirstGoodGod())) {
+            if (bazi.getFatePattern().isGood(c.getWuXing())) {
+                if (c.getWuXing().equals(bazi.getFatePattern().getFirstGoodGod())) {
                     cScore = 100;
-                } else if (c.getWuXing().equals(bazi.getGridPattern().getSecondGoodGod())) {
+                } else if (c.getWuXing().equals(bazi.getFatePattern().getSecondGoodGod())) {
                     cScore = 80;
                 } else {
                     cScore = 60;

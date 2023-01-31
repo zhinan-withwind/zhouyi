@@ -11,8 +11,11 @@ import net.time4j.PlainDate;
 import net.time4j.calendar.ChineseCalendar;
 import net.time4j.calendar.EastAsianMonth;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class DateUtil {
@@ -42,6 +45,27 @@ public class DateUtil {
         return toGanZhi(dateTime, false);
     }
 
+    public static List<LocalDateTime> findDateTime(int start, int end, 干支 year, 干支 month, 干支 day, 干支 hour) {
+        List<LocalDateTime> dateTimeList = new ArrayList<>();
+        int startYear = start + (year.getValue() - toGanZhi(start).getValue() + 60) % 60;
+        for (int y = startYear; y < end; y+=60) {
+            int m = (month.getValue() - toGanZhi(y, 1).getValue() + 60) % 60 + 1;
+            if (m <= 12) {
+                LocalDateTime solarTerm = SolarTerm.ofMajor((m - 2 + 12) % 12).of(y);
+                int d = (day.getValue() - toGanZhi(y, m, solarTerm.getDayOfMonth()).getValue() + 60) % 60;
+                int duration = (int) Duration.between(solarTerm, SolarTerm.ofMajor(m - 1).of(y)).getSeconds() / 3600 / 24;
+                if (d < duration) {
+                    LocalDate date = solarTerm.toLocalDate().plusDays(d);
+                    int h = (hour.getValue() - toGanZhi(date.getYear(), date.getMonthValue(), date.getDayOfMonth(), 0).getValue() + 60) % 60;
+                    if (h < 12) {
+                        dateTimeList.add(date.atTime(h * 2, 0));
+                    }
+                }
+            }
+        }
+        return dateTimeList;
+    }
+
     public static 干支 toGanZhi(干支 day, int hour) {
         int dayGanValue = ((day.getGan().getValue() % 5) * 2 + (hour + 1) / 2) % 10;
         int dayZhiValue = (hour + 1) / 2;
@@ -49,7 +73,7 @@ public class DateUtil {
     }
 
     public static 干支 toGanZhi(int year) {
-        return 干支.getByValue(ChineseCalendar.ofNewYear(year).getYear().getNumber() - 1);
+        return 干支.getByValue(ChineseCalendar.ofQingMing(year).getYear().getNumber() - 1);
     }
 
     public static 干支 toGanZhi(int year, int month) {
@@ -144,5 +168,19 @@ public class DateUtil {
             }
         }
         return calendar;
+    }
+
+    public static int getFullYearAge(LocalDateTime birthday, LocalDateTime now) {
+        int age = 0;
+        birthday = birthday.toLocalDate().atTime(0, 0);
+        while (!birthday.plusYears(1L).isAfter(now)) {
+            age++;
+            birthday = birthday.plusYears(1L);
+        }
+        return age;
+    }
+
+    public static int calculateZodiacSign(LocalDateTime birthday) {
+        return GanZhiDateTime.of(birthday).getGanZhiYear().getZhi().getValue() + 1;
     }
 }

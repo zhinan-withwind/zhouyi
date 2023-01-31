@@ -2,12 +2,9 @@ package com.zhinan.zhouyi.desc.fate;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zhinan.zhouyi.common.ColorSeries;
-import com.zhinan.zhouyi.common.Descriptor;
-import com.zhinan.zhouyi.common.Source;
-import com.zhinan.zhouyi.desc.基础描述器;
+import com.zhinan.zhouyi.desc.BaseDescriptor;
 import com.zhinan.zhouyi.effect.作用元素;
 import com.zhinan.zhouyi.effect.元素类别;
-import com.zhinan.zhouyi.fate.bazi.命局;
 import com.zhinan.zhouyi.fate.luck.运势;
 import com.zhinan.zhouyi.fate.util.财运;
 import com.zhinan.zhouyi.fate.util.风水物;
@@ -19,11 +16,10 @@ import java.util.List;
     3. 发财指南
     4. 地域推荐
  */
-@Descriptor(source = Source.明易)
-public class 财运描述器 extends 基础描述器<财运> {
+public class 财运描述器 extends BaseDescriptor<财运> {
     private final String lineSeparator = System.lineSeparator();
 
-    public JSONObject 描述(Object o) {
+    public JSONObject fullDescribe(Object o) {
         财运 wealth = (财运) o;
         return new JSONObject()
                 .fluentPut("财运五行", wealth.getWealthWuXing())
@@ -96,8 +92,8 @@ public class 财运描述器 extends 基础描述器<财运> {
     }
 
     public String describeAffordability(财运 wealth) {
-        boolean isWeak = wealth.getPattern().getType().equals(命局.种类.命弱);
-        StringBuilder result = new StringBuilder("您的命局是" + wealth.getPattern().getName() + "，是个" + wealth.getPattern().getType() + "的命局。" + lineSeparator);
+        boolean isWeak = !wealth.getPattern().isStrong();
+        StringBuilder result = new StringBuilder("您的命局是" + wealth.getPattern().getName() + "，是个" + (wealth.getPattern().isStrong() ? "身强" : "身弱") + "的命局。" + lineSeparator);
         result.append("命强与命弱决定了您的担财能力。假如您的生命里有一个宝库，所谓担财能力，是指您能从这个宝库中搬运出财的能力。" + "所以您的担财能力相对").append(isWeak ? "较弱" : "较强").append("。");
         if (isWeak) {
             result.append("加强您的命主五行，可以帮助您提升担财能力，从而获取更多的财富。").append(lineSeparator);
@@ -108,7 +104,7 @@ public class 财运描述器 extends 基础描述器<财运> {
     }
 
     public String describeCloth(财运 wealth) {
-        return wealth.getPattern().getType().equals(命局.种类.命弱) ?
+        return !wealth.getPattern().isStrong() ?
                 "穿着" + ColorSeries.getByWuXing(wealth.getFate().get生()) + "颜色的衣服和"
                         + ColorSeries.getByWuXing(wealth.getFate().get同())
                         + "颜色的衣服可以补充您的命主力量，加强您的担财能力，从而获得更多财富。" + lineSeparator :
@@ -119,7 +115,7 @@ public class 财运描述器 extends 基础描述器<财运> {
 
     public String describeLuckObject(财运 wealth) {
         StringBuilder result = new StringBuilder("可以摆放一个");
-        if (wealth.getPattern().getType().equals(命局.种类.命弱)) {
+        if (!wealth.getPattern().isStrong()) {
             风水物.getByWuXing(wealth.getFate().getGan().getWuXing()).forEach(o -> result.append(o.getName()).append("，"));
         } else {
             风水物.getByWuXing(wealth.getWealthWuXing()).forEach(o -> result.append(o.getName()).append("，"));

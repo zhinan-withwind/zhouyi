@@ -1,17 +1,11 @@
-package com.zhinan.zhouyi.desc.xinghe;
+package com.zhinan.zhouyi.desc.fate;
 
-import com.zhinan.zhouyi.common.Source;
-import com.zhinan.zhouyi.common.Descriptor;
-import com.zhinan.zhouyi.desc.IDescriptor;
-import com.zhinan.zhouyi.desc.基础描述器;
+import com.zhinan.zhouyi.desc.BaseDescriptor;
 import com.zhinan.zhouyi.fate.bazi.命主;
+import org.springframework.stereotype.Component;
 
-import java.util.Map;
-
-import static com.zhinan.zhouyi.common.Source.*;
-
-@Descriptor(source = Source.星鹤, isDefault = true)
-public class 命主描述器 extends 基础描述器<命主> implements IDescriptor<命主> {
+@Component
+public class 命主描述器 extends BaseDescriptor<命主> {
     static  {
         final String[] 指代 =  {
                 "高乔木", "藤蔓木", "太阳火", "灯烛火", "城墙土",
@@ -61,22 +55,25 @@ public class 命主描述器 extends 基础描述器<命主> implements IDescrip
                 "示弱", "示弱", "表扬", "表扬", "诚信", "诚信", "负责", "负责", "聪明", "聪明",
         };
 
-        register(星鹤, 命主.class, "指代", 指代);
-        register(星鹤, 命主.class, "五常", 五常);
-        register(星鹤, 命主.class, "优势", 优势);
-        register(星鹤, 命主.class, "提醒", 提醒);
-        register(星鹤, 命主.class, "相处", 相处);
+        register(命主.class, "指代", 指代);
+        register(命主.class, "五常", 五常);
+        register(命主.class, "优势", 优势);
+        register(命主.class, "提醒", 提醒);
+        register(命主.class, "相处", 相处);
     }
 
     @Override
     public String describe(Object o) {
         命主 zhu = (命主) o;
-        return getName(zhu) + "命：" + getName(zhu) + "是"
+        return "您的日主是"  + getName(zhu) + "，" + getName(zhu) + "是"
                 + describe(zhu, "指代") + "，主"
-                + describe(zhu, "五常") + "。" + lineSeparator
-                + getName(zhu) + "命的人会比较" + describe(zhu, "优势") + "。" + lineSeparator
-                + "同时也需要注意"+ describe(zhu, "提醒") + "的问题。" + lineSeparator
-                + "和" + getName(zhu) + "命的人相处的方法是：展现你的" + describe(zhu, "相处") + "。"
+                + describe(zhu, "五常") + "。"
+                + lineSeparator
+                + getName(zhu) + "日主的人会比较" + describe(zhu, "优势") + "。"
+                + lineSeparator
+                + "同时也需要注意"+ describe(zhu, "提醒") + "的问题。"
+                + lineSeparator
+                + "和" + getName(zhu) + "日主的人相处的方法是：展现你的" + describe(zhu, "相处") + "。"
                 + lineSeparator;
     }
 }

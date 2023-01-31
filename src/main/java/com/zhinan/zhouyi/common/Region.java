@@ -31,7 +31,7 @@ public class Region {
         for (Object o : regions) {
             JSONObject r = (JSONObject) o;
             Region region = new Region()
-                    .setId(r.getLong("code"))
+                    .setId(r.getLong("id"))
                     .setParentId(r.getLong("parentId"))
                     .setCode(r.getString("code"))
                     .setName(r.getString("name"))
@@ -83,5 +83,9 @@ public class Region {
 
     public Region getParent() {
         return parentId == null ? null : getIdMap().get(parentId);
+    }
+
+    public String getFullName() {
+        return (getParent() != null ? getParent().getFullName() : "") + getName();
     }
 }

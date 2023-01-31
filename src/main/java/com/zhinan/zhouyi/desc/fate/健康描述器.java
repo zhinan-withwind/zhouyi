@@ -2,14 +2,13 @@ package com.zhinan.zhouyi.desc.fate;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zhinan.zhouyi.base.五行;
-import com.zhinan.zhouyi.common.Descriptor;
-import com.zhinan.zhouyi.common.Source;
 import com.zhinan.zhouyi.common.Weather;
-import com.zhinan.zhouyi.desc.基础描述器;
+import com.zhinan.zhouyi.desc.BaseDescriptor;
 import com.zhinan.zhouyi.fate.util.健康;
+import org.springframework.stereotype.Component;
 
-@Descriptor(source = Source.明易, isDefault = true)
-public class 健康描述器 extends 基础描述器<健康> {
+@Component
+public class 健康描述器 extends BaseDescriptor<健康> {
     final static String[] 指代 = {
             "肝脏和胆囊",
             "心脏和小肠",
@@ -93,7 +92,7 @@ public class 健康描述器 extends 基础描述器<健康> {
     }
 
     @Override
-    public JSONObject 描述(Object o) {
+    public JSONObject fullDescribe(Object o) {
         健康 health = (健康) o;
         return new JSONObject()
                 .fluentPut("旺衰", describeUpAndDown(health.getMonth()) + lineSeparator)

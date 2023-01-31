@@ -18,7 +18,7 @@ public class 命盘 {
     阴阳         sex;
     天干         ming;
     命主         zhu;
-    命局         pattern;
+    FatePattern pattern;
 
     List<干支>   ganZhiList     = new ArrayList<>();
     List<天干>   ganList        = new ArrayList<>();
@@ -67,7 +67,8 @@ public class 命盘 {
         pan.decadeLuckList = 大运.list(birthday, sex);
 
         pan.origin = 能量.of(bazi.getFourColumn());
-        pan.energy = 能量.of(pan.getGanZhiList());
+        pan.energy = 能量.of(pan .getGanZhiList());
+
         return pan;
     }
 
@@ -85,7 +86,7 @@ public class 命盘 {
         selfStatusList.add(ganzhi.getStatus());
         starStatusList.add(new 干支(ming, ganzhi.getZhi()).getStatus());
         effects = 合化冲.getEffects(ganZhiList);
-        origin = 能量.of(ganZhiList.size() > 4 ? ganZhiList.subList(0, 3) : ganZhiList);
+//        origin = 能量.of(ganZhiList.size() > 4 ? ganZhiList.subList(0, 4) : ganZhiList);
         energy = 能量.of(ganZhiList);
     }
 

@@ -5,7 +5,7 @@ import com.zhinan.zhouyi.base.地支;
 import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.生克;
 import com.zhinan.zhouyi.date.*;
-import com.zhinan.zhouyi.desc.周易描述器;
+import com.zhinan.zhouyi.desc.ZhouYiDescriptor;
 import com.zhinan.zhouyi.effect.可作用;
 import com.zhinan.zhouyi.effect.合化冲;
 import com.zhinan.zhouyi.fate.luck.运势;
@@ -58,10 +58,10 @@ public class 简盘 {
     public 简盘(命盘 pan) {
         八字 bazi = 八字.of(pan.birthday, pan.sex.getValue());
         命主 = pan.zhu.getName();
-        命局 = 周易描述器.getName(pan.pattern);
+        命局 = ZhouYiDescriptor.getName(pan.pattern);
 
-        命主描述 = 周易描述器.describe(pan.zhu);
-        命局描述 = 周易描述器.describe(pan.pattern);
+        命主描述 = ZhouYiDescriptor.describe(pan.zhu);
+        命局描述 = ZhouYiDescriptor.describe(pan.pattern);
 
         for (生克 xing : 生克.values()) {
             五行关系.put(xing.getName(), bazi.getMing().getWuXing().getByShengKe(xing).getName());
@@ -69,7 +69,7 @@ public class 简盘 {
         for (十神 shen : 十神.values()) {
             十神属性.put(shen.getName(),      shen.getWuXing(bazi.getMing()).getName());
             十神属性.put(shen.getShortName(), shen.getWuXing(bazi.getMing()).getName());
-            十神描述.put(shen.getName(),      周易描述器.describe(shen));
+            十神描述.put(shen.getName(),      ZhouYiDescriptor.describe(shen));
         }
         for (天干 gan  : com.zhinan.zhouyi.base.天干.values()) {
             天干属性.put(gan.getName(), gan.getWuXing().getName());

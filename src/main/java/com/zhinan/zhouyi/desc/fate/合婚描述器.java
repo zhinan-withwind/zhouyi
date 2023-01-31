@@ -4,15 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.zhinan.zhouyi.base.五行;
 import com.zhinan.zhouyi.base.元素;
 import com.zhinan.zhouyi.base.属相;
-import com.zhinan.zhouyi.common.Descriptor;
-import com.zhinan.zhouyi.common.Source;
-import com.zhinan.zhouyi.desc.基础描述器;
+import com.zhinan.zhouyi.desc.BaseDescriptor;
 import com.zhinan.zhouyi.divine.other.合婚;
 import com.zhinan.zhouyi.effect.作用类别;
 import com.zhinan.zhouyi.effect.合化冲;
 import com.zhinan.zhouyi.energy.能量;
+import com.zhinan.zhouyi.fate.bazi.FatePattern;
 import com.zhinan.zhouyi.fate.bazi.八字;
-import com.zhinan.zhouyi.fate.bazi.格局;
 import com.zhinan.zhouyi.fate.bazi.纳音;
 
 import java.util.ArrayList;
@@ -31,8 +29,7 @@ import java.util.List;
  * 7. 一方的主要能量是另一方的药，或者相互为药                - 是药 100，不是药 0。权重 50%，分男女各自计算，
  * 8. 以毒攻毒（如果两方的婚姻都不好，反而比较相配）           - 都好或都不好 100，一个好一个不好 0，没关联 50。权重 100%
  */
-@Descriptor(source = Source.明易, isDefault = true)
-public class 合婚描述器 extends 基础描述器<合婚> {
+public class 合婚描述器 extends BaseDescriptor<合婚> {
 
     public static String describe(八字 mBazi, 八字 wBazi) {
         JSONObject result = 描述(mBazi, wBazi);
@@ -125,11 +122,11 @@ public class 合婚描述器 extends 基础描述器<合婚> {
         total += result.getJSONObject("日主关系").getInteger("分数") * 0.5;
 
         // 7. 一方的主要能量是另一方的药，或者相互为药
-        result.put("男命能量", getEnergyScore(mBazi.getEnergy(), 1, wBazi.getGridPattern()));
+        result.put("男命能量", getEnergyScore(mBazi.getEnergy(), 1, wBazi.getFatePattern()));
         total += result.getJSONObject("男命能量").getInteger("分数") * 0.5;
 
         // 7. 一方的主要能量是另一方的药，或者相互为药
-        result.put("女命能量", getEnergyScore(wBazi.getEnergy(), 0, mBazi.getGridPattern()));
+        result.put("女命能量", getEnergyScore(wBazi.getEnergy(), 0, mBazi.getFatePattern()));
         total += result.getJSONObject("女命能量").getInteger("分数") * 0.5;
 
         // 8. 以毒攻毒（如果两方的婚姻都不好，反而比较相配）
@@ -217,17 +214,17 @@ public class 合婚描述器 extends 基础描述器<合婚> {
         return result;
     }
 
-    public static JSONObject getEnergyScore(能量 energy, int sex, 格局 gridPattern) {
+    public static JSONObject getEnergyScore(能量 energy, int sex, FatePattern fatePattern) {
         JSONObject result = new JSONObject();
         五行 wx = null;
         for (五行 wuXing : 五行.values()) {
-            if (energy.getValue(wuXing) > energy.getTotal() / 2 && gridPattern.isGood(wuXing)) {
+            if (energy.getValue(wuXing) > energy.getTotal() / 2 && fatePattern.isGood(wuXing)) {
                 wx = wuXing;
                 break;
             }
         }
-        result.put("男命", sex == 1 ? wx == null ? energy.getMax() : wx : gridPattern.getName());
-        result.put("女命", sex == 0 ? wx == null ? energy.getMax() : wx : gridPattern.getName());
+        result.put("男命", sex == 1 ? wx == null ? energy.getMax() : wx : fatePattern.getName());
+        result.put("女命", sex == 0 ? wx == null ? energy.getMax() : wx : fatePattern.getName());
         result.put("关系", sex == 1 ?
                 "男命的能量对女命" + (wx == null ? "无" : "起") + "辅助作用" :
                 "女命的能量对男命" + (wx == null ? "无" : "起") + "辅助作用");

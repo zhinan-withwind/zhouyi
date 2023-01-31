@@ -1,15 +1,9 @@
-package com.zhinan.zhouyi.desc.xinghe;
+package com.zhinan.zhouyi.desc.fate;
 
 import com.zhinan.zhouyi.base.十神;
-import com.zhinan.zhouyi.common.Descriptor;
-import com.zhinan.zhouyi.common.Source;
-import com.zhinan.zhouyi.desc.基础描述器;
+import com.zhinan.zhouyi.desc.BaseDescriptor;
 
-import java.util.HashMap;
-import java.util.Map;
-
-@Descriptor(source = Source.星鹤)
-public class 十神描述器 extends 基础描述器<十神> {
+public class 十神描述器 extends BaseDescriptor<十神> {
     static {
         final String[] 基本象义 = {
                 "逻辑性强、思维强、好读书、有学识、有修养、有愿景、内含不漏、有容忍性、思想保守传统、学识、文化、思维、聪明、智慧、尊严、忍耐力、承受力、少病、庇荫、保护意识、爱心、呆板不活跃。",
@@ -50,9 +44,15 @@ public class 十神描述器 extends 基础描述器<十神> {
                 "流于虚浮、缺乏节制、浮华风流",
         };
 
-        register(Source.星鹤, 十神.class, "基本象义", 基本象义);
-        register(Source.星鹤, 十神.class, "正向心性", 正向心性);
-        register(Source.星鹤, 十神.class, "负向心性", 负向心性);
+        register(十神.class, "基本象义", 基本象义);
+        register(十神.class, "正向心性", 正向心性);
+        register(十神.class, "负向心性", 负向心性);
 
+    }
+
+    private final static 十神描述器 instance = new 十神描述器();
+
+    public static 十神描述器 getInstance() {
+        return instance;
     }
 }

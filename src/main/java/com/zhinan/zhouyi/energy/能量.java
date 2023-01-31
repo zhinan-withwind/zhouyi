@@ -9,11 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
-@Slf4j
 public class 能量 {
     private final List<干支> ganZhiList = new ArrayList<>();
     private final int[] values = new int[5];
     private final int[] number = new int[5];
+    private final int[] percentage = {0, 0, 0, 0, 0};
 
     private 能量() {}
 
@@ -29,7 +29,7 @@ public class 能量 {
         for (int i = start; i < ganZhiList.size(); i++) {
             power = power.add(ganZhiList.get(i), i);
         }
-        return power;
+        return power.calculatePercentage();
     }
 
     public static 能量 ofOriginal(List<干支> ganZhiList) {
@@ -37,8 +37,19 @@ public class 能量 {
         for (int i = 0; i < ganZhiList.size(); i++) {
             power.add(ganZhiList.get(i), i);
         }
+        return power.calculatePercentage();
+    }
 
-        return power;
+    public 能量 calculatePercentage() {
+        if (getTotal() != 0) {
+            for (int i = 0; i < 5; i++) {
+                this.percentage[i] = new Double(Math.floor((this.values[i] + 0.0) * 100.0 / this.getTotal() + 0.5)).intValue();
+            }
+            if (this.percentage[0] + this.percentage[1] + this.percentage[2] + this.percentage[3] + this.percentage[4] != 100) {
+                this.percentage[4] = 100 - (this.percentage[0] + this.percentage[1] + this.percentage[2] + this.percentage[3]);
+            }
+        }
+        return this;
     }
 
     public int getValue(五行 wuXing) {
@@ -169,7 +180,6 @@ public class 能量 {
         }
         // 记一下数
         add(wuXing);
-        log.debug("{} {} {}", wuXing.getName(), value < 0 ? "-" : "+", Math.abs(value));
         return setValue(wuXing, getValue(wuXing) + value);
     }
 
@@ -199,19 +209,27 @@ public class 能量 {
     }
 
     public int getPercentage(五行 wuXing) {
-        return getTotal() == 0 ? 0 : getValue(wuXing) * 100 / getTotal();
+        return percentage[wuXing.getValue()];
     }
 
     public 五行 getMing() {
         return ganZhiList.get(2).getGan().getWuXing();
     }
 
-    public int getMyPart() {
+    public int getSelfPart() {
         return getValue(getMing().get生()) + getValue(getMing().get同());
     }
 
     public int getOtherPart() {
         return getValue(getMing().get泄()) + getValue(getMing().get克()) + getValue(getMing().get耗());
+    }
+
+    public int getSelfPartPercentage() {
+        return getPercentage(getMing().get生()) + getPercentage(getMing().get同());
+    }
+
+    public int getOtherPartPercentage() {
+        return getPercentage(getMing().get泄()) + getPercentage(getMing().get克()) + getPercentage(getMing().get耗());
     }
 
     public JSONObject simplify() {
@@ -226,7 +244,7 @@ public class 能量 {
         power.put("最强", this.getMax());
         power.put("最弱", this.getMin());
         power.put("总和", this.getTotal());
-        power.put("同党", this.getMyPart());
+        power.put("同党", this.getSelfPart());
         power.put("异党", this.getOtherPart());
         return power;
     }

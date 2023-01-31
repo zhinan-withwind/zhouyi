@@ -2,7 +2,6 @@ package com.zhinan.zhouyi.fate.bazi;
 
 import com.zhinan.zhouyi.base.五行;
 import com.zhinan.zhouyi.base.生克;
-import lombok.SneakyThrows;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,32 +43,32 @@ public enum 命局 {
         return type;
     }
 
-    public static 五行 getMasterGoodGod(八字 bazi) {
-        return bazi.getMasterGoodGod();
-    }
+//    public static 五行 getMasterGoodGod(八字 bazi) {
+//        return bazi.getMasterGoodGod();
+//    }
 
-    public static List<五行> getMinisterGoodGod(八字 bazi) {
-        List<五行> result = new ArrayList<>();
-        if (of(bazi).getType().equals(种类.命强)) {
-            result.add(bazi.getMing().getWuXing().getByShengKe(生克.泄));
-            result.add(bazi.getMing().getWuXing().getByShengKe(生克.耗));
-            result.add(bazi.getMing().getWuXing().getByShengKe(生克.克));
-        } else {
-            result.add(bazi.getMing().getWuXing().getByShengKe(生克.生));
-            result.add(bazi.getMing().getWuXing().getByShengKe(生克.同));
-        }
-        return result;
-    }
-
-    public List<五行> getGoodList(八字 bazi) {
-        List<五行> result = new ArrayList<>(getMinisterGoodGod(bazi));
-        if (!getMinisterGoodGod(bazi).contains(getMasterGoodGod(bazi))) {
-            result.add(getMasterGoodGod(bazi));
-        }
-        return result;
-    }
-
-    public boolean isGood(八字 bazi, 五行 wuXing) {
-        return getGoodList(bazi).contains(wuXing);
-    }
+//    public static List<五行> getMinisterGoodGod(八字 bazi) {
+//        List<五行> result = new ArrayList<>();
+//        if (of(bazi).getType().equals(种类.命强)) {
+//            result.add(bazi.getMing().getWuXing().getByShengKe(生克.泄));
+//            result.add(bazi.getMing().getWuXing().getByShengKe(生克.耗));
+//            result.add(bazi.getMing().getWuXing().getByShengKe(生克.克));
+//        } else {
+//            result.add(bazi.getMing().getWuXing().getByShengKe(生克.生));
+//            result.add(bazi.getMing().getWuXing().getByShengKe(生克.同));
+//        }
+//        return result;
+//    }
+//
+//    public List<五行> getGoodList(八字 bazi) {
+//        List<五行> result = new ArrayList<>(getMinisterGoodGod(bazi));
+//        if (getMasterGoodGod(bazi) != null && !getMinisterGoodGod(bazi).contains(getMasterGoodGod(bazi))) {
+//            result.add(getMasterGoodGod(bazi));
+//        }
+//        return result;
+//    }
+//
+//    public boolean isGood(八字 bazi, 五行 wuXing) {
+//        return getGoodList(bazi).contains(wuXing);
+//    }
 }

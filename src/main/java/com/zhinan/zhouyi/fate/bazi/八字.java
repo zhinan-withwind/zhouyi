@@ -25,11 +25,11 @@ public class 八字 {
 
     阴阳 sex;
     能量 energy;
-    命局 fatePattern;
-    格局 gridPattern;
 
-    double  selfPart;
-    double otherPart;
+    FatePattern fatePattern;
+
+    int  selfPart;
+    int otherPart;
 
     public static List<地支> coolMonthList = Arrays.asList(地支.亥, 地支.子, 地支.丑, 地支.寅);
     public static List<地支>  hotMonthList = Arrays.asList(地支.辰, 地支.巳, 地支.午, 地支.未);
@@ -37,24 +37,25 @@ public class 八字 {
     private 八字() {}
 
     public static 八字 of(LocalDateTime birthday, int sex) {
+        return of(GanZhiDateTime.of(birthday), sex);
+    }
+
+    public static 八字 of(GanZhiDateTime birthday, int sex) {
         八字 bazi = new 八字();
-        bazi.birthday = birthday;
+        bazi.birthday = birthday.toLocalDateTime();
         bazi.sex = 阴阳.getByValue(sex);
 
-        bazi.fourColumn = GanZhiDateTime.of(birthday).toGanZhiList();
+        bazi.fourColumn = birthday.toGanZhiList();
         bazi.year    = bazi.fourColumn.get(0);
         bazi.month   = bazi.fourColumn.get(1);
         bazi.day     = bazi.fourColumn.get(2);
         bazi.time    = bazi.fourColumn.get(3);
 
-        bazi.energy  = 能量.of(bazi.fourColumn);
-        bazi.selfPart  = (bazi.energy.getValue(bazi.getMing().getWuXing().get生())
-                + bazi.energy.getValue(bazi.getMing().getWuXing().get同())) / bazi.energy.getTotal().doubleValue();
-        bazi.otherPart = (bazi.energy.getValue(bazi.getMing().getWuXing().get泄())
-                + bazi.energy.getValue(bazi.getMing().getWuXing().get耗())
-                + bazi.energy.getValue(bazi.getMing().getWuXing().get克())) / bazi.energy.getTotal().doubleValue();
-        bazi.fatePattern = 命局.of(bazi);
-        bazi.gridPattern = 格局.of(bazi);
+        bazi.fatePattern = FatePattern.of(bazi);
+        bazi.selfPart    = bazi.fatePattern.getSelfPart();
+        bazi.otherPart   = bazi.fatePattern.getOtherPart();
+        bazi.energy      = 能量.of(bazi.fourColumn);
+
         return bazi;
     }
 
@@ -83,11 +84,6 @@ public class 八字 {
 
     public 命主 getFate() {
         return 命主.of(getMing());
-    }
-
-    public 五行 getMasterGoodGod() {
-        种类 type = getType();
-        return type.equals(八字.种类.寒局) ? 五行.火 : type.equals(八字.种类.燥局) ? 五行.水 : null;
     }
 
     /**

@@ -4,7 +4,6 @@ import com.zhinan.zhouyi.base.五行;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

@@ -5,6 +5,7 @@ import com.zhinan.zhouyi.util.DateUtil;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -56,6 +57,25 @@ public class GanZhiDateTime extends BaseDateTime implements DateTimeHolder {
 
     public static GanZhiDateTime of(LocalDateTime dateTime) {
         return of(dateTime, false);
+    }
+
+    public static GanZhiDateTime of(干支 year, 干支 month, 干支 day, 干支 hour) {
+        GanZhiDateTime ganZhiDateTime = new GanZhiDateTime(year, month, day, hour);
+        LocalDateTime now = LocalDateTime.now();
+        List<LocalDateTime> dateTimeList = DateUtil.findDateTime(now.getYear() - 100, now.getYear() + 100, year, month, day, hour);
+        long duration = 101 * 365 * 24 * 3600L;
+        for (LocalDateTime dateTime : dateTimeList) {
+            if (dateTime.isAfter(now) && ganZhiDateTime.toLocalDateTime() != null) {
+                break;
+            } else {
+                long d = Math.abs(Duration.between(dateTime, now).getSeconds());
+                if (d < duration) {
+                    ganZhiDateTime.setDateTime(dateTime);
+                    duration = d;
+                }
+            }
+        }
+        return ganZhiDateTime;
     }
 
     public 干支 getGanZhiYear() { return year; }

@@ -6,10 +6,7 @@ import com.zhinan.zhouyi.common.Direction;
 import com.zhinan.zhouyi.common.Region;
 import com.zhinan.zhouyi.effect.元素类别;
 import com.zhinan.zhouyi.effect.地支六冲;
-import com.zhinan.zhouyi.fate.bazi.八字;
-import com.zhinan.zhouyi.fate.bazi.命主;
-import com.zhinan.zhouyi.fate.bazi.命局;
-import com.zhinan.zhouyi.fate.bazi.命盘;
+import com.zhinan.zhouyi.fate.bazi.*;
 import com.zhinan.zhouyi.fate.luck.运势;
 import lombok.Getter;
 
@@ -22,7 +19,7 @@ import java.util.stream.Collectors;
 public class 财运 {
     八字 bazi;
     命主 fate;
-    命局 pattern;
+    FatePattern pattern;
     五行 wealthWuXing;
     ColorSeries color;
     天干 mainWealthGan, partialWealthGan;
@@ -63,7 +60,7 @@ public class 财运 {
         wealth.partialWealthZhi = 地支.getByYYWX(mainYinYang.inverse(), wealth.wealthWuXing);
         wealth.wealthBank       = 地支.getBank(wealth.wealthWuXing);
 
-        wealth.isGood  = wealth.pattern.isGood(wealth.bazi, wealth.wealthWuXing);
+        wealth.isGood  = wealth.pattern.isGood(wealth.wealthWuXing);
 
         命盘 pan = 命盘.of(bazi.getBirthday(), bazi.getSex().getValue()).atDecade(LocalDateTime.now().getYear());
         wealth.hasBank = wealth.wealthBank != null
@@ -76,7 +73,7 @@ public class 财运 {
         }
 
         // 身弱
-        if (wealth.pattern.getType().equals(命局.种类.命弱)) {
+        if (!wealth.pattern.isStrong()) {
             List<运势> decadeHealthGoodList = find(pan.getDecadeLuckList(),
                     天干.getByYYWX(阴阳.阴, wealth.fate.get生()), 天干.getByYYWX(阴阳.阳, wealth.fate.get生()),
                     天干.getByYYWX(阴阳.阴, wealth.fate.get同()), 天干.getByYYWX(阴阳.阳, wealth.fate.get同()),

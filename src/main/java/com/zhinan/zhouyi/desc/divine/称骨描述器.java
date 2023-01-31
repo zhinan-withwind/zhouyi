@@ -1,16 +1,13 @@
 package com.zhinan.zhouyi.desc.divine;
 
 import com.alibaba.fastjson.JSONObject;
-import com.zhinan.zhouyi.common.Descriptor;
-import com.zhinan.zhouyi.common.Source;
-import com.zhinan.zhouyi.desc.基础描述器;
+import com.zhinan.zhouyi.desc.BaseDescriptor;
 import com.zhinan.zhouyi.divine.other.称骨;
 
-@Descriptor(source = Source.通用, isDefault = true)
-public class 称骨描述器 extends 基础描述器<称骨> {
+public class 称骨描述器 extends BaseDescriptor<称骨> {
 
     @Override
-    public JSONObject 描述(Object o) {
+    public JSONObject fullDescribe(Object o) {
         称骨 weight = (称骨) o;
         return new JSONObject()
                 .fluentPut("生日", new JSONObject()

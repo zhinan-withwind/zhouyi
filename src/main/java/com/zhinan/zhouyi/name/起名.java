@@ -26,8 +26,8 @@ public class 起名 {
     public static List<String> recommendName(String surname, LocalDateTime birthday, int sex) {
         List<String> nameList = new ArrayList<>();
         八字 bazi = 八字.of(birthday, sex);
-        五行 firstGoodGod  = bazi.getGridPattern().getFirstGoodGod();
-        五行 secondGoodGod = bazi.getGridPattern().getSecondGoodGod();
+        五行 firstGoodGod  = bazi.getFatePattern().getFirstGoodGod();
+        五行 secondGoodGod = bazi.getFatePattern().getSecondGoodGod();
         int A = surname.length() == 1 ? 1 : 汉字.get(surname.substring(0, 1)).getStrokeNum();
         int B = surname.length() == 1 ? 汉字.get(surname).getStrokeNum() : 汉字.get(surname.substring(0, 1)).getStrokeNum();
         List<int[]> numberList = getRecommendList(A, B);

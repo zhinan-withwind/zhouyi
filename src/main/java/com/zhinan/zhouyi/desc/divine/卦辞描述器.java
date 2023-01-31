@@ -1,15 +1,16 @@
 package com.zhinan.zhouyi.desc.divine;
 
-import com.zhinan.zhouyi.common.Descriptor;
-import com.zhinan.zhouyi.common.Source;
-import com.zhinan.zhouyi.desc.基础描述器;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.zhinan.zhouyi.desc.BaseDescriptor;
 import com.zhinan.zhouyi.divine.common.六十四卦;
+import com.zhinan.zhouyi.util.FileUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Descriptor(source = Source.通用, isDefault = true)
-public class 卦辞描述器 extends 基础描述器<六十四卦> {
+public class 卦辞描述器 extends BaseDescriptor<六十四卦> {
     public enum 描述类型 {
         含义, 卦辞, // 象传, 彖传
     }
@@ -155,11 +156,12 @@ public class 卦辞描述器 extends 基础描述器<六十四卦> {
             "未济：亨。小狐汔济，濡其尾，无攸利。"
     };
 
+    private static JSONArray description64 = JSON.parseArray(FileUtil.loadResource("data/description64.json"));
+
     public final static Map<卦辞描述器.描述类型, String[]> descriptions = new HashMap<卦辞描述器.描述类型, String[]>() {
         {
             put(描述类型.含义, 含义);
             put(描述类型.卦辞, 卦辞);
-
         }
     };
 
@@ -173,5 +175,17 @@ public class 卦辞描述器 extends 基础描述器<六十四卦> {
 
     public static String describe(六十四卦 gua, 卦辞描述器.描述类型 type) {
         return descriptions.get(type)[gua.getValue() - 1];
+    }
+
+    public static JSONObject describe(六十四卦 gua, int yao) {
+        return (JSONObject) ((JSONObject) description64.get(gua.getValue())).getJSONArray("卦爻").get(yao);
+    }
+
+    public static JSONObject fullDescribe(六十四卦 gua) {
+        JSONObject result = new JSONObject();
+        for (卦辞描述器.描述类型 type : 卦辞描述器.描述类型.values()) {
+            result.fluentPut(type.name(), describe(gua, type));
+        }
+        return result;
     }
 }

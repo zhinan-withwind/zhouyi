@@ -1,18 +1,17 @@
 package com.zhinan.zhouyi;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.zhinan.zhouyi.base.干支;
-import com.zhinan.zhouyi.common.Source;
+import com.zhinan.zhouyi.common.ZhouYiAPI;
 import com.zhinan.zhouyi.date.SolarDateTime;
-import com.zhinan.zhouyi.desc.周易描述器;
+import com.zhinan.zhouyi.desc.ZhouYiDescriptor;
+import com.zhinan.zhouyi.desc.fate.十神描述器;
 import com.zhinan.zhouyi.fate.bazi.八字;
-import com.zhinan.zhouyi.fate.bazi.命盘;
 import com.zhinan.zhouyi.fate.luck.*;
-import com.zhinan.zhouyi.fate.util.健康;
 import com.zhinan.zhouyi.out.LuckOutputter;
 import com.zhinan.zhouyi.util.FileUtil;
 import okhttp3.*;
+import org.springframework.boot.SpringApplication;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -28,8 +27,8 @@ public class ZhouYi {
     private final static LocalDateTime wh = LocalDateTime.of(1980, 4, 19, 0 , 40);
 
     public static void main(String[] args) {
-        Source.init(Source.明易);
-        周易描述器.autoInit();
+        ZhouYiAPI.init(ZhouYiAPI.MODEL_TYPE.SCORE, System.lineSeparator());
+        ZhouYiDescriptor.autoInit();
 
 //        日运 yun = 日运.of(LocalDateTime.now(), ww, sex);
 //        System.out.println(合婚描述器.describe(八字.of(wh, 1), 八字.of(yx, 0)));
@@ -42,13 +41,22 @@ public class ZhouYi {
 //        System.out.println(周易描述器.describe(财运.of(LocalDateTime.of(2019, 9, 19, 10, 20), 0)));
 //        System.out.println(能量描述器.describe(命盘.of(ww, 1).atYear(LocalDateTime.now().getYear()).getEnergy()));
 //        System.out.println(称骨描述器.describe(ww, 1));
-        System.out.println(JSON.toJSONString(命盘.of(LocalDateTime.of(1969,2,18,22,0), 1).simplify().get大运(), true));
+//        System.out.println(JSON.toJSONString(命盘.of(LocalDateTime.of(1969,2,18,22,0), 1).simplify().get大运(), true));
 //                .atDay(2022, 12, 1).simplify().get大运(), true));
 //        System.out.println(干支.getByName("壬寅").getStatus());
 //        System.out.println(干支.getByName("壬寅").getStatus());
 //        System.out.println(干支.getByName("壬寅").getStatus());
 //        System.out.println(干支.getByName("壬寅").getStatus());
 //        System.out.println(大运.calculateLuckDate(LocalDateTime.of(1969,2,18,22,4), 1));
+//        八字 bazi = 八字.of(ww, 1);
+//        DateUtil.findDateTime(1900, 2100, bazi.getYear(), bazi.getMonth(), bazi.getDay(), bazi.getTime()).
+//                        forEach(dateTime -> {System.out.println(dateTime + " - " + GanZhiDateTime.of(dateTime));});
+//        GanZhiDateTime dateTime = GanZhiDateTime.of(bazi.getYear(), bazi.getMonth(), bazi.getDay(), bazi.getTime());
+//        System.out.println(dateTime.toLocalDateTime() + " - " + dateTime);
+//        System.out.println(大运.of(LocalDateTime.of(2023, 2, 11, 23, 1), ww, 1).getAge());
+        System.out.println(十神描述器.getInstance().getClass().getName());
+
+        SpringApplication.run(ZhouYi.class, args);
     }
 
     public static void createLuckChart() throws IOException {
