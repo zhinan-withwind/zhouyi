@@ -1,11 +1,6 @@
 package com.zhinan.zhouyi.fate.bazi;
 
-import com.zhinan.zhouyi.base.五行;
-import com.zhinan.zhouyi.base.生克;
-
-import java.util.ArrayList;
-import java.util.List;
-
+@Deprecated
 public enum 命局 {
     印重局("印枭思辨格", "爱思考的印重局", 种类.命强),
     命旺局("截比强旺格", "自信的命旺局"  , 种类.命强),

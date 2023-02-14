@@ -1,21 +1,26 @@
 package com.zhinan.zhouyi;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zhinan.zhouyi.base.地支;
+import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.common.ZhouYiAPI;
+import com.zhinan.zhouyi.date.GanZhiDateTime;
 import com.zhinan.zhouyi.date.SolarDateTime;
 import com.zhinan.zhouyi.desc.ZhouYiDescriptor;
 import com.zhinan.zhouyi.desc.fate.十神描述器;
 import com.zhinan.zhouyi.fate.bazi.八字;
 import com.zhinan.zhouyi.fate.luck.*;
+import com.zhinan.zhouyi.fortune.StudyFortune;
 import com.zhinan.zhouyi.out.LuckOutputter;
+import com.zhinan.zhouyi.util.DateUtil;
 import com.zhinan.zhouyi.util.FileUtil;
 import okhttp3.*;
 import org.springframework.boot.SpringApplication;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.*;
 
 public class ZhouYi {
     private final static String dir = "/Users/withwind/Downloads/LuckChart";
@@ -54,9 +59,21 @@ public class ZhouYi {
 //        GanZhiDateTime dateTime = GanZhiDateTime.of(bazi.getYear(), bazi.getMonth(), bazi.getDay(), bazi.getTime());
 //        System.out.println(dateTime.toLocalDateTime() + " - " + dateTime);
 //        System.out.println(大运.of(LocalDateTime.of(2023, 2, 11, 23, 1), ww, 1).getAge());
-        System.out.println(十神描述器.getInstance().getClass().getName());
+//        System.out.println(十神描述器.getInstance().getClass().getName());
+        八字 bazi = 八字.of(ww, 1);
+        StudyFortune study = StudyFortune.of(bazi);
+        System.out.println(study.getScore() + " - " + study.isGood());
+        System.out.println(study.getDirection() + " - " + study.getMidTermExamScore() + " - " + study.getHighTermExamScore());
+        study.getDecadeFortuneList().forEach(fortune -> System.out.println(fortune.getLuck() + " - " + fortune.getScore()));
 
-        SpringApplication.run(ZhouYi.class, args);
+//        SpringApplication.run(ZhouYi.class, args);
+//        Map<Integer, Integer> result = new TreeMap<>();
+//        listAllBazi().forEach(bazi -> {
+//            int score = StudyFortune.of(bazi).getScore();
+//            System.out.print("\r" + bazi + " - " + score);
+//            result.put(score, result.computeIfAbsent(score, s -> 0)+1);
+//        });
+//        result.keySet().forEach(key -> System.out.println(key + "\t - " + result.get(key)));
     }
 
     public static void createLuckChart() throws IOException {
@@ -123,5 +140,28 @@ public class ZhouYi {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static List<八字> listAllBazi() {
+        List<八字> baziList = new ArrayList<>();
+        int count = 0;
+        for (int y = 0; y < 60; y++) {
+            干支 year = 干支.getByValue(y);
+            for (int m = 0; m < 12; m++) {
+                干支 month = new 干支(天干.getByValue((year.getGan().getValue() % 5) * 2 + m), 地支.getByValue((m + 2) % 12));
+                for (int d = 0; d < 60; d++) {
+                    干支 day = 干支.getByValue(d);
+                    for (int h = 0; h < 12; h++) {
+                        干支 hour = DateUtil.toGanZhi(day, h);
+                        GanZhiDateTime ganZhiDateTime = GanZhiDateTime.of(year, month, day, hour);
+                        baziList.add(八字.of(ganZhiDateTime, 1));
+                        baziList.add(八字.of(ganZhiDateTime, 0));
+                        System.out.print("\r" + ganZhiDateTime + " - " + count++);
+                    }
+                }
+            }
+        }
+        System.out.println();
+        return baziList;
     }
 }

@@ -85,9 +85,11 @@ public class 命盘 {
         soundList.add(ganzhi.getSound());
         selfStatusList.add(ganzhi.getStatus());
         starStatusList.add(new 干支(ming, ganzhi.getZhi()).getStatus());
-        effects = 合化冲.getEffects(ganZhiList);
-//        origin = 能量.of(ganZhiList.size() > 4 ? ganZhiList.subList(0, 4) : ganZhiList);
-        energy = 能量.of(ganZhiList);
+
+        if (ganZhiList.size() >= 4) {
+            effects = 合化冲.getEffects(ganZhiList);
+            energy  = 能量.of(ganZhiList);
+        }
     }
 
     public 命盘 atDecade(int year) {

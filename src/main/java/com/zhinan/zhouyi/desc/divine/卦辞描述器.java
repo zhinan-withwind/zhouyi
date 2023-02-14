@@ -156,7 +156,7 @@ public class 卦辞描述器 extends BaseDescriptor<六十四卦> {
             "未济：亨。小狐汔济，濡其尾，无攸利。"
     };
 
-    private static JSONArray description64 = JSON.parseArray(FileUtil.loadResource("data/description64.json"));
+    private static final JSONArray description64 = JSON.parseArray(FileUtil.loadResource("data/description64.json"));
 
     public final static Map<卦辞描述器.描述类型, String[]> descriptions = new HashMap<卦辞描述器.描述类型, String[]>() {
         {
@@ -178,7 +178,7 @@ public class 卦辞描述器 extends BaseDescriptor<六十四卦> {
     }
 
     public static JSONObject describe(六十四卦 gua, int yao) {
-        return (JSONObject) ((JSONObject) description64.get(gua.getValue())).getJSONArray("卦爻").get(yao);
+        return (JSONObject) ((JSONObject) description64.get(gua.getValue() - 1)).getJSONArray("卦爻").get(yao);
     }
 
     public static JSONObject fullDescribe(六十四卦 gua) {

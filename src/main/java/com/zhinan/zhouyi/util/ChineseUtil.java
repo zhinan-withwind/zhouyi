@@ -1,7 +1,7 @@
 package com.zhinan.zhouyi.util;
 
 public class ChineseUtil {
-    private static String[] charstr = new String[40];
+    private static final String[] charstr = new String[40];
     static {
         charstr[0] = "";
         charstr[1] = "一丨丶丿乀乁乙乚乛亅";

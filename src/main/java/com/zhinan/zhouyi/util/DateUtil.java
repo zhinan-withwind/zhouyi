@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.time4j.PlainDate;
 import net.time4j.calendar.ChineseCalendar;
 import net.time4j.calendar.EastAsianMonth;
+import org.springframework.util.StringUtils;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -136,12 +137,16 @@ public class DateUtil {
     }
 
     public static LocalDateTime toApparentSolarTime(LocalDateTime dateTime, String region) {
-        double N0   = 79.6764 + 0.2422 *(dateTime.getYear() - 1985) - Math.floor(0.25 * (dateTime.getYear() - 1985));
-        double sita = 2 * Math.PI * (dateTime.getDayOfYear() - N0) / 365.2422;
-        double t = 0.0028 - 1.9857 * Math.sin(sita) + 9.9059 * Math.sin(2 * sita) - 7.0924 * Math.cos(sita) - 0.6882 * Math.cos(2 * sita);
-        return toMeanSolarTime(dateTime, region)
-                .plusMinutes(new Double(Math.floor(t)).longValue())
-                .plusSeconds(new Double(Math.floorMod(new Double(t * 100).intValue(), 100) * 0.6).longValue());
+        if (StringUtils.isEmpty(region)) {
+            return dateTime;
+        } else {
+            double N0 = 79.6764 + 0.2422 * (dateTime.getYear() - 1985) - Math.floor(0.25 * (dateTime.getYear() - 1985));
+            double sita = 2 * Math.PI * (dateTime.getDayOfYear() - N0) / 365.2422;
+            double t = 0.0028 - 1.9857 * Math.sin(sita) + 9.9059 * Math.sin(2 * sita) - 7.0924 * Math.cos(sita) - 0.6882 * Math.cos(2 * sita);
+            return toMeanSolarTime(dateTime, region)
+                    .plusMinutes(new Double(Math.floor(t)).longValue())
+                    .plusSeconds(new Double(Math.floorMod(new Double(t * 100).intValue(), 100) * 0.6).longValue());
+        }
     }
 
     public static JSONArray yearCalendar(int y) {

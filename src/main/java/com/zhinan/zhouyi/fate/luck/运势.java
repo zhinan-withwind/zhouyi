@@ -98,8 +98,8 @@ public abstract class 运势 extends 干支 {
     }
 
     public String getAge() {
-//        return String.valueOf(startTime.getYear() - bazi.getBirthday().getYear() + 1);
-        return String.valueOf(DateUtil.getFullYearAge(bazi.getBirthday(), startTime));
+        return String.valueOf(startTime.getYear() - bazi.getBirthday().getYear());
+//        return String.valueOf(DateUtil.getFullYearAge(bazi.getBirthday(), startTime));
     }
 
     public boolean isGanGodGood() {
@@ -110,7 +110,7 @@ public abstract class 运势 extends 干支 {
         return bazi.getFatePattern().isGood(getZhi().getWuXing());
     }
 
-    abstract 运势 getParent();
+    public abstract 运势 getParent();
 
     public int getScore() {
         int score = new Double(40 * (isGanGodGood() ? 0.8 : 0.3) + 60 * (isZhiGodGood() ? 0.8 : 0.3)).intValue();

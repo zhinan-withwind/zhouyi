@@ -5,7 +5,6 @@ import com.zhinan.zhouyi.base.五行;
 import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.effect.作用元素;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
@@ -46,10 +45,36 @@ public class 能量 {
                 this.percentage[i] = new Double(Math.floor((this.values[i] + 0.0) * 100.0 / this.getTotal() + 0.5)).intValue();
             }
             if (this.percentage[0] + this.percentage[1] + this.percentage[2] + this.percentage[3] + this.percentage[4] != 100) {
-                this.percentage[4] = 100 - (this.percentage[0] + this.percentage[1] + this.percentage[2] + this.percentage[3]);
+                if (isStrong()) {
+                    if (getValue(getMing().get生()) > getValue(getMing())) {
+                        calculateRemainder(getMing().get生().getValue());
+                    } else {
+                        calculateRemainder(getMing().getValue());
+                    }
+                } else {
+                    int leakIndex = getMing().get泄().getValue();
+                    int costIndex = getMing().get耗().getValue();
+                    int curbIndex = getMing().get克().getValue();
+                    int max = Math.max(Math.max(values[leakIndex], values[costIndex]), values[curbIndex]);
+                    if (max == values[leakIndex]) {
+                        calculateRemainder(leakIndex);
+                    } else if (max == values[costIndex]) {
+                        calculateRemainder(costIndex);
+                    } else {
+                        calculateRemainder(curbIndex);
+                    }
+                }
             }
         }
         return this;
+    }
+
+    public void calculateRemainder(int v) {
+        int value = 100;
+        for (int i = 0; i < 5; i++) {
+            value = value - (i == v ? 0 : this.percentage[i]);
+        }
+        this.percentage[v] = value;
     }
 
     public int getValue(五行 wuXing) {
@@ -216,6 +241,8 @@ public class 能量 {
         return ganZhiList.get(2).getGan().getWuXing();
     }
 
+    public 五行 getLing() { return ganZhiList.get(1).getZhi().getWuXing(); }
+
     public int getSelfPart() {
         return getValue(getMing().get生()) + getValue(getMing().get同());
     }
@@ -230,6 +257,14 @@ public class 能量 {
 
     public int getOtherPartPercentage() {
         return getPercentage(getMing().get泄()) + getPercentage(getMing().get克()) + getPercentage(getMing().get耗());
+    }
+
+    public boolean isSelfPart(五行 wuXing) {
+        return wuXing.equals(getMing()) || wuXing.equals(getMing().get生());
+    }
+
+    public boolean isStrong() {
+        return getSelfPart() == getOtherPart() ? isSelfPart(getLing()) : getSelfPart() > getOtherPart();
     }
 
     public JSONObject simplify() {

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 @RequiredArgsConstructor
 public enum 格局 {
     印枭主导的偏旺格(new 生克[] {生克.耗, 生克.泄, 生克.克}),
@@ -40,15 +41,16 @@ public enum 格局 {
         int 泄 = bazi.getEnergy().getValue(bazi.getFate().get泄());
         int 耗 = bazi.getEnergy().getValue(bazi.getFate().get耗());
         int 克 = bazi.getEnergy().getValue(bazi.getFate().get克());
-        if (bazi.selfPart > bazi.otherPart) {
-            if (bazi.otherPart >= 80.0 / 610.0) {
+
+        if (bazi.getFatePattern().isStrong()) {
+            if (!bazi.getFatePattern().isFollow()) {
                 if (生 >= 同) {
                     pattern = 格局.印枭主导的偏旺格;
                 } else {
                     pattern = 格局.截比主导的偏旺格;
                 }
             } else {
-                if (生 > 同) {
+                if (生 >= 同) {
                     pattern = 格局.印枭主导的从旺格;
                 } else {
                     pattern = 格局.截比主导的从旺格;
@@ -56,7 +58,7 @@ public enum 格局 {
             }
         } else {
             int max = Math.max(Math.max(克, 耗), 泄);
-            if (bazi.selfPart >= 80.0 / 610.0) {
+            if (!bazi.getFatePattern().isFollow()) {
                 if (max == 克) {
                     pattern = 格局.官杀主导的偏弱格;
                 } else if (max == 耗) {
@@ -74,6 +76,7 @@ public enum 格局 {
                 }
             }
         }
+
         for (生克 shengKe : pattern.goodShengKeList) {
             pattern.goodList.add(bazi.getFate().get(shengKe));
         }

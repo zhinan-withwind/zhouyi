@@ -4,6 +4,7 @@ import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.util.DateUtil;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import run.zhinan.time.solar.SolarTerm;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -40,7 +41,7 @@ public class GanZhiDateTime extends BaseDateTime implements DateTimeHolder {
         int yearGanValue = (dateTime.getYear() - 3 - 1) % 10;
         int yearZhiValue = (dateTime.getYear() - 3 - 1) % 12;
         干支 year  = 干支.getByValue(yearGanValue, yearZhiValue);
-        if (dateTime.isBefore(SolarTerm.立春.of(dateTime.getYear()))) {
+        if (dateTime.isBefore(SolarTerm.J01_LICHUN.of(dateTime.getYear()).getDateTime())) {
             year  = year.roll(-1);
         }
         // 计算月份干支

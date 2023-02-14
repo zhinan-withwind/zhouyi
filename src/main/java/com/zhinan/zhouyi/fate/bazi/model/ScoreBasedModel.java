@@ -33,8 +33,50 @@ public class ScoreBasedModel implements FatePatternModel {
 
         private final 生克[] goodShengKeList;
 
-        public static GRID_PATTERN of(生克 shengKe, boolean follow) {
-            return values()[(follow ? 1 : 0) * 5 + shengKe.getValue()];
+        public static GRID_PATTERN of(ScoreBasedModel fatePattern) {
+            GRID_PATTERN gridPattern;
+            int give = fatePattern.energy.getValue(fatePattern.bazi.getFate().get生());
+            int help = fatePattern.energy.getValue(fatePattern.bazi.getFate().get同());
+            int leak = fatePattern.energy.getValue(fatePattern.bazi.getFate().get泄());
+            int cost = fatePattern.energy.getValue(fatePattern.bazi.getFate().get耗());
+            int curb = fatePattern.energy.getValue(fatePattern.bazi.getFate().get克());
+
+            if (fatePattern.isStrong()) {
+                int max = Math.max(give, help);
+                if (fatePattern.isFollow()) {
+                    if (max == give) {
+                        gridPattern = 印枭主导的从旺格;
+                    } else {
+                        gridPattern = 截比主导的从旺格;
+                    }
+                } else {
+                    if (max == give) {
+                        gridPattern = 印枭主导的偏旺格;
+                    } else {
+                        gridPattern = 截比主导的偏旺格;
+                    }
+                }
+            } else {
+                int max = Math.max(Math.max(leak, cost), curb);
+                if (fatePattern.isFollow()) {
+                    if (max == leak) {
+                        gridPattern = 食伤主导的从弱格;
+                    } else if (max == cost) {
+                        gridPattern = 财才主导的从弱格;
+                    } else {
+                        gridPattern = 官杀主导的从弱格;
+                    }
+                } else {
+                    if (max == leak) {
+                        gridPattern = 食伤主导的偏弱格;
+                    } else if (max == cost) {
+                        gridPattern = 财才主导的偏弱格;
+                    } else {
+                        gridPattern = 官杀主导的偏弱格;
+                    }
+                }
+            }
+            return gridPattern;
         }
 
         public int getValue() {
@@ -59,7 +101,7 @@ public class ScoreBasedModel implements FatePatternModel {
         this.energy = 能量.of(bazi.getFourColumn());
         this.value  = bazi.getMing().getWuXing().compare(energy.getMax()).getValue();
         this.strong = getSelfPart() == getOtherPart() && isSelfPart(bazi.getLing().getWuXing()) || getSelfPart() > getOtherPart();
-        this.gridPattern = GRID_PATTERN.of(bazi.getMing().getWuXing().compare(this.energy.getMax()), isFollow());
+        this.gridPattern = GRID_PATTERN.of(this);
 
         Arrays.asList(gridPattern.goodShengKeList).forEach(shengKe -> this.goodGodList.add(bazi.getMing().getWuXing().getByShengKe(shengKe)));
         Arrays.asList(五行.values()).forEach(wuXing -> {if (!this.goodGodList.contains(wuXing)) this.badGodList.add(wuXing);});
