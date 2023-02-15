@@ -8,7 +8,6 @@ import com.zhinan.zhouyi.common.ZhouYiAPI;
 import com.zhinan.zhouyi.date.GanZhiDateTime;
 import com.zhinan.zhouyi.date.SolarDateTime;
 import com.zhinan.zhouyi.desc.ZhouYiDescriptor;
-import com.zhinan.zhouyi.desc.fate.十神描述器;
 import com.zhinan.zhouyi.fate.bazi.八字;
 import com.zhinan.zhouyi.fate.luck.*;
 import com.zhinan.zhouyi.fortune.StudyFortune;
@@ -16,7 +15,6 @@ import com.zhinan.zhouyi.out.LuckOutputter;
 import com.zhinan.zhouyi.util.DateUtil;
 import com.zhinan.zhouyi.util.FileUtil;
 import okhttp3.*;
-import org.springframework.boot.SpringApplication;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

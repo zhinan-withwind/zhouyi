@@ -5,8 +5,6 @@ import com.zhinan.zhouyi.fate.bazi.长生;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Objects;
-
 @Getter
 @AllArgsConstructor
 public class 干支 {

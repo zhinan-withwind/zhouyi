@@ -5,12 +5,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.common.Region;
 import com.zhinan.zhouyi.date.GanZhiDateTime;
-import com.zhinan.zhouyi.date.SolarTerm;
 import lombok.extern.slf4j.Slf4j;
 import net.time4j.PlainDate;
 import net.time4j.calendar.ChineseCalendar;
 import net.time4j.calendar.EastAsianMonth;
 import org.springframework.util.StringUtils;
+import run.zhinan.time.solar.SolarTerm;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -52,9 +52,9 @@ public class DateUtil {
         for (int y = startYear; y < end; y+=60) {
             int m = (month.getValue() - toGanZhi(y, 1).getValue() + 60) % 60 + 1;
             if (m <= 12) {
-                LocalDateTime solarTerm = SolarTerm.ofMajor((m - 2 + 12) % 12).of(y);
+                LocalDateTime solarTerm = SolarTerm.ofMajor((m - 2 + 12) % 12).of(y).getDateTime();
                 int d = (day.getValue() - toGanZhi(y, m, solarTerm.getDayOfMonth()).getValue() + 60) % 60;
-                int duration = (int) Duration.between(solarTerm, SolarTerm.ofMajor(m - 1).of(y)).getSeconds() / 3600 / 24;
+                int duration = (int) Duration.between(solarTerm, SolarTerm.ofMajor(m - 1).of(y).getDateTime()).getSeconds() / 3600 / 24;
                 if (d < duration) {
                     LocalDate date = solarTerm.toLocalDate().plusDays(d);
                     int h = (hour.getValue() - toGanZhi(date.getYear(), date.getMonthValue(), date.getDayOfMonth(), 0).getValue() + 60) % 60;
@@ -97,7 +97,7 @@ public class DateUtil {
         int year = dateTime.getYear();
         // 在元旦之后，立春之前，则需要算是上一年
         if (!dateTime.isBefore(LocalDateTime.of(year, 1, 1, 0, 0)) &&
-                dateTime.isBefore(SolarTerm.立春.of(year))) {
+                dateTime.isBefore(SolarTerm.J01_LICHUN.of(year).getDateTime())) {
             year -= 1;
         }
         return year;
@@ -105,10 +105,10 @@ public class DateUtil {
 
     public static SolarTerm getLastMajorSolarTerm(LocalDateTime dateTime) {
         int year = getSolarTermYear(dateTime);
-        SolarTerm solarTerm = SolarTerm.立春;
+        SolarTerm solarTerm = SolarTerm.J01_LICHUN;
         for (int i = 0; i < 12; i++) {
-            LocalDateTime currentSolarTermDateTime = solarTerm.of(year);
-            LocalDateTime nextSolarTermDateTime    = solarTerm.roll(2).of(i < 11 ? year : year + 1);
+            LocalDateTime currentSolarTermDateTime = solarTerm.of(year).getDateTime();
+            LocalDateTime nextSolarTermDateTime    = solarTerm.roll(2).of(i < 11 ? year : year + 1).getDateTime();
             if (!currentSolarTermDateTime.isAfter(dateTime) && nextSolarTermDateTime.isAfter(dateTime)) {
                 break;
             }
@@ -118,7 +118,7 @@ public class DateUtil {
     }
 
     public static LocalDateTime getLastMajorSolarTermDateTime(LocalDateTime dateTime) {
-        return getLastMajorSolarTerm(dateTime).of(getSolarTermYear(dateTime));
+        return getLastMajorSolarTerm(dateTime).of(getSolarTermYear(dateTime)).getDateTime();
     }
 
     public static SolarTerm getNextMajorSolarTerm(LocalDateTime dateTime) {
@@ -128,7 +128,7 @@ public class DateUtil {
     public static LocalDateTime getNextMajorSolarTermDateTime(LocalDateTime dateTime) {
         SolarTerm solarTerm = getNextMajorSolarTerm(dateTime);
         // 如果下一个节气是立春，那么则是下一年的立春
-        return solarTerm.of(getSolarTermYear(dateTime) + (solarTerm.equals(SolarTerm.立春) ? 1 : 0));
+        return solarTerm.of(getSolarTermYear(dateTime) + (solarTerm.equals(SolarTerm.J01_LICHUN) ? 1 : 0)).getDateTime();
     }
 
     public static LocalDateTime toMeanSolarTime(LocalDateTime dateTime, String regionCode) {

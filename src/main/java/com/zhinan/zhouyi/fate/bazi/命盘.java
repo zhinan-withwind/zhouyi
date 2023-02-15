@@ -125,7 +125,7 @@ public class 命盘 {
 
     public 命盘 atDay(int year, int month, int day) {
         LocalDateTime dateTime = LocalDateTime.of(year, month, day, 23, 59);
-        dateTime = dateTime.isBefore(DateUtil.getMajorSolarTerm(dateTime).of(year)) ||
+        dateTime = dateTime.isBefore(DateUtil.getMajorSolarTerm(dateTime).of(year).getDateTime()) ||
                 dateTime.isBefore(运势.getStartTimeOfYear(year)) ?
                 dateTime.minusMonths(1) : dateTime;
         命盘 pan = atMonth(dateTime.getYear(), dateTime.getMonthValue());

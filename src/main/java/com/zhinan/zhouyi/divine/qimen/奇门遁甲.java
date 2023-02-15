@@ -2,10 +2,10 @@ package com.zhinan.zhouyi.divine.qimen;
 
 import com.zhinan.zhouyi.base.*;
 import com.zhinan.zhouyi.date.GanZhiDateTime;
-import com.zhinan.zhouyi.date.SolarTerm;
 import com.zhinan.zhouyi.divine.common.占卜;
 import com.zhinan.zhouyi.effect.地支三合;
 import lombok.Getter;
+import run.zhinan.time.solar.SolarTerm;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,8 +32,8 @@ public class 奇门遁甲 extends 占卜 {
 
     public static int calculatePattern(LocalDateTime divineTime) {
         GanZhiDateTime ganZhiDateTime = GanZhiDateTime.of(divineTime);
-        阴阳 yinYang = !SolarTerm.夏至.of(divineTime.getYear()).isAfter(divineTime)
-                && SolarTerm.冬至.of(divineTime.getYear()).isAfter(divineTime) ? 阴阳.阴 : 阴阳.阳;
+        阴阳 yinYang = !SolarTerm.Z05_XIAZHI.of(divineTime.getYear()).getDateTime().isAfter(divineTime)
+                && SolarTerm.Z11_DONGZHI.of(divineTime.getYear()).getDateTime().isAfter(divineTime) ? 阴阳.阴 : 阴阳.阳;
         return (1 - yinYang.getValue()) * 10 +
                (ganZhiDateTime.getGanZhiYear() .getGan().getValue() + 1 +
                 ganZhiDateTime.getGanZhiMonth().getGan().getValue() + 1 +
