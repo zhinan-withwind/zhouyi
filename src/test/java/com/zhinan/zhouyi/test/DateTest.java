@@ -1,10 +1,10 @@
 package com.zhinan.zhouyi.test;
 
 import com.zhinan.zhouyi.common.Region;
-import com.zhinan.zhouyi.date.*;
 import com.zhinan.zhouyi.util.DateUtil;
 import org.junit.jupiter.api.Test;
 import org.testng.Assert;
+import run.zhinan.time.ganzhi.GanZhiDateTime;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -28,22 +28,9 @@ public class DateTest {
 //    }
 
     @Test
-    public void testFormat() {
-        LocalDateTime dateTime = DateTimeParser.parse("2009-四月-初十 02:01", 0);
-        System.out.println(DateTimeFormatter.getInstance(SolarDateTime.of(dateTime))
-                .format(DateFormatType.ARABIC_NUMBER, DateType.DAY));
-        System.out.println(DateTimeFormatter.getInstance(SolarDateTime.of(dateTime))
-                .format(DateFormatType.ARABIC_NUMBER, DateType.SHORT_DATE));
-        System.out.println(DateTimeFormatter.getInstance(SolarDateTime.of(dateTime))
-                .format(DateFormatType.ARABIC_NUMBER, DateType.FULL_DATE));
-        System.out.println(DateTimeFormatter.getInstance(SolarDateTime.of(dateTime))
-                .format(DateFormatType.ARABIC_NUMBER, DateType.DATETIME));
-    }
-
-    @Test
     public void testTranslateDate() {
         LocalDateTime dateTime = LocalDateTime.of(1998, 1, 1, 14, 5);
-        System.out.println(DateTimeFormatter.getInstance(GanZhiDateTime.of(dateTime)).format(DateFormatType.GANZHI_NUMBER));
+        System.out.println(GanZhiDateTime.of(dateTime));
     }
 
     @Test

@@ -1,9 +1,5 @@
 package com.zhinan.zhouyi.out;
 
-import com.zhinan.zhouyi.date.DateFormatType;
-import com.zhinan.zhouyi.date.DateTimeFormatter;
-import com.zhinan.zhouyi.date.DateType;
-import com.zhinan.zhouyi.date.SolarDateTime;
 import com.zhinan.zhouyi.fate.luck.运势;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtils;
@@ -20,6 +16,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class LuckOutputter {
@@ -113,7 +110,7 @@ public class LuckOutputter {
                     title.append("『日运走势图』");
                     break;
                 case 时运:
-                    title.append(DateTimeFormatter.getInstance(SolarDateTime.of(luck.getStartTime())).format(DateFormatType.ARABIC_NUMBER, DateType.FULL_DATE));
+                    title.append(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(luck.getStartTime()));
                     title.append("『时运走势图』");
             }
         }

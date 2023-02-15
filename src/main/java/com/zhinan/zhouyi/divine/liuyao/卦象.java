@@ -2,13 +2,13 @@ package com.zhinan.zhouyi.divine.liuyao;
 
 import com.zhinan.zhouyi.base.五行;
 import com.zhinan.zhouyi.base.地支;
-import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.阴阳;
 import com.zhinan.zhouyi.divine.common.世名;
 import com.zhinan.zhouyi.divine.common.京房八宫;
 import com.zhinan.zhouyi.divine.common.六十四卦;
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import run.zhinan.time.ganzhi.Gan;
 
 import java.util.*;
 
@@ -20,7 +20,7 @@ public class 卦象 {
 
     阴阳 yinYang;
     五行 wuXing;
-    天干 day;
+    Gan day;
 
     String palaceName;
     世名 generation;
@@ -58,7 +58,7 @@ public class 卦象 {
 
     private 卦象() {}
 
-    public static 卦象 of(int[] values, 天干 day) {
+    public static 卦象 of(int[] values, Gan day) {
         卦象 divine = new 卦象();
 
         divine.day = day;

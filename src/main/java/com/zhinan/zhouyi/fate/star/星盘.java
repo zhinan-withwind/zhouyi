@@ -4,10 +4,10 @@ import com.zhinan.zhouyi.base.地支;
 import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.base.阴阳;
-import com.zhinan.zhouyi.date.GanZhiDateTime;
-import com.zhinan.zhouyi.date.LunarDateTime;
 import com.zhinan.zhouyi.fate.bazi.八字;
 import lombok.Getter;
+import run.zhinan.time.ganzhi.GanZhiDateTime;
+import run.zhinan.time.lunar.LunarDateTime;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class 星盘 {
         pan.bazi = 八字.of(birthday, sex);
 
         int month = lunarTime.getMonth();
-        int hour  = lunarTime.getTime().getValue();
+        int hour  = lunarTime.getTime();
 
         int startGan = ((ganzhiTime.getGanZhiYear().getGan().getValue() + 1) * 2) % 10;
 
@@ -60,7 +60,7 @@ public class 星盘 {
         for (int i = 0; i < 12; i++) {
             宫位 palace = new 宫位(天干.getByValue((startGan + i) % 10), 地支.getByValue(i + 2));
             palace.palace = 星宫.getByValue((12 + pan.fatePalace - i) % 12);
-            int direction = ganzhiTime.getGanZhiYear().getGan().getYinYang().equals(阴阳.getByValue(sex)) ? 1 : -1;
+            int direction = 干支.fromGanZhi(ganzhiTime.getGanZhiYear()).getGan().getYinYang().equals(阴阳.getByValue(sex)) ? 1 : -1;
             palace.startAge = ((12 - (pan.fatePalace - i) * direction) % 12) * 10 + pan.pattern.value;
             palace.endAge = palace.startAge + 9;
             pan.starPalaceList.add(palace);

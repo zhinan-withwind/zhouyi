@@ -3,9 +3,9 @@ package com.zhinan.zhouyi.test;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.zhinan.zhouyi.base.干支;
-import com.zhinan.zhouyi.date.SolarDateTime;
 import okhttp3.*;
 import org.junit.jupiter.api.Test;
+import run.zhinan.time.solar.SolarDateTime;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

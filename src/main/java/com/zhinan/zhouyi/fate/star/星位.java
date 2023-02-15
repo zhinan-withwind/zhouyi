@@ -1,9 +1,9 @@
 package com.zhinan.zhouyi.fate.star;
 
 import com.zhinan.zhouyi.base.地支;
-import com.zhinan.zhouyi.date.GanZhiDateTime;
-import com.zhinan.zhouyi.date.LunarDateTime;
 import lombok.Getter;
+import run.zhinan.time.ganzhi.GanZhiDateTime;
+import run.zhinan.time.lunar.LunarDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,11 +45,11 @@ public class 星位 {
         }
 
         for (int i = 26; i < 30; i++) {
-            stars.add(new 星位(星曜.getByValue(i), otherStarPosition[i -14][ganZhiDateTime.getGanZhiHour().getZhi().getValue()].getValue()));
+            stars.add(new 星位(星曜.getByValue(i), otherStarPosition[i -14][ganZhiDateTime.getGanZhiTime().getZhi().getValue()].getValue()));
         }
 
-        stars.add(new 星位(星曜.火星, fireStarPosition[ganZhiDateTime.getGanZhiYear().getZhi().getValue()][ganZhiDateTime.getGanZhiHour().getZhi().getValue()].getValue()));
-        stars.add(new 星位(星曜.铃星, bellStarPosition[ganZhiDateTime.getGanZhiYear().getZhi().getValue()][ganZhiDateTime.getGanZhiHour().getZhi().getValue()].getValue()));
+        stars.add(new 星位(星曜.火星, fireStarPosition[ganZhiDateTime.getGanZhiYear().getZhi().getValue()][ganZhiDateTime.getGanZhiTime().getZhi().getValue()].getValue()));
+        stars.add(new 星位(星曜.铃星, bellStarPosition[ganZhiDateTime.getGanZhiYear().getZhi().getValue()][ganZhiDateTime.getGanZhiTime().getZhi().getValue()].getValue()));
 
         return stars;
     }

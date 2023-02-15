@@ -2,6 +2,7 @@ package com.zhinan.zhouyi.base;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import run.zhinan.time.ganzhi.Gan;
 
 @Getter
 @AllArgsConstructor
@@ -49,6 +50,10 @@ public enum 天干 implements 元素 {
             }
         }
         return result;
+    }
+
+    public static 天干 fromGan(Gan gan) {
+        return getByValue(gan.getValue() - 1);
     }
 
     @Override

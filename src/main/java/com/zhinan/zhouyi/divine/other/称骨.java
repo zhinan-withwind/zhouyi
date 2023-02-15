@@ -1,17 +1,16 @@
 package com.zhinan.zhouyi.divine.other;
 
-import com.zhinan.zhouyi.date.GanZhiDateTime;
-import com.zhinan.zhouyi.date.LunarDateTime;
 import com.zhinan.zhouyi.fate.bazi.八字;
 import lombok.Getter;
+import run.zhinan.time.ganzhi.GanZhiDateTime;
+import run.zhinan.time.lunar.LunarDateTime;
 
 import java.time.LocalDateTime;
-import java.util.List;
 @Getter
 public class 称骨 {
     LocalDateTime  birthday;
     GanZhiDateTime ganZhiDateTime;
-    LunarDateTime  lunarDateTime;
+    LunarDateTime lunarDateTime;
     int year, month, day, time;
     int weight;
     int sex;
@@ -27,10 +26,10 @@ public class 称骨 {
         weight.ganZhiDateTime = GanZhiDateTime.of(birthday);
         weight.lunarDateTime  = LunarDateTime.of(birthday);
 
-        weight.year  = 年重[weight.ganZhiDateTime.getGanZhiYear().getValue()];
-        weight.month = 月重[weight.lunarDateTime.getMonth() - 1];
-        weight.day   = 日重[weight.lunarDateTime.getDay()   - 1];
-        weight.time  = 时重[weight.lunarDateTime.getTime().getValue()];
+        weight.year  = 年重[weight.ganZhiDateTime.getYear()];
+        weight.month = 月重[weight.lunarDateTime .getMonth() - 1];
+        weight.day   = 日重[weight.lunarDateTime .getDay()   - 1];
+        weight.time  = 时重[weight.lunarDateTime .getTime()];
         weight.weight = weight.year + weight.month + weight.day + weight.time;
 
         return weight;

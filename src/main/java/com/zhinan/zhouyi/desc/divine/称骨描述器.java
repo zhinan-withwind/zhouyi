@@ -11,10 +11,10 @@ public class 称骨描述器 extends BaseDescriptor<称骨> {
         称骨 weight = (称骨) o;
         return new JSONObject()
                 .fluentPut("生日", new JSONObject()
-                    .fluentPut("年", weight.getGanZhiDateTime().getGanZhiYear() .getName())
+                    .fluentPut("年", weight.getGanZhiDateTime().getGanZhiYear ().getName())
                     .fluentPut("月", weight.getGanZhiDateTime().getGanZhiMonth().getName())
-                    .fluentPut("日", weight.getGanZhiDateTime().getGanZhiDay()  .getName())
-                    .fluentPut("时", weight.getGanZhiDateTime().getGanZhiHour() .getName())
+                    .fluentPut("日", weight.getGanZhiDateTime().getGanZhiDay  ().getName())
+                    .fluentPut("时", weight.getGanZhiDateTime().getGanZhiTime ().getName())
                 )
                 .fluentPut("重量", new JSONObject()
                     .fluentPut("年重", describeWeight(weight.getYear()))

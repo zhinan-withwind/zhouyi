@@ -1,11 +1,12 @@
 package com.zhinan.zhouyi.divine.qimen;
 
 import com.zhinan.zhouyi.base.*;
-import com.zhinan.zhouyi.date.GanZhiDateTime;
-import com.zhinan.zhouyi.date.SolarTerm;
 import com.zhinan.zhouyi.divine.common.占卜;
 import com.zhinan.zhouyi.effect.地支三合;
 import lombok.Getter;
+import run.zhinan.time.ganzhi.GanZhi;
+import run.zhinan.time.ganzhi.GanZhiDateTime;
+import run.zhinan.time.solar.SolarTerm;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,13 +33,13 @@ public class 奇门遁甲 extends 占卜 {
 
     public static int calculatePattern(LocalDateTime divineTime) {
         GanZhiDateTime ganZhiDateTime = GanZhiDateTime.of(divineTime);
-        阴阳 yinYang = !SolarTerm.夏至.of(divineTime.getYear()).isAfter(divineTime)
-                && SolarTerm.冬至.of(divineTime.getYear()).isAfter(divineTime) ? 阴阳.阴 : 阴阳.阳;
+        阴阳 yinYang = !SolarTerm.Z05_XIAZHI.of(divineTime.getYear()).getDateTime().isAfter(divineTime)
+                && SolarTerm.Z11_DONGZHI.of(divineTime.getYear()).getDateTime().isAfter(divineTime) ? 阴阳.阴 : 阴阳.阳;
         return (1 - yinYang.getValue()) * 10 +
-               (ganZhiDateTime.getGanZhiYear() .getGan().getValue() + 1 +
-                ganZhiDateTime.getGanZhiMonth().getGan().getValue() + 1 +
-                ganZhiDateTime.getGanZhiDay()  .getGan().getValue() + 1 +
-                ganZhiDateTime.getGanZhiHour() .getGan().getValue() + 1) % 9 - 1;
+               (GanZhi.getByValue(ganZhiDateTime.getYear ()).getGan().getValue() + 1 +
+                GanZhi.getByValue(ganZhiDateTime.getMonth()).getGan().getValue() + 1 +
+                GanZhi.getByValue(ganZhiDateTime.getDay  ()).getGan().getValue() + 1 +
+                GanZhi.getByValue(ganZhiDateTime.getHour ()).getGan().getValue() + 1) % 9 - 1;
     }
 
     public static 奇门遁甲 init(String question, LocalDateTime divineTime, Integer pattern) {
@@ -56,7 +57,7 @@ public class 奇门遁甲 extends 占卜 {
         }
 
         // 第一步 找时干
-        干支 hour = pan.ganZhiDateTime.getGanZhiHour();
+        干支 hour = 干支.fromGanZhi(pan.ganZhiDateTime.getGanZhiTime());
 
         // 第二步 找空亡
         地支[] empty = hour.getEmpty();
@@ -151,7 +152,7 @@ public class 奇门遁甲 extends 占卜 {
         // 第十六步 找马星
         for (地支三合 effect: 地支三合.values()) {
             for (元素 zhi : effect.getElements()) {
-                if (zhi.equals(pan.ganZhiDateTime.getGanZhiHour().getZhi())) {
+                if (zhi.getValue() == pan.ganZhiDateTime.getGanZhiTime().getZhi().getValue()) {
                     palace = pan.getPalace(九宫.getByZhi((地支) effect.getElements().get(0)).getOppositePalace());
                     palace.isHorse = true;
                     break;

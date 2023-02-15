@@ -1,9 +1,9 @@
 package com.zhinan.zhouyi.fate.bazi;
 
 import com.zhinan.zhouyi.base.*;
-import com.zhinan.zhouyi.date.GanZhiDateTime;
 import com.zhinan.zhouyi.energy.能量;
 import lombok.Getter;
+import run.zhinan.time.ganzhi.GanZhiDateTime;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,11 +45,11 @@ public class 八字 {
         bazi.birthday = birthday.toLocalDateTime();
         bazi.sex = 阴阳.getByValue(sex);
 
-        bazi.fourColumn = birthday.toGanZhiList();
-        bazi.year    = bazi.fourColumn.get(0);
-        bazi.month   = bazi.fourColumn.get(1);
-        bazi.day     = bazi.fourColumn.get(2);
-        bazi.time    = bazi.fourColumn.get(3);
+        bazi.year  = bazi.fourColumn.get(0);
+        bazi.month = bazi.fourColumn.get(1);
+        bazi.day   = bazi.fourColumn.get(2);
+        bazi.time  = bazi.fourColumn.get(3);
+        bazi.fourColumn = Arrays.asList(bazi.year, bazi.month, bazi.day, bazi.time);
 
         bazi.fatePattern = FatePattern.of(bazi);
         bazi.selfPart    = bazi.fatePattern.getSelfPart();

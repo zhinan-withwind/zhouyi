@@ -2,6 +2,7 @@ package com.zhinan.zhouyi.base;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import run.zhinan.time.ganzhi.Zhi;
 
 @Getter
 @AllArgsConstructor
@@ -40,6 +41,9 @@ public enum 地支 implements 元素 {
     }
     public static 地支 getBank(五行 wuXing) {
         return 墓库[wuXing.getValue()];
+    }
+    public static 地支 fromZhi(Zhi zhi) {
+        return getByValue(zhi.getValue() - 1);
     }
 
     public 天干 getTianGan() {return get本气();}

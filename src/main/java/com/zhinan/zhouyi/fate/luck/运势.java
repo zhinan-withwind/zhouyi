@@ -2,12 +2,11 @@ package com.zhinan.zhouyi.fate.luck;
 
 import com.zhinan.zhouyi.base.十神;
 import com.zhinan.zhouyi.base.干支;
-import com.zhinan.zhouyi.date.SolarTerm;
 import com.zhinan.zhouyi.fate.bazi.八字;
-import com.zhinan.zhouyi.util.DateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import run.zhinan.time.solar.SolarTerm;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -66,7 +65,7 @@ public abstract class 运势 extends 干支 {
     }
 
     public static LocalDateTime getStartTimeOfYear(int year) {
-        return SolarTerm.立春.of(year);
+        return SolarTerm.J01_LICHUN.of(year).getDateTime();
     }
 
     public boolean contains(LocalDateTime dateTime) {

@@ -1,20 +1,16 @@
 package com.zhinan.zhouyi.desc.fate;
 
-import com.zhinan.zhouyi.date.DateFormatType;
-import com.zhinan.zhouyi.date.DateTimeFormatter;
-import com.zhinan.zhouyi.date.DateType;
-import com.zhinan.zhouyi.date.SolarDateTime;
 import com.zhinan.zhouyi.desc.BaseDescriptor;
 import com.zhinan.zhouyi.fate.luck.运势;
+
+import java.time.format.DateTimeFormatter;
 
 public class 运势描述器 extends BaseDescriptor<运势> {
     public String describe(运势 luck) {
         return  "这步运势起始于" +
-                DateTimeFormatter.getInstance(SolarDateTime.of(luck.getStartTime()))
-                        .format(DateFormatType.ARABIC_NUMBER, DateType.FULL_DATE) +
+                DateTimeFormatter.ofPattern("yyyy-MM-dd").format(luck.getStartTime()) +
                 "，截止于" +
-                DateTimeFormatter.getInstance(SolarDateTime.of(luck.getEndTime()))
-                        .format(DateFormatType.ARABIC_NUMBER, DateType.FULL_DATE) + "。" +
+                DateTimeFormatter.ofPattern("yyyy-MM-dd").format(luck.getEndTime()) + "。" +
                 lineSeparator +
                 "在这" + luck.getType().getUnit() + "里，您走的是" + luck + "运，" +
 //                "这步运势的得分是：" + luck.getScore() + "分，" +

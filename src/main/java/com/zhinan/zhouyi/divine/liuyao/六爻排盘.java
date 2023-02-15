@@ -2,10 +2,11 @@ package com.zhinan.zhouyi.divine.liuyao;
 
 import com.zhinan.zhouyi.base.地支;
 import com.zhinan.zhouyi.base.阴阳;
-import com.zhinan.zhouyi.date.*;
 import com.zhinan.zhouyi.util.DateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import run.zhinan.time.ganzhi.GanZhiDateTime;
+import run.zhinan.time.ganzhi.Zhi;
 
 import java.time.LocalDateTime;
 
@@ -43,8 +44,8 @@ public class 六爻排盘 {
     String date;
     String empty;
 
-    地支 month;
-    地支 day;
+    Zhi month;
+    Zhi day;
 
     卦象 originalGua;
     卦象 resultGua;
@@ -67,7 +68,7 @@ public class 六爻排盘 {
         GanZhiDateTime ganZhiDateTime = DateUtil.toGanZhi(dateTime);
         month = ganZhiDateTime.getGanZhiMonth().getZhi();
         day   = ganZhiDateTime.getGanZhiDay().getZhi();
-        date  = ganZhiDateTime.format(DateFormatType.GANZHI_NUMBER, DateType.FULL_DATE);
+        date  = ganZhiDateTime.toString();
 
         originalGua = 卦象.of(data, ganZhiDateTime.getGanZhiDay().getGan());
         resultGua   = 卦象.change(originalGua);

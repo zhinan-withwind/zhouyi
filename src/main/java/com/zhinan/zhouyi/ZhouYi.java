@@ -5,10 +5,7 @@ import com.zhinan.zhouyi.base.地支;
 import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.common.ZhouYiAPI;
-import com.zhinan.zhouyi.date.GanZhiDateTime;
-import com.zhinan.zhouyi.date.SolarDateTime;
 import com.zhinan.zhouyi.desc.ZhouYiDescriptor;
-import com.zhinan.zhouyi.desc.fate.十神描述器;
 import com.zhinan.zhouyi.fate.bazi.八字;
 import com.zhinan.zhouyi.fate.luck.*;
 import com.zhinan.zhouyi.fortune.StudyFortune;
@@ -16,7 +13,11 @@ import com.zhinan.zhouyi.out.LuckOutputter;
 import com.zhinan.zhouyi.util.DateUtil;
 import com.zhinan.zhouyi.util.FileUtil;
 import okhttp3.*;
-import org.springframework.boot.SpringApplication;
+import run.zhinan.time.ganzhi.Gan;
+import run.zhinan.time.ganzhi.GanZhi;
+import run.zhinan.time.ganzhi.GanZhiDateTime;
+import run.zhinan.time.ganzhi.Zhi;
+import run.zhinan.time.solar.SolarDateTime;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -146,13 +147,13 @@ public class ZhouYi {
         List<八字> baziList = new ArrayList<>();
         int count = 0;
         for (int y = 0; y < 60; y++) {
-            干支 year = 干支.getByValue(y);
+            GanZhi year = GanZhi.getByValue(y);
             for (int m = 0; m < 12; m++) {
-                干支 month = new 干支(天干.getByValue((year.getGan().getValue() % 5) * 2 + m), 地支.getByValue((m + 2) % 12));
+                GanZhi month = new GanZhi(Gan.getByValue((year.getGan().getValue() % 5) * 2 + m + 1), Zhi.getByValue((m + 2) % 12 + 1));
                 for (int d = 0; d < 60; d++) {
-                    干支 day = 干支.getByValue(d);
+                    GanZhi day = GanZhi.getByValue(d);
                     for (int h = 0; h < 12; h++) {
-                        干支 hour = DateUtil.toGanZhi(day, h);
+                        GanZhi hour = GanZhi.toGanZhi(day, h);
                         GanZhiDateTime ganZhiDateTime = GanZhiDateTime.of(year, month, day, hour);
                         baziList.add(八字.of(ganZhiDateTime, 1));
                         baziList.add(八字.of(ganZhiDateTime, 0));

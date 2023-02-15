@@ -4,13 +4,15 @@ import com.zhinan.zhouyi.base.十神;
 import com.zhinan.zhouyi.base.地支;
 import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.生克;
-import com.zhinan.zhouyi.date.*;
 import com.zhinan.zhouyi.desc.ZhouYiDescriptor;
 import com.zhinan.zhouyi.effect.可作用;
 import com.zhinan.zhouyi.effect.合化冲;
 import com.zhinan.zhouyi.fate.luck.运势;
 import lombok.Getter;
+import run.zhinan.time.format.LunarDateTimeParser;
+import run.zhinan.time.lunar.LunarDateTime;
 
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Getter
@@ -81,8 +83,8 @@ public class 简盘 {
         原局能量 = pan.origin.simplify();
         五行能量 = pan.energy.simplify();
 
-        阳历生日 = SolarDateTime.of(pan.birthday).format(DateFormatType.ARABIC_NUMBER);
-        阴历生日 = DateTimeFormatter.getInstance(LunarDateTime.of(pan.birthday)).format(DateFormatType.CHINESE_NUMBER);
+        阳历生日 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(pan.birthday);
+        阴历生日 = LunarDateTimeParser.DEFAULT.format(LunarDateTime.of(pan.birthday));
 
         for (int i = 0; i < pan.ganList.size(); i++) {
             干神.add(pan.ganGodList.get(i).getName());
