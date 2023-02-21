@@ -10,92 +10,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>run.zhinan</groupId>
+    <groupId>com.zhinan.zhouyi</groupId>
     <artifactId>ZhouYi</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-
-    <!--项目信息...-->
-    <name>ZhouYi</name>
-    <description>Easy to use Zhou Yi API</description>
-    <url>https://github.com/zhinan-withwind/zhouyi</url>
-
-    <!--开源协议...-->
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-    </licenses>
-
-    <!--开发者信息-->
-    <developers>
-        <developer>
-            <id>withwind</id>
-            <name>With Wind</name>
-            <email>1414129@qq.com</email>
-            <roles>
-                <role>Project Manager</role>
-                <role>Architect</role>
-            </roles>
-            <timezone>+8</timezone>
-        </developer>
-    </developers>
-
-    <!--项目在github或其它托管平台的地址-->
-    <scm>
-        <connection>https://github.com/zhinan-withwind/zhouyi.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:zhinan-withwind/zhouyi.git</developerConnection>
-        <url>https://github.com/zhinan-withwind/zhouyi</url>
-    </scm>
-
-
-    <repositories>
-        <repository>
-            <id>local-nexus</id>
-            <name>local-nexus</name>
-            <url>http://192.168.200.141:9999/repository/maven-public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
-    <profiles>
-        <profile>
-            <id>local-nexus</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-
-            <distributionManagement>
-                <repository>
-                    <id>nexus-releases</id>
-                    <url>http://192.168.200.141:9999/repository/maven-releases/</url>
-                </repository>
-
-                <snapshotRepository>
-                    <id>nexus-snapshots</id>
-                    <url>http://192.168.200.141:9999/repository/maven-snapshots/</url>
-                </snapshotRepository>
-            </distributionManagement>
-
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>2.22.2</version>
-                        <configuration>
-                            <skipTests>true</skipTests>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+    <version>1.0-SNAPSHOT</version>
 
     <build>
         <plugins>
@@ -124,8 +41,7 @@
     </build>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -178,7 +94,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <version>2.3.12.RELEASE</version>
         </dependency>
 
         <dependency>
@@ -186,5 +101,8 @@
             <artifactId>ChineseCalendar</artifactId>
             <version>1.0.5-SNAPSHOT</version>
         </dependency>
+
     </dependencies>
+
+
 </project>

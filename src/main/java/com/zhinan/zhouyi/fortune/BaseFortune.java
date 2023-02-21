@@ -1,8 +1,11 @@
 package com.zhinan.zhouyi.fortune;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.zhinan.zhouyi.base.五行;
 import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.fate.bazi.八字;
+import com.zhinan.zhouyi.fate.luck.大运;
 import com.zhinan.zhouyi.fate.luck.运势;
 import lombok.Getter;
 
@@ -10,16 +13,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public abstract class BaseFortune {
+public abstract class BaseFortune implements ClassifiedFortune {
+    @JSONField(serialize = false)
     八字 bazi;
 
-    double score = 0.0;
-    boolean good = false;
+    protected double score;
+    protected boolean good;
 
-    List<Fortune> decadeFortuneList = new ArrayList<>();
+    protected List<Fortune> decadeFortuneList;
 
     public BaseFortune(八字 bazi) {
-        this.bazi = bazi;
+        this.bazi  = bazi;
+        this.score = getScore(bazi);
+        this.good  = judge(this.score);
     }
 
     protected int getScore(五行 target, 五行 effect) {
@@ -51,4 +57,29 @@ public abstract class BaseFortune {
     protected int toInt(Double value) { return value.intValue(); }
 
     public abstract Fortune ofLuck(运势 luck);
+
+    abstract double  getScore(八字 bazi);
+
+    abstract boolean judge(double score);
+
+    public int getScore() {
+        return toInt(score);
+    }
+
+    public boolean isGood() {
+        return good;
+    }
+
+    public List<Fortune> getDecadeFortuneList() {
+        if (decadeFortuneList == null) {
+            decadeFortuneList = new ArrayList<>();
+            大运.list(bazi).forEach(luck -> this.decadeFortuneList.add(ofLuck(luck)));
+        }
+        return decadeFortuneList;
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + ": " + JSON.toJSONString(this, true);
+    }
 }

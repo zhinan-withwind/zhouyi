@@ -16,7 +16,7 @@ public class HealthFortune extends BaseFortune {
     private final static int TOO_LESS_VALUE = 10;
     private final static int  AVERAGE_VALUE = 20;
 
-    int[] originScores = new int[5];
+    int[] originScores = new int[] {0, 0, 0, 0, 0};
 
     List<五行> tooMuchList = new ArrayList<>();
     List<五行> tooLessList = new ArrayList<>();
@@ -46,6 +46,16 @@ public class HealthFortune extends BaseFortune {
     @Override
     public Fortune ofLuck(运势 luck) {
         return ofLuck(luck, bazi.getEnergy().getMing());
+    }
+
+    @Override
+    double getScore(八字 bazi) {
+        return 0;
+    }
+
+    @Override
+    boolean judge(double score) {
+        return true;
     }
 
     public Fortune ofLuck(运势 luck, 五行 target) {

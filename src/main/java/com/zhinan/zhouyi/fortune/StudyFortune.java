@@ -31,20 +31,9 @@ public class StudyFortune extends BaseFortune {
 
     public StudyFortune(八字 bazi) {
         super(bazi);
-        能量 energy = bazi.getEnergy();
-        五行 ming   = energy.getMing();
-
-        double leakScore = energy.getValue(ming.get泄()) + energy.getValue(ming.get同()) * 0.5;
-        double helpScore = energy.getValue(ming.get生()) + energy.getValue(ming.get克()) * 0.5;
-
-        this.score = leakScore * (energy.isStrong() ? 0.8 : 0.3) + helpScore * (energy.isStrong() ? 0.3 : 0.8);
-        this.good  = this.score > 610 * 0.4 * 0.8;
-
         this.direction = getStudyDirection(bazi);
         this.midTermExamScore  = getExamFortune(bazi.getBirthday().getYear() + 15);
         this.highTermExamScore = getExamFortune(bazi.getBirthday().getYear() + 18);
-
-        大运.list(bazi).forEach(luck -> this.decadeFortuneList.add(ofLuck(luck)));
     }
 
     public static StudyFortune of(八字 bazi) {
@@ -87,5 +76,21 @@ public class StudyFortune extends BaseFortune {
             score = ofLuck(luck.getParent()).getScore() * 0.6 + score * 0.4;
         }
         return new Fortune(luck, toInt(score), false);
+    }
+
+    @Override
+    double getScore(八字 bazi) {
+        能量 energy = bazi.getEnergy();
+        五行 ming   = energy.getMing();
+
+        double leakScore = energy.getValue(ming.get泄()) + energy.getValue(ming.get同()) * 0.5;
+        double helpScore = energy.getValue(ming.get生()) + energy.getValue(ming.get克()) * 0.5;
+
+        return leakScore * (energy.isStrong() ? 0.8 : 0.3) + helpScore * (energy.isStrong() ? 0.3 : 0.8);
+    }
+
+    @Override
+    boolean judge(double score) {
+        return score > 610 * 0.4 * 0.8;
     }
 }

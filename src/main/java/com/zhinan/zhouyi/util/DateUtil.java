@@ -94,22 +94,15 @@ public class DateUtil {
     }
 
     private static int getSolarTermYear(LocalDateTime dateTime) {
-        int year = dateTime.getYear();
-        // 在元旦之后，立春之前，则需要算是上一年
-        if (!dateTime.isBefore(LocalDateTime.of(year, 1, 1, 0, 0)) &&
-                dateTime.isBefore(SolarTerm.J01_LICHUN.of(year).getDateTime())) {
-            year -= 1;
-        }
-        return year;
+        // 如果在立春之前，则需要算是上一年
+        return dateTime.getYear() + (dateTime.isBefore(SolarTerm.J01_LICHUN.of(dateTime.getYear()).getDateTime()) ? -1 : 0);
     }
 
     public static SolarTerm getLastMajorSolarTerm(LocalDateTime dateTime) {
         int year = getSolarTermYear(dateTime);
-        SolarTerm solarTerm = SolarTerm.J01_LICHUN;
+        SolarTerm solarTerm = SolarTerm.J01_LICHUN.of(year);
         for (int i = 0; i < 12; i++) {
-            LocalDateTime currentSolarTermDateTime = solarTerm.of(year).getDateTime();
-            LocalDateTime nextSolarTermDateTime    = solarTerm.roll(2).of(i < 11 ? year : year + 1).getDateTime();
-            if (!currentSolarTermDateTime.isAfter(dateTime) && nextSolarTermDateTime.isAfter(dateTime)) {
+            if (!solarTerm.getDateTime().isAfter(dateTime) && solarTerm.roll(2).getDateTime().isAfter(dateTime)) {
                 break;
             }
             solarTerm = solarTerm.roll(2);
@@ -118,7 +111,7 @@ public class DateUtil {
     }
 
     public static LocalDateTime getLastMajorSolarTermDateTime(LocalDateTime dateTime) {
-        return getLastMajorSolarTerm(dateTime).of(getSolarTermYear(dateTime)).getDateTime();
+        return getLastMajorSolarTerm(dateTime).getDateTime();
     }
 
     public static SolarTerm getNextMajorSolarTerm(LocalDateTime dateTime) {
@@ -126,9 +119,8 @@ public class DateUtil {
     }
 
     public static LocalDateTime getNextMajorSolarTermDateTime(LocalDateTime dateTime) {
-        SolarTerm solarTerm = getNextMajorSolarTerm(dateTime);
         // 如果下一个节气是立春，那么则是下一年的立春
-        return solarTerm.of(getSolarTermYear(dateTime) + (solarTerm.equals(SolarTerm.J01_LICHUN) ? 1 : 0)).getDateTime();
+        return getNextMajorSolarTerm(dateTime).getDateTime();
     }
 
     public static LocalDateTime toMeanSolarTime(LocalDateTime dateTime, String regionCode) {

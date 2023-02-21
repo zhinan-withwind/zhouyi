@@ -27,12 +27,6 @@ public class CareerFortune extends BaseFortune {
 
     public CareerFortune(八字 bazi) {
         super(bazi);
-        能量 energy = bazi.getEnergy();
-        五行 ming   = energy.getMing();
-        五行 useGod = ming.get克();
-
-        this.score = energy.getValue(useGod) * (energy.isStrong() ? 0.8 : 0.3);
-
         this.direction = getDirection(bazi);
     }
 
@@ -71,4 +65,20 @@ public class CareerFortune extends BaseFortune {
         }
         return new Fortune(luck, toInt(score), false);
     }
+
+    @Override
+    double getScore(八字 bazi) {
+        能量 energy = bazi.getEnergy();
+        五行 ming   = energy.getMing();
+        五行 useGod = ming.get克();
+
+        return energy.getValue(useGod) * (energy.isStrong() ? 0.8 : 0.3);
+    }
+
+    @Override
+    boolean judge(double score) {
+        return score > 0;
+    }
+
+
 }

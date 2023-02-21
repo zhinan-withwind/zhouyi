@@ -16,8 +16,8 @@ public class Fortune {
         this.good = good;
     }
 
-    public 运势 getLuck() {
-        return luck;
+    public String getLuck() {
+        return luck.getName();
     }
 
     public int getScore() {
@@ -26,5 +26,10 @@ public class Fortune {
 
     public boolean isGood() {
         return good;
+    }
+
+    @Override
+    public String toString() {
+        return "运势『" + luck.toString() + "』的评分为：" + score + "，这是一步" + (good ? "吉" : "凶") + "运";
     }
 }
