@@ -49,13 +49,13 @@ public class HealthFortune extends BaseFortune {
     }
 
     @Override
-    double getScore(八字 bazi) {
+    public double getScore(八字 bazi) {
         return 0;
     }
 
     @Override
-    boolean judge(double score) {
-        return true;
+    public GOOD_BAD judge(double score) {
+        return GOOD_BAD.GOOD;
     }
 
     public Fortune ofLuck(运势 luck, 五行 target) {

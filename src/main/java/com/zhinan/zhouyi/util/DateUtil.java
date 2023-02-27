@@ -46,17 +46,29 @@ public class DateUtil {
         return toGanZhi(dateTime, false);
     }
 
-    public static List<LocalDateTime> findDateTime(int start, int end, 干支 year, 干支 month, 干支 day, 干支 hour) {
+    public static List<LocalDateTime> findDateTime(干支 year, 干支 month, 干支 day, 干支 hour) {
+        return findDateTime(year, month, day, hour, null, null);
+    }
+
+    public static List<LocalDateTime> findDateTime(干支 year, 干支 month, 干支 day, 干支 hour, Integer start, Integer end) {
+        if (start == null) start = 1900;
+        if (end   == null) end   = 2200;
         List<LocalDateTime> dateTimeList = new ArrayList<>();
         int startYear = start + (year.getValue() - toGanZhi(start).getValue() + 60) % 60;
-        for (int y = startYear; y < end; y+=60) {
-            int m = (month.getValue() - toGanZhi(y, 1).getValue() + 60) % 60 + 1;
-            if (m <= 12) {
-                LocalDateTime solarTerm = SolarTerm.ofMajor((m - 2 + 12) % 12).of(y).getDateTime();
-                int d = (day.getValue() - toGanZhi(y, m, solarTerm.getDayOfMonth()).getValue() + 60) % 60;
-                int duration = (int) Duration.between(solarTerm, SolarTerm.ofMajor(m - 1).of(y).getDateTime()).getSeconds() / 3600 / 24;
+        for (int y = startYear; y < end; y += 60) {
+            int m = (month.getValue() - toGanZhi(y, 2).getValue() + 60) % 60 + 2;
+            int Y = y, M = m;
+            if (m <= 13) {
+                if (m > 12) {
+                    M = m % 12;
+                    Y = y + 1;
+                }
+                SolarTerm solarTerm = SolarTerm.ofMajor((m - 2 + 12) % 12).of(y);
+                int d = (day.getValue() - toGanZhi(Y, M, solarTerm.getDateTime().getDayOfMonth()).getValue() + 60) % 60;
+                int duration = (int) Duration.between(solarTerm.getDateTime(),
+                        solarTerm.roll(2).getDateTime()).toDays();
                 if (d < duration) {
-                    LocalDate date = solarTerm.toLocalDate().plusDays(d);
+                    LocalDate date = solarTerm.getDateTime().toLocalDate().plusDays(d);
                     int h = (hour.getValue() - toGanZhi(date.getYear(), date.getMonthValue(), date.getDayOfMonth(), 0).getValue() + 60) % 60;
                     if (h < 12) {
                         dateTimeList.add(date.atTime(h * 2, 0));

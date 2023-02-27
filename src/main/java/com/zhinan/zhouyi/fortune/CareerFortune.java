@@ -67,7 +67,7 @@ public class CareerFortune extends BaseFortune {
     }
 
     @Override
-    double getScore(八字 bazi) {
+    public double getScore(八字 bazi) {
         能量 energy = bazi.getEnergy();
         五行 ming   = energy.getMing();
         五行 useGod = ming.get克();
@@ -76,8 +76,8 @@ public class CareerFortune extends BaseFortune {
     }
 
     @Override
-    boolean judge(double score) {
-        return score > 0;
+    public GOOD_BAD judge(double score) {
+        return score > 0 ? GOOD_BAD.GOOD : GOOD_BAD.BAD;
     }
 
 

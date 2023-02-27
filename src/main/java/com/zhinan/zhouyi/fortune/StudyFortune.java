@@ -3,7 +3,6 @@ package com.zhinan.zhouyi.fortune;
 import com.zhinan.zhouyi.base.五行;
 import com.zhinan.zhouyi.energy.能量;
 import com.zhinan.zhouyi.fate.bazi.八字;
-import com.zhinan.zhouyi.fate.luck.大运;
 import com.zhinan.zhouyi.fate.luck.年运;
 import com.zhinan.zhouyi.fate.luck.运势;
 import lombok.AllArgsConstructor;
@@ -29,31 +28,35 @@ public class StudyFortune extends BaseFortune {
     int midTermExamScore;
     int highTermExamScore;
 
-    public StudyFortune(八字 bazi) {
+    protected StudyFortune(八字 bazi) {
         super(bazi);
-        this.direction = getStudyDirection(bazi);
-        this.midTermExamScore  = getExamFortune(bazi.getBirthday().getYear() + 15);
-        this.highTermExamScore = getExamFortune(bazi.getBirthday().getYear() + 18);
     }
 
     public static StudyFortune of(八字 bazi) {
-        return new StudyFortune(bazi);
+        StudyFortune fortune = new StudyFortune(bazi);
+        fortune.direction = StudyFortune.getStudyDirection(bazi);
+        fortune.midTermExamScore  = fortune.getExamFortune(bazi.getBirthday().getYear() + 15);
+        fortune.highTermExamScore = fortune.getExamFortune(bazi.getBirthday().getYear() + 18);
+        return fortune;
     }
 
     public static STUDY_DIRECTION getStudyDirection(八字 bazi) {
-        能量 energy = bazi.getEnergy();
-        五行 ming   = energy.getMing();
-        STUDY_DIRECTION direction;
+        STUDY_DIRECTION direction = null;
+        try {
+            能量 energy = bazi.getEnergy();
+            五行 ming   = energy.getMing();
 
-        double socialScore  = energy.getValue(ming.get生()) + energy.getValue(五行.木) + energy.getValue(五行.火);
-        double naturalScore = energy.getValue(ming.get泄()) + energy.getValue(五行.金) + energy.getValue(五行.水);
+            double socialScore  = energy.getValue(ming.get生()) + energy.getValue(五行.木) + energy.getValue(五行.火);
+            double naturalScore = energy.getValue(ming.get泄()) + energy.getValue(五行.金) + energy.getValue(五行.水);
 
-        if (Math.abs(socialScore - naturalScore) < 5) {
-            direction = STUDY_DIRECTION.ALL_GOOD;
-        } else {
-            direction = socialScore > naturalScore ? STUDY_DIRECTION.SOCIAL_SCIENCE : STUDY_DIRECTION.NATURAL_SCIENCE;
+            if (Math.abs(socialScore - naturalScore) < 5) {
+                direction = STUDY_DIRECTION.ALL_GOOD;
+            } else {
+                direction = socialScore > naturalScore ? STUDY_DIRECTION.SOCIAL_SCIENCE : STUDY_DIRECTION.NATURAL_SCIENCE;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
         return direction;
     }
 
@@ -79,7 +82,7 @@ public class StudyFortune extends BaseFortune {
     }
 
     @Override
-    double getScore(八字 bazi) {
+    public double getScore(八字 bazi) {
         能量 energy = bazi.getEnergy();
         五行 ming   = energy.getMing();
 
@@ -90,7 +93,7 @@ public class StudyFortune extends BaseFortune {
     }
 
     @Override
-    boolean judge(double score) {
-        return score > 610 * 0.4 * 0.8;
+    public GOOD_BAD judge(double score) {
+        return score > 610 * 0.4 * 0.8 ? GOOD_BAD.GOOD : GOOD_BAD.BAD;
     }
 }

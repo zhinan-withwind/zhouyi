@@ -118,7 +118,7 @@ public class WealthFortune extends BaseFortune {
     }
 
     @Override
-    double getScore(八字 bazi) {
+    public double getScore(八字 bazi) {
         能量 energy = 能量.of(bazi.getFourColumn());
         int self = energy.getPercentage(energy.getMing());
         int cost = energy.getPercentage(energy.getMing().get耗());
@@ -126,7 +126,7 @@ public class WealthFortune extends BaseFortune {
     }
 
     @Override
-    boolean judge(double score) {
-        return score > 10;
+    public GOOD_BAD judge(double score) {
+        return score > 10 ? GOOD_BAD.GOOD : GOOD_BAD.BAD;
     }
 }

@@ -16,7 +16,7 @@ public class MarriageFortune extends BaseFortune {
     }
 
     @Override
-    double getScore(八字 bazi) {
+    public double getScore(八字 bazi) {
         能量 energy   = 能量.of(bazi.getFourColumn());
         starWuXing   = bazi.getSex().isYang() ? energy.getMing().get耗() : energy.getMing().get克();
         palaceWuXing = bazi.getDay().getZhi().getWuXing();
@@ -32,8 +32,8 @@ public class MarriageFortune extends BaseFortune {
     }
 
     @Override
-    boolean judge(double score) {
-        return score > 0;
+    public GOOD_BAD judge(double score) {
+        return score > 0 ? GOOD_BAD.GOOD : GOOD_BAD.BAD;
     }
 
     public static MarriageFortune of(八字 bazi) {
