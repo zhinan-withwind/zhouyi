@@ -100,7 +100,8 @@ public class ScoreBasedModel implements FatePatternModel {
         this.bazi   = bazi;
         this.energy = 能量.of(bazi.getFourColumn());
         this.value  = bazi.getMing().getWuXing().compare(energy.getMax()).getValue();
-        this.strong = getSelfPart() == getOtherPart() && isSelfPart(bazi.getLing().getWuXing()) || getSelfPart() > getOtherPart();
+//        this.strong = getSelfPart() == getOtherPart() && isSelfPart(bazi.getLing().getWuXing()) || getSelfPart() > getOtherPart();
+        this.strong = energy.isStrong();
         this.gridPattern = GRID_PATTERN.of(this);
 
         Arrays.asList(gridPattern.goodShengKeList).forEach(shengKe -> this.goodGodList.add(bazi.getMing().getWuXing().getByShengKe(shengKe)));

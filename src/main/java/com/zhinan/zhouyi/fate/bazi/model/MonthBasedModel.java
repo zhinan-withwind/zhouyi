@@ -79,9 +79,9 @@ public class MonthBasedModel implements FatePatternModel {
         this.selfPart += (isSelfPart(bazi.getMonth().getGan().getWuXing()) ? 10 : 0);
         this.selfPart += (isSelfPart(bazi.getMonth().getZhi().getWuXing()) ? 30 : 0);
         this.selfPart += (isSelfPart(bazi.getDay  ().getGan().getWuXing()) ? 10 : 0);
-        this.selfPart += (isSelfPart(bazi.getDay  ().getGan().getWuXing()) ? 10 : 0);
+        this.selfPart += (isSelfPart(bazi.getDay  ().getZhi().getWuXing()) ? 10 : 0);
         this.selfPart += (isSelfPart(bazi.getTime ().getGan().getWuXing()) ? 10 : 0);
-        this.selfPart += (isSelfPart(bazi.getTime ().getGan().getWuXing()) ? 10 : 0);
+        this.selfPart += (isSelfPart(bazi.getTime ().getZhi().getWuXing()) ? 10 : 0);
 
         if ( this.strong && getSelfPart() <= getOtherPart()) {
             this.selfPart  = 51;

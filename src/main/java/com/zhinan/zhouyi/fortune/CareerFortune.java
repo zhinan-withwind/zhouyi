@@ -2,6 +2,7 @@ package com.zhinan.zhouyi.fortune;
 
 import com.zhinan.zhouyi.base.五行;
 import com.zhinan.zhouyi.energy.能量;
+import com.zhinan.zhouyi.fate.bazi.ENERGY_TYPE;
 import com.zhinan.zhouyi.fate.bazi.八字;
 import com.zhinan.zhouyi.fate.luck.运势;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,7 @@ import lombok.Getter;
 public class CareerFortune extends BaseFortune {
     @Getter
     @AllArgsConstructor
-    enum CAREER_DIRECTION {
+    public enum CAREER_DIRECTION {
         OFFICIAL("从政"), RESEARCH("学术"), BUSINESS("经商"), ARTISTE("艺术");
 
         String name;
@@ -23,11 +24,14 @@ public class CareerFortune extends BaseFortune {
         }
     }
 
+    ENERGY_TYPE energyType;
     CAREER_DIRECTION direction;
 
     public CareerFortune(八字 bazi) {
         super(bazi);
         this.direction = getDirection(bazi);
+        this.energyType = bazi.getSelfPart() > bazi.getOtherPart() ? ENERGY_TYPE.STRONG :
+                bazi.getSelfPart() < bazi.getOtherPart() ? ENERGY_TYPE.WEAK : ENERGY_TYPE.BALANCE;
     }
 
     public static CareerFortune of(八字 bazi) {
@@ -79,6 +83,7 @@ public class CareerFortune extends BaseFortune {
     public GOOD_BAD judge(double score) {
         return score > 0 ? GOOD_BAD.GOOD : GOOD_BAD.BAD;
     }
+
 
 
 }

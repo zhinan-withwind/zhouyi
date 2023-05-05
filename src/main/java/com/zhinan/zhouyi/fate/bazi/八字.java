@@ -4,7 +4,9 @@ import com.zhinan.zhouyi.base.*;
 import com.zhinan.zhouyi.date.GanZhiDateTime;
 import com.zhinan.zhouyi.energy.能量;
 import lombok.Getter;
+import run.zhinan.time.ganzhi.GanZhiDate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +52,27 @@ public class 八字 {
         bazi.month   = bazi.fourColumn.get(1);
         bazi.day     = bazi.fourColumn.get(2);
         bazi.time    = bazi.fourColumn.get(3);
+
+        bazi.fatePattern = FatePattern.of(bazi);
+        bazi.selfPart    = bazi.fatePattern.getSelfPart();
+        bazi.otherPart   = bazi.fatePattern.getOtherPart();
+        bazi.energy      = 能量.of(bazi.fourColumn);
+
+        return bazi;
+    }
+
+    public static 八字 of(LocalDate birthdate, int sex) {
+        八字 bazi = new 八字();
+        bazi.birthday = birthdate.atTime(0, 0);
+        bazi.sex = 阴阳.getByValue(sex);
+
+        GanZhiDate ganZhiDate = GanZhiDate.of(birthdate);
+
+        bazi.year  = 干支.of(ganZhiDate.getGanZhiYear ());
+        bazi.month = 干支.of(ganZhiDate.getGanZhiMonth());
+        bazi.day   = 干支.of(ganZhiDate.getGanZhiDay  ());
+        bazi.time  = null;
+        bazi.fourColumn = Arrays.asList(bazi.year, bazi.getMonth(), bazi.getDay(), bazi.getTime());
 
         bazi.fatePattern = FatePattern.of(bazi);
         bazi.selfPart    = bazi.fatePattern.getSelfPart();

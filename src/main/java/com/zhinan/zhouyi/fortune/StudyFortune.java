@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class StudyFortune extends BaseFortune {
     @Getter
     @AllArgsConstructor
-    enum STUDY_DIRECTION {
+    public enum STUDY_DIRECTION {
         SOCIAL_SCIENCE("文科"), NATURAL_SCIENCE("理科"), ALL_GOOD("文理皆可");
 
         String name;

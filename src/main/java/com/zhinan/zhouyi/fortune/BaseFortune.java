@@ -21,6 +21,8 @@ public abstract class BaseFortune implements ClassifiedFortune {
         GOOD("吉"), OK("中"), BAD("差");
 
         String name;
+
+        public int getValue() { return ordinal(); }
     }
 
     @JSONField(serialize = false)

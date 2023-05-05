@@ -5,6 +5,7 @@ import com.zhinan.zhouyi.base.五行;
 import com.zhinan.zhouyi.base.天干;
 import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.effect.作用元素;
+import com.zhinan.zhouyi.fate.bazi.ENERGY_TYPE;
 
 import java.util.*;
 
@@ -190,12 +191,14 @@ public class 能量 {
     }
 
     public 能量 add(干支 ganZhi, int index) {
-        int amount = index == 1 ? 150 : 100;
-        this.add(ganZhi.getGan().getWuXing(), 作用.天干.effect);
-        this.add(ganZhi.getZhi().get本气().getWuXing(), amount * 作用.本气.effect / 100);
-        this.add(ganZhi.getZhi().get余气().getWuXing(), amount * 作用.余气.effect / 100);
-        this.add(ganZhi.getZhi().get合气().getWuXing(), amount * 作用.合气.effect / 100);
-        this.ganZhiList.add(ganZhi);
+        if (ganZhi != null) {
+            int amount = index == 1 ? 150 : 100;
+            this.add(ganZhi.getGan().getWuXing(), 作用.天干.effect);
+            this.add(ganZhi.getZhi().get本气().getWuXing(), amount * 作用.本气.effect / 100);
+            this.add(ganZhi.getZhi().get余气().getWuXing(), amount * 作用.余气.effect / 100);
+            this.add(ganZhi.getZhi().get合气().getWuXing(), amount * 作用.合气.effect / 100);
+            this.ganZhiList.add(ganZhi);
+        }
         return this;
     }
 
@@ -265,6 +268,10 @@ public class 能量 {
 
     public boolean isStrong() {
         return getSelfPart() == getOtherPart() ? isSelfPart(getLing()) : getSelfPart() > getOtherPart();
+    }
+
+    public ENERGY_TYPE getType() {
+        return isStrong() ? ENERGY_TYPE.STRONG : ENERGY_TYPE.WEAK;
     }
 
     public JSONObject simplify() {

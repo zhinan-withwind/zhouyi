@@ -1,5 +1,6 @@
 package com.zhinan.zhouyi.fate.luck;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.zhinan.zhouyi.base.十神;
 import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.fate.bazi.八字;
@@ -50,6 +51,7 @@ public abstract class 运势 extends 干支 {
         }
     }
 
+    @JSONField(serialize = false)
     八字 bazi;
     LocalDateTime startTime;
     LocalDateTime endTime;
@@ -109,6 +111,7 @@ public abstract class 运势 extends 干支 {
         return bazi.getFatePattern().isGood(getZhi().getWuXing());
     }
 
+    @JSONField(serialize = false)
     public abstract 运势 getParent();
 
     public int getScore() {

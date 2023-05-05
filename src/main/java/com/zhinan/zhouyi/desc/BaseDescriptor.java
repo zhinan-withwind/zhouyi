@@ -90,7 +90,7 @@ public class BaseDescriptor<T> implements IDescriptor<T> {
         Map<String, String[]> descriptions = getDescriptions(getTypeClass());
         for (String type : descriptions.keySet()) {
             if (!type.equals(NAME)) {
-                result.put(type, descriptions.get(type)[getValue(o)]);
+                result.put(type, describe(o, type));
             }
         }
         return result;

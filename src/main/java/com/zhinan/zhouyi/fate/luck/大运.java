@@ -1,5 +1,6 @@
 package com.zhinan.zhouyi.fate.luck;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.zhinan.zhouyi.base.干支;
 import com.zhinan.zhouyi.base.阴阳;
 import com.zhinan.zhouyi.fate.bazi.八字;
@@ -27,10 +28,16 @@ public class 大运 extends 运势 {
         LocalDateTime startTime = birthday;
         LocalDateTime endTime = luckDate.atTime(0, 0);
 
-        if (!dateTime.toLocalDate().isBefore(luckDate)) {
-            startTime = getStartTimeOfYear(dateTime.getYear());
-            endTime   = getStartTimeOfYear(dateTime.getYear() + 10);
-            ganzhi    = bazi.getMonth().roll(direction * ((dateTime.getYear() - luckDate.getYear()) / 10 + 1));
+//        if (!dateTime.toLocalDate().isBefore(luckDate)) {
+//            startTime = getStartTimeOfYear(dateTime.getYear());
+//            endTime   = getStartTimeOfYear(dateTime.getYear() + 10);
+//            ganzhi    = bazi.getMonth().roll(direction * ((dateTime.getYear() - luckDate.getYear()) / 10 + 1));
+//        }
+
+        while (!endTime.isAfter(dateTime)) {
+            startTime = endTime;
+            endTime   = endTime.plusYears(10L);
+            ganzhi    = ganzhi.roll(direction);
         }
 
         return new 大运(ganzhi, bazi, startTime, endTime);
@@ -70,10 +77,12 @@ public class 大运 extends 运势 {
         return String.valueOf(startTime.getYear());
     }
 
+    @JSONField(serialize = false)
     public 运势 getParent() {
         return null;
     }
 
+    @JSONField(serialize = false)
     public 大运 getNext() {
         return new 大运(roll(bazi.getDirection()), bazi,
                 endTime, getStartTimeOfYear(endTime.getYear() + 10));

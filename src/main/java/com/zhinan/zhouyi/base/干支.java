@@ -4,6 +4,7 @@ import com.zhinan.zhouyi.fate.bazi.纳音;
 import com.zhinan.zhouyi.fate.bazi.长生;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import run.zhinan.time.ganzhi.GanZhi;
 
 @Getter
 @AllArgsConstructor
@@ -21,6 +22,10 @@ public class 干支 {
 
     public static 干支 getByName(String name) {
         return new 干支(天干.getByName(name.substring(0, 1)), 地支.getByName(name.substring(1)));
+    }
+
+    public static 干支 of(GanZhi ganZhi) {
+        return 干支.getByValue(ganZhi.getGan().getValue() - 1, ganZhi.getZhi().getValue() - 1);
     }
 
     public int getValue() {

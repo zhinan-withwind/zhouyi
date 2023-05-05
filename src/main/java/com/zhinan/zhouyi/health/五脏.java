@@ -18,4 +18,18 @@ public enum 五脏 {
     五行 wuXing;
     天干 gan;
     地支 zhi;
+
+    public static 五脏 getByWuXing(五行 wuXing) {
+        五脏 result = null;
+        for (五脏 viscus : values()) {
+            if (viscus.wuXing.equals(wuXing)) {
+                result = viscus;
+                break;
+            }
+        }
+        return result;
+    }
+
+    public int getValue() { return ordinal(); }
+    public String getName() { return name(); }
 }

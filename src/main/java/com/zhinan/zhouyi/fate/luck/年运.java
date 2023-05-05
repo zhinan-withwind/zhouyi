@@ -41,7 +41,7 @@ public class 年运 extends 运势 {
     }
 
     public 大运 getParent() {
-        return 大运.of(this.startTime, bazi.getBirthday(), bazi.getSex().getValue());
+        return 大运.of(this.endTime, bazi.getBirthday(), bazi.getSex().getValue());
     }
 
     public 年运 getNext() {
