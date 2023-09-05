@@ -36,7 +36,7 @@ public abstract class BaseFortune implements ClassifiedFortune {
     public BaseFortune(八字 bazi) {
         this.bazi   = bazi;
         this.score  = getScore(bazi);
-        this.result = judge(this.score);
+        this.result = judge();
     }
 
     protected int getScore(五行 target, 五行 effect) {
@@ -71,7 +71,7 @@ public abstract class BaseFortune implements ClassifiedFortune {
 
     public abstract double getScore(八字 bazi);
 
-    public abstract GOOD_BAD judge(double score);
+    public abstract GOOD_BAD judge();
 
     public int getScore() {
         return toInt(score);

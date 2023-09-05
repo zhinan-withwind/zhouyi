@@ -93,7 +93,7 @@ public class StudyFortune extends BaseFortune {
     }
 
     @Override
-    public GOOD_BAD judge(double score) {
+    public GOOD_BAD judge() {
         return score > 610 * 0.4 * 0.8 ? GOOD_BAD.GOOD : GOOD_BAD.BAD;
     }
 }

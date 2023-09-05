@@ -32,7 +32,7 @@ public class MarriageFortune extends BaseFortune {
     }
 
     @Override
-    public GOOD_BAD judge(double score) {
+    public GOOD_BAD judge() {
         return score > 0 ? GOOD_BAD.GOOD : GOOD_BAD.BAD;
     }
 

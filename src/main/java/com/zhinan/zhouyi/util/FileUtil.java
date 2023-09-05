@@ -1,6 +1,9 @@
 package com.zhinan.zhouyi.util;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import lombok.SneakyThrows;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -26,6 +29,15 @@ public class FileUtil {
             e.printStackTrace();
         }
         return sb.toString();
+    }
+
+    @SneakyThrows
+    public static JSONObject loadJSON(String path) {
+        JSONObject data;
+        try(InputStream inputStream = new ClassPathResource(path).getInputStream()){
+            data = JSON.parseObject(inputStream, null);
+        }
+        return data;
     }
 
     public static void saveToFile(String path, String content) throws Exception {

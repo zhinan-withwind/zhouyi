@@ -42,37 +42,55 @@ public class ScoreBasedModel implements FatePatternModel {
             int curb = fatePattern.energy.getValue(fatePattern.bazi.getFate().get克());
 
             if (fatePattern.isStrong()) {
-                int max = Math.max(give, help);
-                if (fatePattern.isFollow()) {
-                    if (max == give) {
-                        gridPattern = 印枭主导的从旺格;
+                if (give == help) {
+                    if (fatePattern.bazi.getLing().getWuXing().equals(fatePattern.bazi.getFate().get生())) {
+                        gridPattern = fatePattern.isFollow() ? 印枭主导的从旺格 : 印枭主导的偏旺格;
                     } else {
-                        gridPattern = 截比主导的从旺格;
+                        gridPattern = fatePattern.isFollow() ? 截比主导的从旺格 : 截比主导的偏旺格;
                     }
                 } else {
-                    if (max == give) {
-                        gridPattern = 印枭主导的偏旺格;
+                    int max = Math.max(give, help);
+                    if (fatePattern.isFollow()) {
+                        if (max == give) {
+                            gridPattern = 印枭主导的从旺格;
+                        } else {
+                            gridPattern = 截比主导的从旺格;
+                        }
                     } else {
-                        gridPattern = 截比主导的偏旺格;
+                        if (max == give) {
+                            gridPattern = 印枭主导的偏旺格;
+                        } else {
+                            gridPattern = 截比主导的偏旺格;
+                        }
                     }
                 }
             } else {
-                int max = Math.max(Math.max(leak, cost), curb);
-                if (fatePattern.isFollow()) {
-                    if (max == leak) {
-                        gridPattern = 食伤主导的从弱格;
-                    } else if (max == cost) {
-                        gridPattern = 财才主导的从弱格;
+                if (leak == cost && cost == curb) {
+                    if (fatePattern.bazi.getLing().getWuXing().equals(fatePattern.bazi.getFate().get泄())) {
+                        gridPattern = fatePattern.isFollow() ? 食伤主导的从弱格 : 食伤主导的偏弱格;
+                    } else if (fatePattern.bazi.getLing().getWuXing().equals(fatePattern.bazi.getFate().get耗())) {
+                        gridPattern = fatePattern.isFollow() ? 财才主导的从弱格 : 财才主导的偏弱格;
                     } else {
-                        gridPattern = 官杀主导的从弱格;
+                        gridPattern = fatePattern.isFollow() ? 官杀主导的从弱格 : 官杀主导的偏弱格;
                     }
                 } else {
-                    if (max == leak) {
-                        gridPattern = 食伤主导的偏弱格;
-                    } else if (max == cost) {
-                        gridPattern = 财才主导的偏弱格;
+                    int max = Math.max(Math.max(leak, cost), curb);
+                    if (fatePattern.isFollow()) {
+                        if (max == leak) {
+                            gridPattern = 食伤主导的从弱格;
+                        } else if (max == cost) {
+                            gridPattern = 财才主导的从弱格;
+                        } else {
+                            gridPattern = 官杀主导的从弱格;
+                        }
                     } else {
-                        gridPattern = 官杀主导的偏弱格;
+                        if (max == leak) {
+                            gridPattern = 食伤主导的偏弱格;
+                        } else if (max == cost) {
+                            gridPattern = 财才主导的偏弱格;
+                        } else {
+                            gridPattern = 官杀主导的偏弱格;
+                        }
                     }
                 }
             }
@@ -140,7 +158,7 @@ public class ScoreBasedModel implements FatePatternModel {
 
     @Override
     public boolean isFollow() {
-        return getSelfPart() <= 80 * 100 / 610;
+        return energy.getSelfPart() <= 80 || energy.getOtherPart() <= 40;
     }
 
     @Override

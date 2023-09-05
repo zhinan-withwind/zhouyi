@@ -5,7 +5,7 @@ import com.zhinan.zhouyi.fate.bazi.八字;
 public interface ClassifiedFortune {
     八字 getBazi();
     int getScore();
-    BaseFortune.GOOD_BAD judge(double score);
+    BaseFortune.GOOD_BAD judge();
     boolean isGood();
     boolean isOK();
     boolean notBad();

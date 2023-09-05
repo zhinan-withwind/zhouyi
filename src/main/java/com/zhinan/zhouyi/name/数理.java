@@ -1,7 +1,9 @@
 package com.zhinan.zhouyi.name;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
 public enum 数理 {
     S1 ("太极之数", "太极之数，万物开泰，生发无穷，利禄亨通。", 吉凶.吉),

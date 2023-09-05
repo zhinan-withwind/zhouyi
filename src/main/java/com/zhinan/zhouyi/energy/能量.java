@@ -11,9 +11,9 @@ import java.util.*;
 
 public class 能量 {
     private final List<干支> ganZhiList = new ArrayList<>();
-    private final int[] values = new int[5];
-    private final int[] number = new int[5];
-    private final int[] percentage = {0, 0, 0, 0, 0};
+    private final Integer[] values  = {0, 0, 0, 0, 0};
+    private final Integer[] numbers = {0, 0, 0, 0, 0};
+    private final Integer[] percentages = {0, 0, 0, 0, 0};
 
     private 能量() {}
 
@@ -43,39 +43,39 @@ public class 能量 {
     public 能量 calculatePercentage() {
         if (getTotal() != 0) {
             for (int i = 0; i < 5; i++) {
-                this.percentage[i] = new Double(Math.floor((this.values[i] + 0.0) * 100.0 / this.getTotal() + 0.5)).intValue();
+                this.percentages[i] = new Double(Math.floor((this.values[i] + 0.0) * 100.0 / this.getTotal() + 0.5)).intValue();
             }
-            if (this.percentage[0] + this.percentage[1] + this.percentage[2] + this.percentage[3] + this.percentage[4] != 100) {
-                if (isStrong()) {
-                    if (getValue(getMing().get生()) > getValue(getMing())) {
-                        calculateRemainder(getMing().get生().getValue());
-                    } else {
-                        calculateRemainder(getMing().getValue());
-                    }
-                } else {
-                    int leakIndex = getMing().get泄().getValue();
-                    int costIndex = getMing().get耗().getValue();
-                    int curbIndex = getMing().get克().getValue();
-                    int max = Math.max(Math.max(values[leakIndex], values[costIndex]), values[curbIndex]);
-                    if (max == values[leakIndex]) {
-                        calculateRemainder(leakIndex);
-                    } else if (max == values[costIndex]) {
-                        calculateRemainder(costIndex);
-                    } else {
-                        calculateRemainder(curbIndex);
-                    }
-                }
-            }
+//            adjustPercent();
         }
         return this;
     }
 
-    public void calculateRemainder(int v) {
-        int value = 100;
-        for (int i = 0; i < 5; i++) {
-            value = value - (i == v ? 0 : this.percentage[i]);
+    public void adjustPercent() {
+        int error = this.percentages[0] + this.percentages[1] + this.percentages[2] + this.percentages[3] + this.percentages[4] - 100;
+        if (error != 0) {
+            int maxOther;
+            int leakIndex = getMing().get泄().getValue();
+            int costIndex = getMing().get耗().getValue();
+            int curbIndex = getMing().get克().getValue();
+            int max = Math.max(Math.max(values[leakIndex], values[costIndex]), values[curbIndex]);
+            if (max == values[leakIndex]) {
+                maxOther = leakIndex;
+            } else if (max == values[costIndex]) {
+                maxOther = costIndex;
+            } else {
+                maxOther = curbIndex;
+            }
+
+            int maxSelf = getValue(getMing().get生()) > getValue(getMing()) ? getMing().get生().getValue() : getMing().getValue();
+
+            int v = error > 0 ? isStrong() ? maxOther : maxSelf : isStrong() ? maxSelf : maxOther;
+
+            int value = 100;
+            for (int i = 0; i < 5; i++) {
+                value = value - (i == v ? 0 : this.percentages[i]);
+            }
+            this.percentages[v] = value;
         }
-        this.percentage[v] = value;
     }
 
     public int getValue(五行 wuXing) {
@@ -87,10 +87,10 @@ public class 能量 {
         return this;
     }
 
-    public int getNumber(五行 wuXing) { return number[wuXing.getValue()]; }
+    public int getNumber(五行 wuXing) { return numbers[wuXing.getValue()]; }
 
     public 能量 setNumber(五行 wuXing, int number) {
-        this.number[wuXing.getValue()] = number;
+        this.numbers[wuXing.getValue()] = number;
         return this;
     }
 
@@ -216,28 +216,56 @@ public class 能量 {
     }
 
     public List<五行> sortAsc() {
-        List<五行> result =  new ArrayList<>();
-        List<Integer> source = new ArrayList<>();
+        TreeMap<Integer, 五行> sortMap = new TreeMap<>();
+        int lingValue = getLing().getValue();
         for (int i = 0; i < values.length; i++) {
-            source.add(values[i] * 10 + i);
+            sortMap.put(values[i] * 10 + (i == lingValue ? 5 : 0) + i, 五行.getByValue(i));
         }
-        source.sort(Comparator.comparingInt(o -> o));
-        for (Integer i : source) {
-            result.add(五行.getByValue(i % 10));
-        }
-        return result;
+        return new ArrayList<>(sortMap.values());
     }
 
     public 五行 getMax() {
-        return sortAsc().get(4);
+        五行 max;
+        List<五行> result = sortAsc();
+        if (getValue(result.get(4)) == getValue(result.get(3)) && getValue(result.get(3)) == getValue(result.get(2))) {
+            max = result.get(2).equals(getLing()) ? result.get(2) :
+                  result.get(3).equals(getLing()) ? result.get(3) : result.get(4);
+        } else if (getValue(result.get(4)) == getValue(result.get(3))) {
+            max = result.get(3).equals(getLing()) ? result.get(3) : result.get(4);
+        } else {
+            max = result.get(4);
+        }
+        return max;
     }
 
     public 五行 getMin() {
         return sortAsc().get(0);
     }
 
+    public List<五行> getMaxWuxing() {
+        List<五行> result = new ArrayList<>();
+        int maxValue = Collections.max(Arrays.asList(values));
+        for (五行 wuXing : 五行.values()) {
+            if (maxValue == values[wuXing.getValue()]) {
+                result.add(wuXing);
+            }
+        }
+        return result;
+    }
+
+    public List<五行> getMinWuxing() {
+        List<五行> result = new ArrayList<>();
+        int minValue = Collections.min(Arrays.asList(values));
+        for (五行 wuXing : 五行.values()) {
+            if (minValue == values[wuXing.getValue()]) {
+                result.add(wuXing);
+            }
+        }
+        return result;
+    }
+
     public int getPercentage(五行 wuXing) {
-        return percentage[wuXing.getValue()];
+        return percentages[wuXing.getValue()];
     }
 
     public 五行 getMing() {

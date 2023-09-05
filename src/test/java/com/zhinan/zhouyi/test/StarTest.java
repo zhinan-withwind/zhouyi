@@ -17,14 +17,15 @@ public class StarTest {
     void testPaiPan() {
 //        LocalDateTime birthday = LocalDateTime.of(1976, 2, 11, 11, 40);
 //        LocalDateTime birthday = LocalDateTime.of(1987, 2, 20, 15, 40);
-        LocalDateTime birthday = LocalDateTime.of(1998, 1, 1, 13, 5);
-        LocalDateTime apparentSolarTime = DateUtil.toApparentSolarTime(birthday, "320700");
-//        星盘 pan = 星盘.of(, 1);
+        LocalDateTime birthday = LocalDateTime.of(2020, 05, 26, 0, 48);
+        LocalDateTime apparentSolarTime = DateUtil.toApparentSolarTime(birthday, null);
         星盘 pan = 星盘.of(apparentSolarTime, 1);
-//        星盘 pan = 星盘.of(, 0);
-        System.out.println("生日：" + DateTimeFormatter.getInstance(pan.getBirthday()).format(DateFormatType.CHINESE_NUMBER, DateType.DATETIME));
+        System.out.println("生日：" + pan.getBirthday().toString());
+        System.out.println("生日：" + pan.getBazi().toString());
         System.out.println("命局：" + pan.getPattern().name());
         System.out.println("身宫：" + pan.getBodyPalace());
+        System.out.println("命主：" + pan.getFateMaster().getName());
+        System.out.println("身主：" + pan.getBodyMaster().getName());
         System.out.println("四化：" + Arrays.toString(pan.getChangeList().toArray(new 化位[0])));
         List<宫位> palaceList = pan.getStarPalaceList();
         for (宫位 palace : palaceList) {
@@ -34,7 +35,7 @@ public class StarTest {
             System.out.println("大限：" + palace.getStartAge() + " - " + palace.getEndAge());
             StringBuilder sb = new StringBuilder();
             for (星位 star : palace.getStars()) {
-                sb.append(star.getStar().getName()).append(", ");
+                sb.append(star.getStar().getName()).append("-").append(star.getStatus()).append(", ");
             }
             System.out.println(sb);
         }

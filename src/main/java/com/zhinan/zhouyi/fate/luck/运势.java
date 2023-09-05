@@ -114,8 +114,12 @@ public abstract class 运势 extends 干支 {
     @JSONField(serialize = false)
     public abstract 运势 getParent();
 
+    public int getSelfScore() {
+        return new Double(40 * (isGanGodGood() ? 0.8 : 0.3) + 60 * (isZhiGodGood() ? 0.8 : 0.3)).intValue();
+    }
+
     public int getScore() {
-        int score = new Double(40 * (isGanGodGood() ? 0.8 : 0.3) + 60 * (isZhiGodGood() ? 0.8 : 0.3)).intValue();
+        int score = getSelfScore();
         运势 parent = getParent();
         int parentScore = parent == null ? score : parent.getScore();
         return new Double(parentScore * 0.4 + score * 0.6).intValue();

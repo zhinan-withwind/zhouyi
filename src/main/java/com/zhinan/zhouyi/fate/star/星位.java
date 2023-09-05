@@ -1,9 +1,9 @@
 package com.zhinan.zhouyi.fate.star;
 
 import com.zhinan.zhouyi.base.地支;
-import com.zhinan.zhouyi.date.GanZhiDateTime;
-import com.zhinan.zhouyi.date.LunarDateTime;
 import lombok.Getter;
+import run.zhinan.time.ganzhi.GanZhiDateTime;
+import run.zhinan.time.lunar.LunarDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,31 +25,38 @@ public class 星位 {
     public static List<星位> of(LunarDateTime birthday, 命局 pattern) {
         List<星位> stars = new ArrayList<>();
         GanZhiDateTime ganZhiDateTime = birthday.toGanZhiDateTime();
+
+        // 安紫微星
         星位 紫微 = new 星位(星曜.紫微, masterStarPosition[pattern.wuXing.getValue()][birthday.getDay() - 1].getValue());
         stars.add(紫微);
         地支[] mainPosition = mainStarPosition[紫微.getPosition()];
+
+        // 安十四正星
         for (int i = 1; i < 14; i++) {
             stars.add(new 星位(星曜.getByValue(i), mainPosition[i - 1].getValue()));
         }
 
+        int month = birthday.toLunarDate().getLunarMonth().isLeap() ?
+                birthday.toLunarDate().getLunarMonth().getIndex() : birthday.getMonth();
+        // 安月系诸星
         for (int i = 14; i < 18; i++) {
-            stars.add(new 星位(星曜.getByValue(i), otherStarPosition[i -14][birthday.getMonth() - 1].getValue()));
+            stars.add(new 星位(星曜.getByValue(i), otherStarPosition[i -14][month - 1].getValue()));
         }
 
         for (int i = 18; i < 23; i++) {
-            stars.add(new 星位(星曜.getByValue(i), otherStarPosition[i -14][ganZhiDateTime.getGanZhiYear().getGan().getValue()].getValue()));
+            stars.add(new 星位(星曜.getByValue(i), otherStarPosition[i -14][ganZhiDateTime.getGanZhiYear().getGan().getValue() - 1].getValue()));
         }
 
         for (int i = 23; i < 26; i++) {
-            stars.add(new 星位(星曜.getByValue(i), otherStarPosition[i -14][ganZhiDateTime.getGanZhiYear().getZhi().getValue()].getValue()));
+            stars.add(new 星位(星曜.getByValue(i), otherStarPosition[i -14][ganZhiDateTime.getGanZhiYear().getZhi().getValue() - 1].getValue()));
         }
 
         for (int i = 26; i < 30; i++) {
-            stars.add(new 星位(星曜.getByValue(i), otherStarPosition[i -14][ganZhiDateTime.getGanZhiHour().getZhi().getValue()].getValue()));
+            stars.add(new 星位(星曜.getByValue(i), otherStarPosition[i -14][ganZhiDateTime.getGanZhiTime().getZhi().getValue() - 1].getValue()));
         }
 
-        stars.add(new 星位(星曜.火星, fireStarPosition[ganZhiDateTime.getGanZhiYear().getZhi().getValue()][ganZhiDateTime.getGanZhiHour().getZhi().getValue()].getValue()));
-        stars.add(new 星位(星曜.铃星, bellStarPosition[ganZhiDateTime.getGanZhiYear().getZhi().getValue()][ganZhiDateTime.getGanZhiHour().getZhi().getValue()].getValue()));
+        stars.add(new 星位(星曜.火星, fireStarPosition[ganZhiDateTime.getGanZhiYear().getZhi().getValue() - 1][ganZhiDateTime.getGanZhiTime().getZhi().getValue() - 1].getValue()));
+        stars.add(new 星位(星曜.铃星, bellStarPosition[ganZhiDateTime.getGanZhiYear().getZhi().getValue() - 1][ganZhiDateTime.getGanZhiTime().getZhi().getValue() - 1].getValue()));
 
         return stars;
     }

@@ -126,7 +126,7 @@ public class WealthFortune extends BaseFortune {
     }
 
     @Override
-    public GOOD_BAD judge(double score) {
+    public GOOD_BAD judge() {
         return score > 10 ? GOOD_BAD.GOOD : GOOD_BAD.BAD;
     }
 }

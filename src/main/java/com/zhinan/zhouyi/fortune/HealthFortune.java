@@ -54,7 +54,7 @@ public class HealthFortune extends BaseFortune {
     }
 
     @Override
-    public GOOD_BAD judge(double score) {
+    public GOOD_BAD judge() {
         return GOOD_BAD.GOOD;
     }
 
