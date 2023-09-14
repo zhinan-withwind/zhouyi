@@ -17,7 +17,7 @@ public class StarTest {
     void testPaiPan() {
 //        LocalDateTime birthday = LocalDateTime.of(1976, 2, 11, 11, 40);
 //        LocalDateTime birthday = LocalDateTime.of(1987, 2, 20, 15, 40);
-        LocalDateTime birthday = LocalDateTime.of(2020, 05, 26, 0, 48);
+        LocalDateTime birthday = LocalDateTime.of(2001, 1, 24, 2, 0);
         LocalDateTime apparentSolarTime = DateUtil.toApparentSolarTime(birthday, null);
         星盘 pan = 星盘.of(apparentSolarTime, 1);
         System.out.println("生日：" + pan.getBirthday().toString());
@@ -35,7 +35,13 @@ public class StarTest {
             System.out.println("大限：" + palace.getStartAge() + " - " + palace.getEndAge());
             StringBuilder sb = new StringBuilder();
             for (星位 star : palace.getStars()) {
-                sb.append(star.getStar().getName()).append("-").append(star.getStatus()).append(", ");
+                sb.append(star.getStar().getName()).append("-").append(star.getStatus());
+                for (化位 c : pan.getChangeList()) {
+                    if (c.getPosition() == star.getStar().getValue()) {
+                        sb.append("[").append(c.getChange().getName()).append("]");
+                    }
+                }
+                sb.append("  ");
             }
             System.out.println(sb);
         }

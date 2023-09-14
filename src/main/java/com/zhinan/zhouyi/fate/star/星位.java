@@ -3,6 +3,7 @@ package com.zhinan.zhouyi.fate.star;
 import com.zhinan.zhouyi.base.地支;
 import lombok.Getter;
 import run.zhinan.time.ganzhi.GanZhiDateTime;
+import run.zhinan.time.ganzhi.GanZhiYear;
 import run.zhinan.time.lunar.LunarDateTime;
 
 import java.util.ArrayList;
@@ -42,21 +43,24 @@ public class 星位 {
         for (int i = 14; i < 18; i++) {
             stars.add(new 星位(星曜.getByValue(i), otherStarPosition[i -14][month - 1].getValue()));
         }
-
+        // 安年干诸星
+        int yearGanValue = GanZhiYear.of(birthday.getYear()).getGan().getValue() - 1;
         for (int i = 18; i < 23; i++) {
-            stars.add(new 星位(星曜.getByValue(i), otherStarPosition[i -14][ganZhiDateTime.getGanZhiYear().getGan().getValue() - 1].getValue()));
+            stars.add(new 星位(星曜.getByValue(i), otherStarPosition[i -14][yearGanValue].getValue()));
         }
-
+        // 安年支诸星
+        int yearZhiValue = GanZhiYear.of(birthday.getYear()).getZhi().getValue() - 1;
         for (int i = 23; i < 26; i++) {
-            stars.add(new 星位(星曜.getByValue(i), otherStarPosition[i -14][ganZhiDateTime.getGanZhiYear().getZhi().getValue() - 1].getValue()));
+            stars.add(new 星位(星曜.getByValue(i), otherStarPosition[i -14][yearZhiValue].getValue()));
         }
-
+        // 安时系诸星
+        int timeZhiValue = ganZhiDateTime.getGanZhiTime().getZhi().getValue() - 1;
         for (int i = 26; i < 30; i++) {
             stars.add(new 星位(星曜.getByValue(i), otherStarPosition[i -14][ganZhiDateTime.getGanZhiTime().getZhi().getValue() - 1].getValue()));
         }
-
-        stars.add(new 星位(星曜.火星, fireStarPosition[ganZhiDateTime.getGanZhiYear().getZhi().getValue() - 1][ganZhiDateTime.getGanZhiTime().getZhi().getValue() - 1].getValue()));
-        stars.add(new 星位(星曜.铃星, bellStarPosition[ganZhiDateTime.getGanZhiYear().getZhi().getValue() - 1][ganZhiDateTime.getGanZhiTime().getZhi().getValue() - 1].getValue()));
+        // 安火星铃星
+        stars.add(new 星位(星曜.火星, fireStarPosition[yearZhiValue][timeZhiValue].getValue()));
+        stars.add(new 星位(星曜.铃星, bellStarPosition[yearZhiValue][timeZhiValue].getValue()));
 
         return stars;
     }
