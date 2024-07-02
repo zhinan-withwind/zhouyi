@@ -122,6 +122,6 @@ public abstract class 运势 extends 干支 {
         int score = getSelfScore();
         运势 parent = getParent();
         int parentScore = parent == null ? score : parent.getScore();
-        return new Double(parentScore * 0.4 + score * 0.6).intValue();
+        return new Double(parentScore * 0.6 + score * 0.4).intValue();
     }
 }

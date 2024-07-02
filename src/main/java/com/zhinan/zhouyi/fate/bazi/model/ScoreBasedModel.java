@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ScoreBasedModel implements FatePatternModel {
     enum FATE_PATTERN {
-        印枭思辨格, 截比强旺格, 食伤灵动格, 财才务实格, 官杀自律格
+        印枭思辨格, 劫比强旺格, 伤食灵动格, 财才实践格, 官杀自律格
     }
 
     @RequiredArgsConstructor

@@ -10,9 +10,6 @@
         <module name="ZhouYi" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="ZhouYi" target="8" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
