@@ -1430,7 +1430,7 @@
 {"id": 1429, "parentId": 89, "code": "150102", "name": "新城区", "latitude": 40.858440, "longitude": 111.663450}, 
 {"id": 1430, "parentId": 89, "code": "150103", "name": "回民区", "latitude": 40.807720, "longitude": 111.622990}, 
 {"id": 1431, "parentId": 89, "code": "150104", "name": "玉泉区", "latitude": 40.753190, "longitude": 111.675430}, 
-{"id": 1432, "parentId": 89, "code": "150105", "name": "赛罕区", "latitude": 40.791950, "longitude": 111.701710}, 
+{"id": 1432, "parentId": 89, "code": "150105", "name": "赛罕区", "latitude": 40.791950, "longitude": 111.701710},
 {"id": 1433, "parentId": 89, "code": "150121", "name": "土默特左旗", "latitude": 40.729570, "longitude": 111.163580}, 
 {"id": 1434, "parentId": 89, "code": "150122", "name": "托克托县", "latitude": 40.277440, "longitude": 111.194210}, 
 {"id": 1435, "parentId": 89, "code": "150123", "name": "和林格尔县", "latitude": 40.378590, "longitude": 111.820830}, 

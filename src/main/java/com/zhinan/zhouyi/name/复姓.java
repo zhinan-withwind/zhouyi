@@ -54,11 +54,13 @@ public enum 复姓 {
 
     public static boolean is(String name) {
         boolean result = false;
-        String familyName = name.substring(0, 2);
-        for (复姓 value : values()) {
-            if (familyName.equals(value.name())) {
-                result = true;
-                break;
+        if (name.length() > 2) {
+            String familyName = name.substring(0, 2);
+            for (复姓 value : values()) {
+                if (familyName.equals(value.name())) {
+                    result = true;
+                    break;
+                }
             }
         }
         return result;

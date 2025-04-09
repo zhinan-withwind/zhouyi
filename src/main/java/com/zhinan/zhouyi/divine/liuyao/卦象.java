@@ -127,6 +127,7 @@ public class 卦象 {
         卦象 gua = 卦象.of(values, original.day);
         for (卦爻 yao : gua.yaoList) {
             yao.setRelation(六亲.getByValue(original.wuXing.compare(yao.wuXing).getValue()));
+            yao.setChange(false);
         }
         return gua;
     }
